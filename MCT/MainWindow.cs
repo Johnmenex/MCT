@@ -23,6 +23,10 @@ namespace MCT
         SerialPort SerialPort;
         List<CheckBox> cb_sensors;
 
+        private bool _started = false;
+
+        public bool Started { get => _started; set => _started = value; }
+
         private string DetectCOM()
         {
             SerialPort _serialPort = new SerialPort();
@@ -45,7 +49,6 @@ namespace MCT
             }
             return _value;
         }
-        
         private int DetectNumberOfSensors(SerialPort _serialPort)
         {
             int _value = 0;
@@ -57,25 +60,12 @@ namespace MCT
                 _value = _serialPort.ReadExisting().Split('|').Length - 1;
                 _serialPort.Close();
             }
-            catch {
+            catch
+            {
                 MessageBox.Show("Could not acquire the number of sensors.");
             }
             return _value;
         }
-
-        private void SetDTR(bool _state)
-        {
-            DTRenableToolStripMenuItem.Checked = _state? true : false;
-            DTRdisableToolStripMenuItem.Checked = !_state ? true : false;
-            tb_DTR_state.BackColor = _state ? Color.Green : Color.Red;
-        }
-        private void SetRTS(bool _state)
-        {
-            RTSenableToolStripMenuItem.Checked = _state ? true : false;
-            RTSdisableToolStripMenuItem.Checked = !_state ? true : false;
-            tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
-        }
-
         private void SetupSensors(int _number_of_sensors)
         {
             cb_sensors = new List<CheckBox>();
@@ -107,8 +97,8 @@ namespace MCT
                     column = 0;
                     row++;
                 }
-                
-                if((15 + (row * 25) + cb_sensors[i].Height) >gb_sensors.Height)
+
+                if ((15 + (row * 25) + cb_sensors[i].Height) > gb_sensors.Height)
                 {
                     gb_sensors.Height += cb_sensors[i].Height;
                     Height += cb_sensors[i].Height;
@@ -121,6 +111,61 @@ namespace MCT
             }
             lb_sensors_instructions.Visible = false;
         }
+        private void SetDTR(bool _state)
+        {
+            DTRenableToolStripMenuItem.Checked = _state? true : false;
+            DTRdisableToolStripMenuItem.Checked = !_state ? true : false;
+            tb_DTR_state.BackColor = _state ? Color.Green : Color.Red;
+        }
+        private void SetRTS(bool _state)
+        {
+            RTSenableToolStripMenuItem.Checked = _state ? true : false;
+            RTSdisableToolStripMenuItem.Checked = !_state ? true : false;
+            tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
+        }
+        private void Start()
+        {
+            btn_start_stop.Text = "Stop";
+
+            gb_sampling_info.Enabled = false;
+            gb_auto_mode.Enabled = false;
+
+            btn_reset.Enabled = false;
+            btn_save.Enabled = false;
+            btn_detect_sensors.Enabled = false;
+            cb_scheduled_monitor.Enabled = false;
+
+            timer_logger.Start();
+        }
+        private void Stop()
+        {
+            btn_start_stop.Text = "Start";
+
+            timer_logger.Stop();
+            btn_reset.Enabled = true;
+            btn_save.Enabled = true;
+        }
+        private void Reset()
+        {
+            gb_sampling_info.Enabled = true;
+            lb_USB_port.Text = "Selected USB port:";
+            lb_sampling_rate.Text = "Sampling rate:";
+            tb_DTR_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
+            tb_RTS_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
+            lb_sensors_number.Text = "Number of detected sensors: ";
+
+            cb_scheduled_monitor.Enabled = true;
+            gb_auto_mode.Enabled = cb_scheduled_monitor.Checked;
+            
+            btn_detect_sensors.Enabled = true;
+            gb_sensors.Controls.Clear();
+            cb_sensors = new List<CheckBox>();
+
+            btn_reset.Enabled = false;
+            btn_save.Enabled = false;
+            
+            btn_start_stop.Enabled = false;
+        }
 
         private void btn_detect_sensors_Click(object sender, EventArgs e)
         {
@@ -130,6 +175,7 @@ namespace MCT
             if (SerialPort == null)
                 return;
 
+            btn_start_stop.Text = "Start";
             btn_start_stop.Enabled = true;
 
 
@@ -147,6 +193,21 @@ namespace MCT
         {
             gb_auto_mode.Enabled = ((CheckBox)sender).Checked;
             
+        }
+
+        private void btn_start_stop_Click(object sender, EventArgs e)
+        {
+            if (!Started)
+                Start();
+            else
+                Stop();
+            
+            Started = !Started;
+        }
+
+        private void btn_reset_Click(object sender, EventArgs e)
+        {
+            Reset();
         }
     }
 }

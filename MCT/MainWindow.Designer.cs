@@ -295,6 +295,7 @@
             this.btn_start_stop.TabIndex = 2;
             this.btn_start_stop.Text = "Start \r\n--------\r\nStop";
             this.btn_start_stop.UseVisualStyleBackColor = true;
+            this.btn_start_stop.Click += new System.EventHandler(this.btn_start_stop_Click);
             // 
             // btn_reset
             // 
@@ -305,6 +306,7 @@
             this.btn_reset.TabIndex = 3;
             this.btn_reset.Text = "Reset";
             this.btn_reset.UseVisualStyleBackColor = true;
+            this.btn_reset.Click += new System.EventHandler(this.btn_reset_Click);
             // 
             // btn_save
             // 
@@ -453,6 +455,7 @@
             this.gb_auto_mode.Controls.Add(this.dateTimePicker1);
             this.gb_auto_mode.Controls.Add(this.lb_finish_date);
             this.gb_auto_mode.Controls.Add(this.lb_start_date);
+            this.gb_auto_mode.Enabled = false;
             this.gb_auto_mode.Location = new System.Drawing.Point(12, 252);
             this.gb_auto_mode.Name = "gb_auto_mode";
             this.gb_auto_mode.Size = new System.Drawing.Size(468, 96);
