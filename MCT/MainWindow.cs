@@ -25,28 +25,26 @@ namespace MCT
         private string DetectCOM()
         {
             SerialPort _serialPort = new SerialPort();
-            string _serial_content="";
+            string _serial_content = "";
             string _value = "";
 
             foreach (string _s in SerialPort.GetPortNames())
             {
 
-                if (_serialPort.IsOpen)
-                    _serial_content = _serialPort.ReadExisting();
-                else
-                {
+                if (!_serialPort.IsOpen)
                     _serialPort.Open();
-                    _serial_content = _serialPort.ReadExisting();
-                    _serialPort.Close();
-                }
 
-                if (_serial_content == "MCT|") //<-detects if THIS is the device we want to listen monitor
+                _serial_content = _serialPort.ReadExisting();
+                _serialPort.Close();
+
+                if (_serial_content.Contains("")) //<-detects if THIS is the device we want to listen monitor
                     _value = _s;
                 else
                     _value = "";
             }
             return _value;
         }
+
         private void SetDTR(bool _state)
         {
             DTRenableToolStripMenuItem.Checked = _state? true : false;
