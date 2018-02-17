@@ -75,6 +75,10 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.lb_finish_date = new System.Windows.Forms.Label();
             this.lb_start_date = new System.Windows.Forms.Label();
+            this.enableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.enableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.gb_sampling_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -113,19 +117,25 @@
             // portToolStripMenuItem
             // 
             this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-            this.portToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.portToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.portToolStripMenuItem.Text = "Port";
             // 
             // dTRToolStripMenuItem
             // 
+            this.dTRToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.enableToolStripMenuItem,
+            this.disableToolStripMenuItem});
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // rTSToolStripMenuItem
             // 
+            this.rTSToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.enableToolStripMenuItem1,
+            this.disableToolStripMenuItem1});
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // activityMonitorToolStripMenuItem
@@ -275,6 +285,7 @@
             this.btn_detect_sensors.TabIndex = 5;
             this.btn_detect_sensors.Text = "Detect sensors";
             this.btn_detect_sensors.UseVisualStyleBackColor = true;
+            this.btn_detect_sensors.Click += new System.EventHandler(this.btn_detect_sensors_Click);
             // 
             // gb_sampling_info
             // 
@@ -496,6 +507,30 @@
             this.lb_start_date.TabIndex = 0;
             this.lb_start_date.Text = "Start monitoring at:";
             // 
+            // enableToolStripMenuItem
+            // 
+            this.enableToolStripMenuItem.Name = "enableToolStripMenuItem";
+            this.enableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.enableToolStripMenuItem.Text = "Enable";
+            // 
+            // disableToolStripMenuItem
+            // 
+            this.disableToolStripMenuItem.Name = "disableToolStripMenuItem";
+            this.disableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.disableToolStripMenuItem.Text = "Disable";
+            // 
+            // enableToolStripMenuItem1
+            // 
+            this.enableToolStripMenuItem1.Name = "enableToolStripMenuItem1";
+            this.enableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.enableToolStripMenuItem1.Text = "Enable";
+            // 
+            // disableToolStripMenuItem1
+            // 
+            this.disableToolStripMenuItem1.Name = "disableToolStripMenuItem1";
+            this.disableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.disableToolStripMenuItem1.Text = "Disable";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -506,7 +541,6 @@
             this.Controls.Add(this.gb_sampling_info);
             this.Controls.Add(this.gb_sensors);
             this.Controls.Add(this.menuStrip1);
-            this.Enabled = false;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
             this.Text = "Control Panel";
@@ -577,6 +611,10 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label lb_finish_date;
         private System.Windows.Forms.Label lb_start_date;
+        private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem1;
     }
 }
 
