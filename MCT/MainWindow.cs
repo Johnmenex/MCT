@@ -120,7 +120,7 @@ namespace MCT
         private void SetRTS(bool _state)
         {
             RTSenableToolStripMenuItem.Checked = _state;
-            RTSdisableToolStripMenuItem.Checked = !_state;/
+            RTSdisableToolStripMenuItem.Checked = !_state;
             tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
         }
         private void Start()
