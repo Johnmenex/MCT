@@ -119,7 +119,7 @@ namespace MCT
                 gb_sensors.Controls.Add(cb_sensors[i]);
 
             }
-            gb_sensors.Visible = true;
+            lb_sensors_instructions.Visible = false;
         }
 
         private void btn_detect_sensors_Click(object sender, EventArgs e)
@@ -130,14 +130,23 @@ namespace MCT
             if (SerialPort == null)
                 return;
 
-            lb_USB_port.Text += SerialPort.PortName;
-            lb_sensors_number.Text += "" + DetectNumberOfSensors(SerialPort);
+            btn_start_stop.Enabled = true;
+
+
+            lb_USB_port.Text = "Selected USB port: " + SerialPort.PortName;
+            lb_sensors_number.Text = "Number of detected sensors: " + DetectNumberOfSensors(SerialPort);
             track_sampling_rate.Enabled=true;
 
             SetupSensors(9);
 
             SetDTR(true);
             SetRTS(true);
+        }
+
+        private void cb_scheduled_monitor_CheckedChanged(object sender, EventArgs e)
+        {
+            gb_auto_mode.Enabled = ((CheckBox)sender).Checked;
+            
         }
     }
 }

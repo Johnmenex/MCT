@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +53,7 @@
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gb_sensors = new System.Windows.Forms.GroupBox();
+            this.lb_sensors_instructions = new System.Windows.Forms.Label();
             this.btn_start_stop = new System.Windows.Forms.Button();
             this.btn_reset = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
@@ -79,7 +81,9 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.lb_finish_date = new System.Windows.Forms.Label();
             this.lb_start_date = new System.Windows.Forms.Label();
+            this.timer_logger = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
+            this.gb_sensors.SuspendLayout();
             this.gb_sampling_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_sampling_rate)).BeginInit();
             this.gb_buttons.SuspendLayout();
@@ -117,7 +121,7 @@
             // portToolStripMenuItem
             // 
             this.portToolStripMenuItem.Name = "portToolStripMenuItem";
-            this.portToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.portToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.portToolStripMenuItem.Text = "Port";
             // 
             // dTRToolStripMenuItem
@@ -126,19 +130,19 @@
             this.DTRenableToolStripMenuItem,
             this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // DTRenableToolStripMenuItem
             // 
             this.DTRenableToolStripMenuItem.Name = "DTRenableToolStripMenuItem";
-            this.DTRenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DTRenableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.DTRenableToolStripMenuItem.Text = "Enable";
             // 
             // DTRdisableToolStripMenuItem
             // 
             this.DTRdisableToolStripMenuItem.Name = "DTRdisableToolStripMenuItem";
-            this.DTRdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DTRdisableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.DTRdisableToolStripMenuItem.Text = "Disable";
             // 
             // rTSToolStripMenuItem
@@ -147,19 +151,19 @@
             this.RTSenableToolStripMenuItem,
             this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // RTSenableToolStripMenuItem
             // 
             this.RTSenableToolStripMenuItem.Name = "RTSenableToolStripMenuItem";
-            this.RTSenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RTSenableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.RTSenableToolStripMenuItem.Text = "Enable";
             // 
             // RTSdisableToolStripMenuItem
             // 
             this.RTSdisableToolStripMenuItem.Name = "RTSdisableToolStripMenuItem";
-            this.RTSdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RTSdisableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.RTSdisableToolStripMenuItem.Text = "Disable";
             // 
             // activityMonitorToolStripMenuItem
@@ -263,13 +267,24 @@
             // 
             // gb_sensors
             // 
+            this.gb_sensors.Controls.Add(this.lb_sensors_instructions);
             this.gb_sensors.Location = new System.Drawing.Point(12, 103);
             this.gb_sensors.Name = "gb_sensors";
             this.gb_sensors.Size = new System.Drawing.Size(262, 127);
             this.gb_sensors.TabIndex = 1;
             this.gb_sensors.TabStop = false;
             this.gb_sensors.Text = "Sensors to monitor";
-            this.gb_sensors.Visible = false;
+            // 
+            // lb_sensors_instructions
+            // 
+            this.lb_sensors_instructions.AutoSize = true;
+            this.lb_sensors_instructions.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.lb_sensors_instructions.Location = new System.Drawing.Point(16, 37);
+            this.lb_sensors_instructions.Name = "lb_sensors_instructions";
+            this.lb_sensors_instructions.Size = new System.Drawing.Size(231, 60);
+            this.lb_sensors_instructions.TabIndex = 0;
+            this.lb_sensors_instructions.Text = "Press the \"Detect sensors\" \r\nbutton for the sensors to \r\nbe detected and displaye" +
+    "d.";
             // 
             // btn_start_stop
             // 
@@ -423,6 +438,7 @@
             this.cb_scheduled_monitor.TabIndex = 6;
             this.cb_scheduled_monitor.Text = "Scheduled monitoring";
             this.cb_scheduled_monitor.UseVisualStyleBackColor = true;
+            this.cb_scheduled_monitor.CheckedChanged += new System.EventHandler(this.cb_scheduled_monitor_CheckedChanged);
             // 
             // gb_auto_mode
             // 
@@ -437,7 +453,7 @@
             this.gb_auto_mode.Controls.Add(this.dateTimePicker1);
             this.gb_auto_mode.Controls.Add(this.lb_finish_date);
             this.gb_auto_mode.Controls.Add(this.lb_start_date);
-            this.gb_auto_mode.Location = new System.Drawing.Point(13, 236);
+            this.gb_auto_mode.Location = new System.Drawing.Point(12, 252);
             this.gb_auto_mode.Name = "gb_auto_mode";
             this.gb_auto_mode.Size = new System.Drawing.Size(468, 96);
             this.gb_auto_mode.TabIndex = 7;
@@ -535,7 +551,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(493, 339);
+            this.ClientSize = new System.Drawing.Size(493, 360);
             this.Controls.Add(this.gb_auto_mode);
             this.Controls.Add(this.gb_buttons);
             this.Controls.Add(this.gb_sampling_info);
@@ -546,6 +562,8 @@
             this.Text = "Control Panel";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.gb_sensors.ResumeLayout(false);
+            this.gb_sensors.PerformLayout();
             this.gb_sampling_info.ResumeLayout(false);
             this.gb_sampling_info.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.track_sampling_rate)).EndInit();
@@ -615,6 +633,8 @@
         private System.Windows.Forms.ToolStripMenuItem DTRdisableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RTSenableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RTSdisableToolStripMenuItem;
+        private System.Windows.Forms.Label lb_sensors_instructions;
+        private System.Windows.Forms.Timer timer_logger;
     }
 }
 
