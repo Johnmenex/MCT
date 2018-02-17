@@ -21,6 +21,7 @@ namespace MCT
         }
 
         SerialPort SerialPort;
+        List<CheckBox> cb_sensors;
 
         private string DetectCOM()
         {
@@ -74,7 +75,51 @@ namespace MCT
             RTSdisableToolStripMenuItem.Checked = !_state ? true : false;
             tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
         }
-        
+
+        private void SetupSensors(int _number_of_sensors)
+        {
+            cb_sensors = new List<CheckBox>();
+            int column = 0;
+            int row = 0;
+
+            for (int i = 0; i < _number_of_sensors; i++)
+            {
+                cb_sensors.Add(new CheckBox());
+                cb_sensors[i].Name = "cb_sensor_" + (i + 1);
+                cb_sensors[i].Text = "Sensor " + (i + 1);
+                cb_sensors[i].Checked = true;
+                cb_sensors[i].AutoSize = true;
+
+                if (column == 0)
+                    cb_sensors[i].Location = new Point(
+                        10 + (column * (cb_sensors[i].Width)),
+                        15 + (row * 25)
+                        );
+                else
+                    cb_sensors[i].Location = new Point(
+                        (-15 * column) + (column * (cb_sensors[i].Width)),
+                        15 + (row * 25)
+                        );
+                column++;
+
+                if (((-15 * column) + (column * (cb_sensors[i].Width)) > gb_sensors.Width))
+                {
+                    column = 0;
+                    row++;
+                }
+                
+                if((15 + (row * 25) + cb_sensors[i].Height) >gb_sensors.Height)
+                {
+                    gb_sensors.Height += cb_sensors[i].Height;
+                    Height += cb_sensors[i].Height;
+                    gb_auto_mode.Location = new Point(gb_auto_mode.Location.X, gb_auto_mode.Location.Y + cb_sensors[i].Height);
+                }
+
+                gb_sensors.Controls.Add(cb_sensors[i]);
+
+            }
+            gb_sensors.Visible = true;
+        }
 
         private void btn_detect_sensors_Click(object sender, EventArgs e)
         {
@@ -84,9 +129,11 @@ namespace MCT
             if (SerialPort == null)
                 return;
 
-            lb_USB_port.Text = SerialPort.PortName;
-            lb_sensors_number.Text = "" + DetectNumberOfSensors(SerialPort);
+            lb_USB_port.Text += SerialPort.PortName;
+            lb_sensors_number.Text += "" + DetectNumberOfSensors(SerialPort);
             track_sampling_rate.Enabled=true;
+
+            SetupSensors(9);
 
             SetDTR(true);
             SetRTS(true);
