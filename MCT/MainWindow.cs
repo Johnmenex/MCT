@@ -47,11 +47,30 @@ namespace MCT
             }
             return _value;
         }
+        private void SetDTR(bool _state)
+        {
+            DTRenableToolStripMenuItem.Checked = _state? true : false;
+            DTRdisableToolStripMenuItem.Checked = !_state ? true : false;
+            tb_DTR_state.BackColor = _state ? Color.Green : Color.Red;
+        }
+        private void SetRTS(bool _state)
+        {
+            RTSenableToolStripMenuItem.Checked = _state ? true : false;
+            RTSdisableToolStripMenuItem.Checked = !_state ? true : false;
+            tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
+        }
+        
 
         private void btn_detect_sensors_Click(object sender, EventArgs e)
         {
             string _portname = DetectCOM();
             SerialPort = _portname!="" ? new SerialPort(_portname) : null;
+
+            if (SerialPort == null)
+                return;
+
+            SetDTR(true);
+            SetRTS(true);
         }
     }
 }

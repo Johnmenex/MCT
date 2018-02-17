@@ -32,7 +32,11 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.portToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dTRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DTRenableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DTRdisableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rTSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RTSenableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RTSdisableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activityMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.realtimeValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.realtimeGraphsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,8 +57,8 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_detect_sensors = new System.Windows.Forms.Button();
             this.gb_sampling_info = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tb_RTS_state = new System.Windows.Forms.TextBox();
+            this.tb_DTR_state = new System.Windows.Forms.TextBox();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.lb_sensors_number = new System.Windows.Forms.Label();
             this.lb_RTS_state = new System.Windows.Forms.Label();
@@ -75,10 +79,6 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.lb_finish_date = new System.Windows.Forms.Label();
             this.lb_start_date = new System.Windows.Forms.Label();
-            this.enableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.enableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.disableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.gb_sampling_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -123,20 +123,44 @@
             // dTRToolStripMenuItem
             // 
             this.dTRToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.enableToolStripMenuItem,
-            this.disableToolStripMenuItem});
+            this.DTRenableToolStripMenuItem,
+            this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
             this.dTRToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
+            // DTRenableToolStripMenuItem
+            // 
+            this.DTRenableToolStripMenuItem.Name = "DTRenableToolStripMenuItem";
+            this.DTRenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DTRenableToolStripMenuItem.Text = "Enable";
+            // 
+            // DTRdisableToolStripMenuItem
+            // 
+            this.DTRdisableToolStripMenuItem.Name = "DTRdisableToolStripMenuItem";
+            this.DTRdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DTRdisableToolStripMenuItem.Text = "Disable";
+            // 
             // rTSToolStripMenuItem
             // 
             this.rTSToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.enableToolStripMenuItem1,
-            this.disableToolStripMenuItem1});
+            this.RTSenableToolStripMenuItem,
+            this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
             this.rTSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
+            // 
+            // RTSenableToolStripMenuItem
+            // 
+            this.RTSenableToolStripMenuItem.Name = "RTSenableToolStripMenuItem";
+            this.RTSenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RTSenableToolStripMenuItem.Text = "Enable";
+            // 
+            // RTSdisableToolStripMenuItem
+            // 
+            this.RTSdisableToolStripMenuItem.Name = "RTSdisableToolStripMenuItem";
+            this.RTSdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RTSdisableToolStripMenuItem.Text = "Disable";
             // 
             // activityMonitorToolStripMenuItem
             // 
@@ -289,8 +313,8 @@
             // 
             // gb_sampling_info
             // 
-            this.gb_sampling_info.Controls.Add(this.textBox2);
-            this.gb_sampling_info.Controls.Add(this.textBox1);
+            this.gb_sampling_info.Controls.Add(this.tb_RTS_state);
+            this.gb_sampling_info.Controls.Add(this.tb_DTR_state);
             this.gb_sampling_info.Controls.Add(this.trackBar1);
             this.gb_sampling_info.Controls.Add(this.lb_sensors_number);
             this.gb_sampling_info.Controls.Add(this.lb_RTS_state);
@@ -304,25 +328,25 @@
             this.gb_sampling_info.TabStop = false;
             this.gb_sampling_info.Text = "Monitoring parameters and information";
             // 
-            // textBox2
+            // tb_RTS_state
             // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(68, 145);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(20, 20);
-            this.textBox2.TabIndex = 7;
+            this.tb_RTS_state.BackColor = System.Drawing.SystemColors.Control;
+            this.tb_RTS_state.Enabled = false;
+            this.tb_RTS_state.Location = new System.Drawing.Point(68, 145);
+            this.tb_RTS_state.Multiline = true;
+            this.tb_RTS_state.Name = "tb_RTS_state";
+            this.tb_RTS_state.Size = new System.Drawing.Size(20, 20);
+            this.tb_RTS_state.TabIndex = 7;
             // 
-            // textBox1
+            // tb_DTR_state
             // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(68, 115);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(20, 20);
-            this.textBox1.TabIndex = 6;
+            this.tb_DTR_state.BackColor = System.Drawing.SystemColors.Control;
+            this.tb_DTR_state.Enabled = false;
+            this.tb_DTR_state.Location = new System.Drawing.Point(68, 115);
+            this.tb_DTR_state.Multiline = true;
+            this.tb_DTR_state.Name = "tb_DTR_state";
+            this.tb_DTR_state.Size = new System.Drawing.Size(20, 20);
+            this.tb_DTR_state.TabIndex = 6;
             // 
             // trackBar1
             // 
@@ -507,30 +531,6 @@
             this.lb_start_date.TabIndex = 0;
             this.lb_start_date.Text = "Start monitoring at:";
             // 
-            // enableToolStripMenuItem
-            // 
-            this.enableToolStripMenuItem.Name = "enableToolStripMenuItem";
-            this.enableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.enableToolStripMenuItem.Text = "Enable";
-            // 
-            // disableToolStripMenuItem
-            // 
-            this.disableToolStripMenuItem.Name = "disableToolStripMenuItem";
-            this.disableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.disableToolStripMenuItem.Text = "Disable";
-            // 
-            // enableToolStripMenuItem1
-            // 
-            this.enableToolStripMenuItem1.Name = "enableToolStripMenuItem1";
-            this.enableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.enableToolStripMenuItem1.Text = "Enable";
-            // 
-            // disableToolStripMenuItem1
-            // 
-            this.disableToolStripMenuItem1.Name = "disableToolStripMenuItem1";
-            this.disableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.disableToolStripMenuItem1.Text = "Disable";
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -589,8 +589,8 @@
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.Button btn_detect_sensors;
         private System.Windows.Forms.GroupBox gb_sampling_info;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tb_RTS_state;
+        private System.Windows.Forms.TextBox tb_DTR_state;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Label lb_sensors_number;
         private System.Windows.Forms.Label lb_RTS_state;
@@ -611,10 +611,10 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label lb_finish_date;
         private System.Windows.Forms.Label lb_start_date;
-        private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem DTRenableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DTRdisableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RTSenableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RTSdisableToolStripMenuItem;
     }
 }
 
