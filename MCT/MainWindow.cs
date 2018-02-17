@@ -135,6 +135,9 @@ namespace MCT
             btn_detect_sensors.Enabled = false;
             cb_scheduled_monitor.Enabled = false;
 
+            dTRToolStripMenuItem.Enabled = false;
+            rTSToolStripMenuItem.Enabled = false;
+
             timer_logger.Start();
         }
         private void Stop()
@@ -163,8 +166,12 @@ namespace MCT
 
             btn_reset.Enabled = false;
             btn_save.Enabled = false;
-            
             btn_start_stop.Enabled = false;
+
+            dTRToolStripMenuItem.Enabled = true;
+            rTSToolStripMenuItem.Enabled = true;
+
+            
         }
 
         private void btn_detect_sensors_Click(object sender, EventArgs e)
@@ -192,7 +199,6 @@ namespace MCT
         private void cb_scheduled_monitor_CheckedChanged(object sender, EventArgs e)
         {
             gb_auto_mode.Enabled = ((CheckBox)sender).Checked;
-            
         }
 
         private void btn_start_stop_Click(object sender, EventArgs e)
