@@ -113,14 +113,14 @@ namespace MCT
         }
         private void SetDTR(bool _state)
         {
-            DTRenableToolStripMenuItem.Checked = _state? true : false;
-            DTRdisableToolStripMenuItem.Checked = !_state ? true : false;
+            DTRenableToolStripMenuItem.Checked = _state;
+            DTRdisableToolStripMenuItem.Checked = !_state;
             tb_DTR_state.BackColor = _state ? Color.Green : Color.Red;
         }
         private void SetRTS(bool _state)
         {
-            RTSenableToolStripMenuItem.Checked = _state ? true : false;
-            RTSdisableToolStripMenuItem.Checked = !_state ? true : false;
+            RTSenableToolStripMenuItem.Checked = _state;
+            RTSdisableToolStripMenuItem.Checked = !_state;/
             tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
         }
         private void Start()
@@ -167,9 +167,7 @@ namespace MCT
             btn_reset.Enabled = false;
             btn_save.Enabled = false;
             btn_start_stop.Enabled = false;
-
-            dTRToolStripMenuItem.Enabled = true;
-            rTSToolStripMenuItem.Enabled = true;
+            
 
             
         }
@@ -184,6 +182,9 @@ namespace MCT
 
             btn_start_stop.Text = "Start";
             btn_start_stop.Enabled = true;
+
+            dTRToolStripMenuItem.Enabled = true;
+            rTSToolStripMenuItem.Enabled = true;
 
 
             lb_USB_port.Text = "Selected USB port: " + SerialPort.PortName;
@@ -214,6 +215,26 @@ namespace MCT
         private void btn_reset_Click(object sender, EventArgs e)
         {
             Reset();
+        }
+
+        private void DTRenableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetDTR(true);
+        }
+
+        private void DTRdisableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetDTR(false);
+        }
+
+        private void RTSenableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetRTS(true);
+        }
+
+        private void RTSdisableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetRTS(false);
         }
     }
 }

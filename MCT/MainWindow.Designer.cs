@@ -121,6 +121,7 @@
             this.dTRToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DTRenableToolStripMenuItem,
             this.DTRdisableToolStripMenuItem});
+            this.dTRToolStripMenuItem.Enabled = false;
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
             this.dTRToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
@@ -130,18 +131,21 @@
             this.DTRenableToolStripMenuItem.Name = "DTRenableToolStripMenuItem";
             this.DTRenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.DTRenableToolStripMenuItem.Text = "Enable";
+            this.DTRenableToolStripMenuItem.Click += new System.EventHandler(this.DTRenableToolStripMenuItem_Click);
             // 
             // DTRdisableToolStripMenuItem
             // 
             this.DTRdisableToolStripMenuItem.Name = "DTRdisableToolStripMenuItem";
             this.DTRdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.DTRdisableToolStripMenuItem.Text = "Disable";
+            this.DTRdisableToolStripMenuItem.Click += new System.EventHandler(this.DTRdisableToolStripMenuItem_Click);
             // 
             // rTSToolStripMenuItem
             // 
             this.rTSToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.RTSenableToolStripMenuItem,
             this.RTSdisableToolStripMenuItem});
+            this.rTSToolStripMenuItem.Enabled = false;
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
             this.rTSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
@@ -149,14 +153,16 @@
             // RTSenableToolStripMenuItem
             // 
             this.RTSenableToolStripMenuItem.Name = "RTSenableToolStripMenuItem";
-            this.RTSenableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.RTSenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.RTSenableToolStripMenuItem.Text = "Enable";
+            this.RTSenableToolStripMenuItem.Click += new System.EventHandler(this.RTSenableToolStripMenuItem_Click);
             // 
             // RTSdisableToolStripMenuItem
             // 
             this.RTSdisableToolStripMenuItem.Name = "RTSdisableToolStripMenuItem";
-            this.RTSdisableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.RTSdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.RTSdisableToolStripMenuItem.Text = "Disable";
+            this.RTSdisableToolStripMenuItem.Click += new System.EventHandler(this.RTSdisableToolStripMenuItem_Click);
             // 
             // activityMonitorToolStripMenuItem
             // 
