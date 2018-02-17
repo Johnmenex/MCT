@@ -59,7 +59,7 @@
             this.gb_sampling_info = new System.Windows.Forms.GroupBox();
             this.tb_RTS_state = new System.Windows.Forms.TextBox();
             this.tb_DTR_state = new System.Windows.Forms.TextBox();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.track_sampling_rate = new System.Windows.Forms.TrackBar();
             this.lb_sensors_number = new System.Windows.Forms.Label();
             this.lb_RTS_state = new System.Windows.Forms.Label();
             this.lb_DTR_state = new System.Windows.Forms.Label();
@@ -81,7 +81,7 @@
             this.lb_start_date = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.gb_sampling_info.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.track_sampling_rate)).BeginInit();
             this.gb_buttons.SuspendLayout();
             this.gb_auto_mode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
@@ -315,7 +315,7 @@
             // 
             this.gb_sampling_info.Controls.Add(this.tb_RTS_state);
             this.gb_sampling_info.Controls.Add(this.tb_DTR_state);
-            this.gb_sampling_info.Controls.Add(this.trackBar1);
+            this.gb_sampling_info.Controls.Add(this.track_sampling_rate);
             this.gb_sampling_info.Controls.Add(this.lb_sensors_number);
             this.gb_sampling_info.Controls.Add(this.lb_RTS_state);
             this.gb_sampling_info.Controls.Add(this.lb_DTR_state);
@@ -348,13 +348,13 @@
             this.tb_DTR_state.Size = new System.Drawing.Size(20, 20);
             this.tb_DTR_state.TabIndex = 6;
             // 
-            // trackBar1
+            // track_sampling_rate
             // 
-            this.trackBar1.Enabled = false;
-            this.trackBar1.Location = new System.Drawing.Point(6, 70);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(187, 45);
-            this.trackBar1.TabIndex = 5;
+            this.track_sampling_rate.Enabled = false;
+            this.track_sampling_rate.Location = new System.Drawing.Point(6, 70);
+            this.track_sampling_rate.Name = "track_sampling_rate";
+            this.track_sampling_rate.Size = new System.Drawing.Size(187, 45);
+            this.track_sampling_rate.TabIndex = 5;
             // 
             // lb_sensors_number
             // 
@@ -548,7 +548,7 @@
             this.menuStrip1.PerformLayout();
             this.gb_sampling_info.ResumeLayout(false);
             this.gb_sampling_info.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.track_sampling_rate)).EndInit();
             this.gb_buttons.ResumeLayout(false);
             this.gb_buttons.PerformLayout();
             this.gb_auto_mode.ResumeLayout(false);
@@ -591,7 +591,7 @@
         private System.Windows.Forms.GroupBox gb_sampling_info;
         private System.Windows.Forms.TextBox tb_RTS_state;
         private System.Windows.Forms.TextBox tb_DTR_state;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar track_sampling_rate;
         private System.Windows.Forms.Label lb_sensors_number;
         private System.Windows.Forms.Label lb_RTS_state;
         private System.Windows.Forms.Label lb_DTR_state;

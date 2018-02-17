@@ -44,6 +44,23 @@ namespace MCT
             }
             return _value;
         }
+        
+        private int DetectNumberOfSensors(SerialPort _serialPort)
+        {
+            int _value = 0;
+            try
+            {
+                if (!_serialPort.IsOpen)
+                    _serialPort.Open();
+
+                _value = _serialPort.ReadExisting().Split('|').Length - 1;
+                _serialPort.Close();
+            }
+            catch {
+                MessageBox.Show("Could not acquire the number of sensors.");
+            }
+            return _value;
+        }
 
         private void SetDTR(bool _state)
         {
@@ -66,6 +83,10 @@ namespace MCT
 
             if (SerialPort == null)
                 return;
+
+            lb_USB_port.Text = SerialPort.PortName;
+            lb_sensors_number.Text = "" + DetectNumberOfSensors(SerialPort);
+            track_sampling_rate.Enabled=true;
 
             SetDTR(true);
             SetRTS(true);
