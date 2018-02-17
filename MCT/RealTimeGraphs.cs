@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace MCT
 {
-    public partial class MainWindow : Form
+    public partial class RealTimeGraphs : Form
     {
-        public MainWindow()
+        public RealTimeGraphs()
         {
             InitializeComponent();
         }

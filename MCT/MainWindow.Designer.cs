@@ -53,37 +53,37 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_detect_sensors = new System.Windows.Forms.Button();
             this.gb_sampling_info = new System.Windows.Forms.GroupBox();
-            this.lb_USB_port = new System.Windows.Forms.Label();
-            this.lb_sampling_rate = new System.Windows.Forms.Label();
-            this.lb_DTR_state = new System.Windows.Forms.Label();
-            this.lb_RTS_state = new System.Windows.Forms.Label();
-            this.lb_sensors_number = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.lb_sensors_number = new System.Windows.Forms.Label();
+            this.lb_RTS_state = new System.Windows.Forms.Label();
+            this.lb_DTR_state = new System.Windows.Forms.Label();
+            this.lb_sampling_rate = new System.Windows.Forms.Label();
+            this.lb_USB_port = new System.Windows.Forms.Label();
             this.gb_buttons = new System.Windows.Forms.GroupBox();
-            this.gb_auto_mode = new System.Windows.Forms.GroupBox();
             this.cb_scheduled_monitor = new System.Windows.Forms.CheckBox();
-            this.lb_start_date = new System.Windows.Forms.Label();
-            this.lb_finish_date = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.lb_scheduled_date = new System.Windows.Forms.Label();
-            this.lb_scheduled_hour = new System.Windows.Forms.Label();
+            this.gb_auto_mode = new System.Windows.Forms.GroupBox();
             this.lb_scheduled_minute = new System.Windows.Forms.Label();
+            this.lb_scheduled_hour = new System.Windows.Forms.Label();
+            this.lb_scheduled_date = new System.Windows.Forms.Label();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.lb_finish_date = new System.Windows.Forms.Label();
+            this.lb_start_date = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.gb_sampling_info.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.gb_buttons.SuspendLayout();
             this.gb_auto_mode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -293,58 +293,15 @@
             this.gb_sampling_info.TabStop = false;
             this.gb_sampling_info.Text = "Monitoring parameters and information";
             // 
-            // lb_USB_port
+            // textBox2
             // 
-            this.lb_USB_port.AutoSize = true;
-            this.lb_USB_port.Location = new System.Drawing.Point(6, 21);
-            this.lb_USB_port.Name = "lb_USB_port";
-            this.lb_USB_port.Size = new System.Drawing.Size(101, 13);
-            this.lb_USB_port.TabIndex = 0;
-            this.lb_USB_port.Text = "Selected USB port: ";
-            // 
-            // lb_sampling_rate
-            // 
-            this.lb_sampling_rate.AutoSize = true;
-            this.lb_sampling_rate.Location = new System.Drawing.Point(6, 45);
-            this.lb_sampling_rate.Name = "lb_sampling_rate";
-            this.lb_sampling_rate.Size = new System.Drawing.Size(77, 13);
-            this.lb_sampling_rate.TabIndex = 1;
-            this.lb_sampling_rate.Text = "Sampling rate: ";
-            // 
-            // lb_DTR_state
-            // 
-            this.lb_DTR_state.AutoSize = true;
-            this.lb_DTR_state.Location = new System.Drawing.Point(7, 118);
-            this.lb_DTR_state.Name = "lb_DTR_state";
-            this.lb_DTR_state.Size = new System.Drawing.Size(56, 13);
-            this.lb_DTR_state.TabIndex = 2;
-            this.lb_DTR_state.Text = "DTR state";
-            // 
-            // lb_RTS_state
-            // 
-            this.lb_RTS_state.AutoSize = true;
-            this.lb_RTS_state.Location = new System.Drawing.Point(7, 148);
-            this.lb_RTS_state.Name = "lb_RTS_state";
-            this.lb_RTS_state.Size = new System.Drawing.Size(55, 13);
-            this.lb_RTS_state.TabIndex = 3;
-            this.lb_RTS_state.Text = "RTS state";
-            // 
-            // lb_sensors_number
-            // 
-            this.lb_sensors_number.AutoSize = true;
-            this.lb_sensors_number.Location = new System.Drawing.Point(6, 175);
-            this.lb_sensors_number.Name = "lb_sensors_number";
-            this.lb_sensors_number.Size = new System.Drawing.Size(146, 13);
-            this.lb_sensors_number.TabIndex = 4;
-            this.lb_sensors_number.Text = "Number of detected sensors: ";
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Enabled = false;
-            this.trackBar1.Location = new System.Drawing.Point(6, 70);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(187, 45);
-            this.trackBar1.TabIndex = 5;
+            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox2.Enabled = false;
+            this.textBox2.Location = new System.Drawing.Point(68, 145);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(20, 20);
+            this.textBox2.TabIndex = 7;
             // 
             // textBox1
             // 
@@ -356,15 +313,58 @@
             this.textBox1.Size = new System.Drawing.Size(20, 20);
             this.textBox1.TabIndex = 6;
             // 
-            // textBox2
+            // trackBar1
             // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(68, 145);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(20, 20);
-            this.textBox2.TabIndex = 7;
+            this.trackBar1.Enabled = false;
+            this.trackBar1.Location = new System.Drawing.Point(6, 70);
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(187, 45);
+            this.trackBar1.TabIndex = 5;
+            // 
+            // lb_sensors_number
+            // 
+            this.lb_sensors_number.AutoSize = true;
+            this.lb_sensors_number.Location = new System.Drawing.Point(6, 175);
+            this.lb_sensors_number.Name = "lb_sensors_number";
+            this.lb_sensors_number.Size = new System.Drawing.Size(146, 13);
+            this.lb_sensors_number.TabIndex = 4;
+            this.lb_sensors_number.Text = "Number of detected sensors: ";
+            // 
+            // lb_RTS_state
+            // 
+            this.lb_RTS_state.AutoSize = true;
+            this.lb_RTS_state.Location = new System.Drawing.Point(7, 148);
+            this.lb_RTS_state.Name = "lb_RTS_state";
+            this.lb_RTS_state.Size = new System.Drawing.Size(55, 13);
+            this.lb_RTS_state.TabIndex = 3;
+            this.lb_RTS_state.Text = "RTS state";
+            // 
+            // lb_DTR_state
+            // 
+            this.lb_DTR_state.AutoSize = true;
+            this.lb_DTR_state.Location = new System.Drawing.Point(7, 118);
+            this.lb_DTR_state.Name = "lb_DTR_state";
+            this.lb_DTR_state.Size = new System.Drawing.Size(56, 13);
+            this.lb_DTR_state.TabIndex = 2;
+            this.lb_DTR_state.Text = "DTR state";
+            // 
+            // lb_sampling_rate
+            // 
+            this.lb_sampling_rate.AutoSize = true;
+            this.lb_sampling_rate.Location = new System.Drawing.Point(6, 45);
+            this.lb_sampling_rate.Name = "lb_sampling_rate";
+            this.lb_sampling_rate.Size = new System.Drawing.Size(77, 13);
+            this.lb_sampling_rate.TabIndex = 1;
+            this.lb_sampling_rate.Text = "Sampling rate: ";
+            // 
+            // lb_USB_port
+            // 
+            this.lb_USB_port.AutoSize = true;
+            this.lb_USB_port.Location = new System.Drawing.Point(6, 21);
+            this.lb_USB_port.Name = "lb_USB_port";
+            this.lb_USB_port.Size = new System.Drawing.Size(101, 13);
+            this.lb_USB_port.TabIndex = 0;
+            this.lb_USB_port.Text = "Selected USB port: ";
             // 
             // gb_buttons
             // 
@@ -378,6 +378,16 @@
             this.gb_buttons.Size = new System.Drawing.Size(262, 70);
             this.gb_buttons.TabIndex = 6;
             this.gb_buttons.TabStop = false;
+            // 
+            // cb_scheduled_monitor
+            // 
+            this.cb_scheduled_monitor.AutoSize = true;
+            this.cb_scheduled_monitor.Location = new System.Drawing.Point(6, 41);
+            this.cb_scheduled_monitor.Name = "cb_scheduled_monitor";
+            this.cb_scheduled_monitor.Size = new System.Drawing.Size(128, 17);
+            this.cb_scheduled_monitor.TabIndex = 6;
+            this.cb_scheduled_monitor.Text = "Scheduled monitoring";
+            this.cb_scheduled_monitor.UseVisualStyleBackColor = true;
             // 
             // gb_auto_mode
             // 
@@ -399,84 +409,14 @@
             this.gb_auto_mode.TabStop = false;
             this.gb_auto_mode.Text = "Scheduled monitoring";
             // 
-            // cb_scheduled_monitor
+            // lb_scheduled_minute
             // 
-            this.cb_scheduled_monitor.AutoSize = true;
-            this.cb_scheduled_monitor.Location = new System.Drawing.Point(6, 41);
-            this.cb_scheduled_monitor.Name = "cb_scheduled_monitor";
-            this.cb_scheduled_monitor.Size = new System.Drawing.Size(128, 17);
-            this.cb_scheduled_monitor.TabIndex = 6;
-            this.cb_scheduled_monitor.Text = "Scheduled monitoring";
-            this.cb_scheduled_monitor.UseVisualStyleBackColor = true;
-            // 
-            // lb_start_date
-            // 
-            this.lb_start_date.AutoSize = true;
-            this.lb_start_date.Location = new System.Drawing.Point(16, 33);
-            this.lb_start_date.Name = "lb_start_date";
-            this.lb_start_date.Size = new System.Drawing.Size(95, 13);
-            this.lb_start_date.TabIndex = 0;
-            this.lb_start_date.Text = "Start monitoring at:";
-            // 
-            // lb_finish_date
-            // 
-            this.lb_finish_date.AutoSize = true;
-            this.lb_finish_date.Location = new System.Drawing.Point(16, 66);
-            this.lb_finish_date.Name = "lb_finish_date";
-            this.lb_finish_date.Size = new System.Drawing.Size(95, 13);
-            this.lb_finish_date.TabIndex = 1;
-            this.lb_finish_date.Text = "Stop monitoring at:";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(114, 31);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(215, 20);
-            this.dateTimePicker1.TabIndex = 2;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(114, 64);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(215, 20);
-            this.dateTimePicker2.TabIndex = 3;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(401, 31);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown1.TabIndex = 4;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(345, 31);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown2.TabIndex = 5;
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.Location = new System.Drawing.Point(345, 64);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown3.TabIndex = 6;
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.Location = new System.Drawing.Point(401, 64);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown4.TabIndex = 7;
-            // 
-            // lb_scheduled_date
-            // 
-            this.lb_scheduled_date.AutoSize = true;
-            this.lb_scheduled_date.Location = new System.Drawing.Point(194, 12);
-            this.lb_scheduled_date.Name = "lb_scheduled_date";
-            this.lb_scheduled_date.Size = new System.Drawing.Size(30, 13);
-            this.lb_scheduled_date.TabIndex = 8;
-            this.lb_scheduled_date.Text = "Date";
+            this.lb_scheduled_minute.AutoSize = true;
+            this.lb_scheduled_minute.Location = new System.Drawing.Point(404, 12);
+            this.lb_scheduled_minute.Name = "lb_scheduled_minute";
+            this.lb_scheduled_minute.Size = new System.Drawing.Size(39, 13);
+            this.lb_scheduled_minute.TabIndex = 10;
+            this.lb_scheduled_minute.Text = "Minute";
             // 
             // lb_scheduled_hour
             // 
@@ -487,14 +427,74 @@
             this.lb_scheduled_hour.TabIndex = 9;
             this.lb_scheduled_hour.Text = "Hour";
             // 
-            // lb_scheduled_minute
+            // lb_scheduled_date
             // 
-            this.lb_scheduled_minute.AutoSize = true;
-            this.lb_scheduled_minute.Location = new System.Drawing.Point(404, 12);
-            this.lb_scheduled_minute.Name = "lb_scheduled_minute";
-            this.lb_scheduled_minute.Size = new System.Drawing.Size(39, 13);
-            this.lb_scheduled_minute.TabIndex = 10;
-            this.lb_scheduled_minute.Text = "Minute";
+            this.lb_scheduled_date.AutoSize = true;
+            this.lb_scheduled_date.Location = new System.Drawing.Point(194, 12);
+            this.lb_scheduled_date.Name = "lb_scheduled_date";
+            this.lb_scheduled_date.Size = new System.Drawing.Size(30, 13);
+            this.lb_scheduled_date.TabIndex = 8;
+            this.lb_scheduled_date.Text = "Date";
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(401, 64);
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(43, 20);
+            this.numericUpDown4.TabIndex = 7;
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.Location = new System.Drawing.Point(345, 64);
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(43, 20);
+            this.numericUpDown3.TabIndex = 6;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(345, 31);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(43, 20);
+            this.numericUpDown2.TabIndex = 5;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(401, 31);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(43, 20);
+            this.numericUpDown1.TabIndex = 4;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(114, 64);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(215, 20);
+            this.dateTimePicker2.TabIndex = 3;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(114, 31);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(215, 20);
+            this.dateTimePicker1.TabIndex = 2;
+            // 
+            // lb_finish_date
+            // 
+            this.lb_finish_date.AutoSize = true;
+            this.lb_finish_date.Location = new System.Drawing.Point(16, 66);
+            this.lb_finish_date.Name = "lb_finish_date";
+            this.lb_finish_date.Size = new System.Drawing.Size(95, 13);
+            this.lb_finish_date.TabIndex = 1;
+            this.lb_finish_date.Text = "Stop monitoring at:";
+            // 
+            // lb_start_date
+            // 
+            this.lb_start_date.AutoSize = true;
+            this.lb_start_date.Location = new System.Drawing.Point(16, 33);
+            this.lb_start_date.Name = "lb_start_date";
+            this.lb_start_date.Size = new System.Drawing.Size(95, 13);
+            this.lb_start_date.TabIndex = 0;
+            this.lb_start_date.Text = "Start monitoring at:";
             // 
             // MainWindow
             // 
@@ -519,10 +519,10 @@
             this.gb_buttons.PerformLayout();
             this.gb_auto_mode.ResumeLayout(false);
             this.gb_auto_mode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
