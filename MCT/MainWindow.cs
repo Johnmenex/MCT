@@ -113,6 +113,7 @@ namespace MCT
                     gb_sensors.Height += cb_sensors[i].Height;
                     Height += cb_sensors[i].Height;
                     gb_auto_mode.Location = new Point(gb_auto_mode.Location.X, gb_auto_mode.Location.Y + cb_sensors[i].Height);
+                    gb_sampling_info.Height += cb_sensors[i].Height;
                 }
 
                 gb_sensors.Controls.Add(cb_sensors[i]);
