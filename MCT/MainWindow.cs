@@ -67,8 +67,12 @@ namespace MCT
             {
                 _data = SerialPort.ReadExisting().Split('|');
             }
-            catch { 
+            catch {
+                timer_logger.Stop();
                 MessageBox.Show("Could not receive any data from SerialPort.");
+                Stop();
+                Reset();
+                return new double[] { 0 };
             }
 #endif
 
@@ -203,6 +207,7 @@ namespace MCT
         private void Start()
         {
             btn_start_stop.Text = "Stop";
+            Started = true;
 
             gb_sampling_info.Enabled = false;
             gb_auto_mode.Enabled = false;
@@ -220,6 +225,7 @@ namespace MCT
         private void Stop()
         {
             btn_start_stop.Text = "Start";
+            Started = false;
 
             timer_logger.Stop();
             btn_reset.Enabled = true;
@@ -246,8 +252,8 @@ namespace MCT
             btn_reset.Enabled = false;
             btn_save.Enabled = false;
             btn_start_stop.Enabled = false;
-            
 
+            Started = false;
             
         }
         private void ApplicationRestart()
@@ -310,11 +316,11 @@ namespace MCT
         private void btn_start_stop_Click(object sender, EventArgs e)
         {
             if (!Started)
+            {
                 Start();
+            }
             else
                 Stop();
-            
-            Started = !Started;
         }
 
         private void btn_reset_Click(object sender, EventArgs e)

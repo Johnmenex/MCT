@@ -255,14 +255,14 @@
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.restartToolStripMenuItem.Text = "Restart";
             this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -294,7 +294,7 @@
             this.btn_start_stop.Name = "btn_start_stop";
             this.btn_start_stop.Size = new System.Drawing.Size(63, 50);
             this.btn_start_stop.TabIndex = 2;
-            this.btn_start_stop.Text = "Start \r\n--------\r\nStop";
+            this.btn_start_stop.Text = "Start";
             this.btn_start_stop.UseVisualStyleBackColor = true;
             this.btn_start_stop.Click += new System.EventHandler(this.btn_start_stop_Click);
             // 
