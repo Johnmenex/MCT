@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management;
 using System.IO.Ports;
+using System.Diagnostics;
 
 
 namespace MCT
@@ -18,14 +19,17 @@ namespace MCT
         public MainWindow()
         {
             InitializeComponent();
+            CenterToScreen();
         }
 
         SerialPort SerialPort;
         List<CheckBox> cb_sensors;
 
         private bool _started = false;
+        private int _samplingTime = 0;
 
         public bool Started { get => _started; set => _started = value; }
+        public int SamplingTime { get => _samplingTime; set => _samplingTime = value; }
 
         private string DetectCOM()
         {
@@ -153,6 +157,8 @@ namespace MCT
             gb_sampling_info.Enabled = true;
             lb_USB_port.Text = "Selected USB port:";
             lb_sampling_rate.Text = "Sampling rate:";
+            track_sampling_rate.Value = 0;
+            track_sampling_rate.Enabled = false;
             tb_DTR_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
             tb_RTS_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
             lb_sensors_number.Text = "Number of detected sensors: ";
@@ -170,6 +176,30 @@ namespace MCT
             
 
             
+        }
+        private void ApplicationRestart()
+        {
+            DialogResult _dg = MessageBox.Show("Are you sure you want to restart \nthe application?",
+                "Application restart",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
+            if (_dg == DialogResult.Yes)
+                Application.Restart();
+            else
+                return;
+        }
+        private void ApplicationExit()
+        {
+            DialogResult _dg = MessageBox.Show("Are you sure you want to exit the application?",
+                "Exit application",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+
+            if (_dg == DialogResult.Yes)
+                Application.Exit();
+            else
+                return;
         }
 
         private void btn_detect_sensors_Click(object sender, EventArgs e)
@@ -235,6 +265,23 @@ namespace MCT
         private void RTSdisableToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetRTS(false);
+        }
+
+        private void track_sampling_rate_Scroll(object sender, EventArgs e)
+        {
+            SamplingTime = ((TrackBar)sender).Value;
+            timer_logger.Interval = SamplingTime > 0 ? SamplingTime : SamplingTime + 1;
+            lb_sampling_rate.Text = "Sampling rate: " + track_sampling_rate.Value;
+        }
+
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ApplicationRestart();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ApplicationExit();
         }
     }
 }

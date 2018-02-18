@@ -123,20 +123,20 @@
             this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Enabled = false;
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // DTRenableToolStripMenuItem
             // 
             this.DTRenableToolStripMenuItem.Name = "DTRenableToolStripMenuItem";
-            this.DTRenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DTRenableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.DTRenableToolStripMenuItem.Text = "Enable";
             this.DTRenableToolStripMenuItem.Click += new System.EventHandler(this.DTRenableToolStripMenuItem_Click);
             // 
             // DTRdisableToolStripMenuItem
             // 
             this.DTRdisableToolStripMenuItem.Name = "DTRdisableToolStripMenuItem";
-            this.DTRdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.DTRdisableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.DTRdisableToolStripMenuItem.Text = "Disable";
             this.DTRdisableToolStripMenuItem.Click += new System.EventHandler(this.DTRdisableToolStripMenuItem_Click);
             // 
@@ -147,20 +147,20 @@
             this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Enabled = false;
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // RTSenableToolStripMenuItem
             // 
             this.RTSenableToolStripMenuItem.Name = "RTSenableToolStripMenuItem";
-            this.RTSenableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RTSenableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.RTSenableToolStripMenuItem.Text = "Enable";
             this.RTSenableToolStripMenuItem.Click += new System.EventHandler(this.RTSenableToolStripMenuItem_Click);
             // 
             // RTSdisableToolStripMenuItem
             // 
             this.RTSdisableToolStripMenuItem.Name = "RTSdisableToolStripMenuItem";
-            this.RTSdisableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RTSdisableToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.RTSdisableToolStripMenuItem.Text = "Disable";
             this.RTSdisableToolStripMenuItem.Click += new System.EventHandler(this.RTSdisableToolStripMenuItem_Click);
             // 
@@ -254,14 +254,16 @@
             // restartToolStripMenuItem
             // 
             this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.restartToolStripMenuItem.Text = "Restart";
+            this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // gb_sensors
             // 
@@ -367,9 +369,11 @@
             // 
             this.track_sampling_rate.Enabled = false;
             this.track_sampling_rate.Location = new System.Drawing.Point(6, 70);
+            this.track_sampling_rate.Maximum = 1000;
             this.track_sampling_rate.Name = "track_sampling_rate";
             this.track_sampling_rate.Size = new System.Drawing.Size(187, 45);
             this.track_sampling_rate.TabIndex = 5;
+            this.track_sampling_rate.Scroll += new System.EventHandler(this.track_sampling_rate_Scroll);
             // 
             // lb_sensors_number
             // 
