@@ -27,7 +27,7 @@ namespace MCT
 
             Number_of_sensors = _n_sensors;
             InitGraphPane();
-            InitBarItem(_n_sensors,_current_Values);
+            InitBar(_n_sensors,_current_Values);
             
         }
 
@@ -73,7 +73,7 @@ namespace MCT
             z.YAxis.Title.Text = "Temperature";
             z.YAxis.IsVisible = true;
         }
-        private void InitBarItem(int _nSensors, double[] _curValues)
+        private void InitBar(int _nSensors, double[] _curValues)
         {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
@@ -85,18 +85,18 @@ namespace MCT
                 Color.Purple,
                 Color.Orange,
                 Color.Gray,
-                Color.Gold,
+                Color.Goldenrod,
                 Color.DarkGreen,
                 Color.Olive
                 };
             Bar = new List<BarItem>();
             for (int i = 0; i < _nSensors; i++)
             {
-                double[] x_value = new double[1] { i + 1 };
+                double[] x_value = new double[1] { i + 1};
                 double[] y_value = new double[1] { _curValues[i] };
                 Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + (i + 1)), x_value, y_value, Colors[i]));
             }
-            
+            z.XAxis.Scale.Min = Bar[0].Points[0].X - 1;
             z.XAxis.Scale.Max = Bar[Bar.Count - 1].Points[0].X + 1;
             z.AxisChange();
         }
