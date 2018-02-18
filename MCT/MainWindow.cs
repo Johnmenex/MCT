@@ -88,12 +88,10 @@ namespace MCT
 
             return _SerialData;
         }
-
-        public double[] GetSensorValues()
+        private double[] TransmitData()
         {
             return SerialData;
         }
-
         private string DetectCOM()
         {
             SerialPort _serialPort = new SerialPort();
@@ -301,8 +299,9 @@ namespace MCT
             lb_USB_port.Text = "Selected USB port: " + SerialPort.PortName;
             lb_sensors_number.Text = "Number of detected sensors: " + Total_sensors;
             track_sampling_rate.Enabled=true;
-
+            SamplingTime = track_sampling_rate.Value = 500;
             
+
 
             SetDTR(true);
             SetRTS(true);
@@ -350,8 +349,8 @@ namespace MCT
 
         private void track_sampling_rate_Scroll(object sender, EventArgs e)
         {
-            SamplingTime = ((TrackBar)sender).Value;
-            timer_logger.Interval = SamplingTime > 0 ? SamplingTime : SamplingTime + 1;
+            SamplingTime = ((TrackBar)sender).Value > 0? ((TrackBar)sender).Value : ((TrackBar)sender).Value+1;
+            timer_logger.Interval = SamplingTime;
             lb_sampling_rate.Text = "Sampling rate: " + track_sampling_rate.Value;
         }
 
@@ -374,7 +373,7 @@ namespace MCT
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
             _current_Values = ReceiveData();
-            ValuesForm = new RealTimeValues(Total_sensors, _current_Values);
+            ValuesForm = new RealTimeValues(Total_sensors, _current_Values, SamplingTime);
 #elif !demo
             ValuesForm = new RealTimeValues(Total_sensors, new double[] { 1.2, 4.3, 3, 6, 7.9, 9, 17, 21.5, 14.2, 39.1, 5.5 });
 #endif
@@ -383,7 +382,12 @@ namespace MCT
 
         private void timer_logger_Tick(object sender, EventArgs e)
         {
+            timer_logger.Stop();
             SerialData = ReceiveData();
+            if (ValuesForm != null)
+                ValuesForm.ReceiveData(serialData);
+            timer_logger.Start();
+            
         }
     }
 }
