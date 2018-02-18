@@ -553,6 +553,10 @@
             this.lb_start_date.TabIndex = 0;
             this.lb_start_date.Text = "Start monitoring at:";
             // 
+            // timer_logger
+            // 
+            this.timer_logger.Tick += new System.EventHandler(this.timer_logger_Tick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

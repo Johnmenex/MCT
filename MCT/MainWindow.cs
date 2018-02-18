@@ -23,32 +23,71 @@ namespace MCT
             CenterToScreen();
         }
 
-        RealTimeValues ValuesForm;
+        private protected RealTimeValues ValuesForm;
 
-        SerialPort SerialPort;
-        List<CheckBox> cb_sensors;
-        private int _total_sensors;
+        private protected SerialPort SerialPort;
+        private protected List<CheckBox> cb_sensors;
+        private protected int _total_sensors = 0;
 
-        private bool _started = false;
-        private int _samplingTime = 0;
+        private protected bool _started = false;
+        private protected int _samplingTime = 0;
+        private double[] serialData;
 
-        public bool Started { get => _started; set => _started = value; }
-        public int SamplingTime { get => _samplingTime; set => _samplingTime = value; }
+        private protected bool Started { get => _started; set => _started = value; }
+        private protected int SamplingTime { get => _samplingTime; set => _samplingTime = value; }
         private protected int Total_sensors { get => _total_sensors; set => _total_sensors = value; }
+        private protected double[] SerialData { get => serialData; set => serialData = value; }
 
         private string DemoMode()
         {
             Random _rnd = new Random();
-            int _number_of_sensors = _rnd.Next(4, 12);
+            int _number_of_sensors;
+            if (Total_sensors == 0)
+                _number_of_sensors = _rnd.Next(4, 12);
+            else
+                _number_of_sensors = Total_sensors;
+
             string serial_value = "MCT";
 
             for (int i = 0; i < _number_of_sensors; i++)
             {
                 serial_value += "|"+_rnd.Next(20, 45);
             }
-
-            MessageBox.Show(serial_value);
+            
             return serial_value;
+        }
+        private double[] ReceiveData()
+        {
+            double[] _SerialData = new double[Total_sensors];
+            string[] _data = new string[] { "" };
+#if demo
+            _data = DemoMode().Split('|');
+#elif !demo
+            try
+            {
+                _data = SerialPort.ReadExisting().Split('|');
+            }
+            catch { 
+                MessageBox.Show("Could not receive any data from SerialPort.");
+            }
+#endif
+
+            int _index = 0;
+            foreach (string _s in _data)
+            {
+                if (_s != "MCT")
+                {
+                    _SerialData[_index] = Convert.ToDouble(_s);
+                    _index++;
+                }
+            }
+
+            return _SerialData;
+        }
+
+        public double[] GetSensorValues()
+        {
+            return SerialData;
         }
 
         private string DetectCOM()
@@ -147,6 +186,7 @@ namespace MCT
 
             }
             lb_sensors_instructions.Visible = false;
+            SerialData = new double[Total_sensors];
         }
         private void SetDTR(bool _state)
         {
@@ -248,7 +288,7 @@ namespace MCT
 
             dTRToolStripMenuItem.Enabled = true;
             rTSToolStripMenuItem.Enabled = true;
-
+            
             Total_sensors = DetectNumberOfSensors(SerialPort);
             SetupSensors(Total_sensors);
 
@@ -327,15 +367,17 @@ namespace MCT
 #if demo
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
-            for(int i=0; i< Total_sensors;i++)
-            {
-                _current_Values[i] = _rnd.Next(1, 50);
-            }
+            _current_Values = ReceiveData();
             ValuesForm = new RealTimeValues(Total_sensors, _current_Values);
 #elif !demo
             ValuesForm = new RealTimeValues(Total_sensors, new double[] { 1.2, 4.3, 3, 6, 7.9, 9, 17, 21.5, 14.2, 39.1, 5.5 });
 #endif
             ValuesForm.Show();
+        }
+
+        private void timer_logger_Tick(object sender, EventArgs e)
+        {
+            SerialData = ReceiveData();
         }
     }
 }
