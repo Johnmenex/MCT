@@ -22,6 +22,8 @@ namespace MCT
             CenterToScreen();
         }
 
+        RealTimeValues ValuesForm;
+
         SerialPort SerialPort;
         List<CheckBox> cb_sensors;
 
@@ -282,6 +284,12 @@ namespace MCT
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ApplicationExit();
+        }
+        
+        private void realtimeValuesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ValuesForm = new RealTimeValues();
+            ValuesForm.Show();
         }
     }
 }

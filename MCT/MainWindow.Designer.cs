@@ -178,6 +178,7 @@
             this.realtimeValuesToolStripMenuItem.Name = "realtimeValuesToolStripMenuItem";
             this.realtimeValuesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.realtimeValuesToolStripMenuItem.Text = "Real-time Values";
+            this.realtimeValuesToolStripMenuItem.Click += new System.EventHandler(this.realtimeValuesToolStripMenuItem_Click);
             // 
             // realtimeGraphsToolStripMenuItem
             // 
