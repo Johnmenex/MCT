@@ -223,7 +223,7 @@ namespace MCT
             lb_sensors_number.Text = "Number of detected sensors: " + DetectNumberOfSensors(SerialPort);
             track_sampling_rate.Enabled=true;
 
-            SetupSensors(9);
+            SetupSensors(0);
 
             SetDTR(true);
             SetRTS(true);
@@ -285,10 +285,13 @@ namespace MCT
         {
             ApplicationExit();
         }
-        
+
         private void realtimeValuesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ValuesForm = new RealTimeValues();
+            if (cb_sensors.Count == 0)
+                return;
+
+            ValuesForm = new RealTimeValues(cb_sensors.Count, new double[] { 1.2, 4.3, 3, 6, 7.9, 9, 17, 21.5, 14.2, 39.1, 5.5 });
             ValuesForm.Show();
         }
     }

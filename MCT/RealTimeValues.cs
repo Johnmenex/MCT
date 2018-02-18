@@ -17,7 +17,26 @@ namespace MCT
         {
             InitializeComponent();
         }
-        GraphPane z;
+
+        public RealTimeValues(int _n_sensors, double[] _current_Values)
+        {
+            if (_n_sensors == 0)
+                return;
+
+            InitializeComponent();
+
+            Number_of_sensors = _n_sensors;
+            InitGraphPane();
+            InitBarItem(_n_sensors,_current_Values);
+            
+        }
+
+        private protected int _number_of_sensors;
+        private protected GraphPane z;
+        private protected List<BarItem> _bar;
+
+        private int Number_of_sensors { get => _number_of_sensors; set => _number_of_sensors = value; }
+        private List<BarItem> Bar { get => _bar; set => _bar = value; }
 
         private void InitGraphPane()
         {
@@ -54,12 +73,39 @@ namespace MCT
             z.YAxis.Title.Text = "Temperature";
             z.YAxis.IsVisible = true;
         }
+        private void InitBarItem(int _nSensors, double[] _curValues)
+        {
+            List<Color> Colors = new List<Color>() {
+                Color.Green,
+                Color.Red,
+                Color.Black,
+                Color.Yellow,
+                Color.Blue,
+                Color.Brown,
+                Color.Purple,
+                Color.Orange,
+                Color.Gray,
+                Color.Gold,
+                Color.DarkGreen,
+                Color.Olive
+                };
+            Bar = new List<BarItem>();
+            for (int i = 0; i < _nSensors; i++)
+            {
+                double[] x_value = new double[1] { i + 1 };
+                double[] y_value = new double[1] { _curValues[i] };
+                Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + (i + 1)), x_value, y_value, Colors[i]));
+            }
+            
+            z.XAxis.Scale.Max = Bar[Bar.Count - 1].Points[0].X + 1;
+            z.AxisChange();
+        }
 
         private void RealTimeValues_Load(object sender, EventArgs e)
         {
             CenterToScreen();
 
-            InitGraphPane();
+            
         }
     }
 }
