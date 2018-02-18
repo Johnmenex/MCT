@@ -9,17 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZedGraph;
 
-namespace MCT
-{
-    public partial class RealTimeValues : Form
-    {
-        public RealTimeValues()
-        {
+namespace MCT {
+    public partial class RealTimeValues : Form {
+        public RealTimeValues() {
             InitializeComponent();
         }
 
-        public RealTimeValues(int _n_sensors, double[] _current_Values, int _sampling_rate)
-        {
+        public RealTimeValues(int _n_sensors, double[] _current_Values, int _sampling_rate) {
             if (_n_sensors == 0)
                 return;
 
@@ -27,8 +23,8 @@ namespace MCT
             Sampling_rate = _sampling_rate;
             NumberOfSensors = _n_sensors;
             InitGraphPane();
-            InitBar(NumberOfSensors,_current_Values);
-            
+            InitBar(NumberOfSensors, _current_Values);
+
         }
         private bool graphPaneInitialized;
         private bool barInitialized;
@@ -45,8 +41,7 @@ namespace MCT
         private protected bool BarInitialized { get => barInitialized; set => barInitialized = value; }
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
 
-        private protected void InitGraphPane()
-        {
+        private protected void InitGraphPane() {
             z = zedGraphControl1.GraphPane;
             //z.Rect = new RectangleF(new PointF(2, 2), new SizeF(Width, Height));
 
@@ -82,8 +77,7 @@ namespace MCT
 
             GraphPaneInitialized = true;
         }
-        private protected void InitBar(int _nSensors, double[] _curValues)
-        {
+        private protected void InitBar(int _nSensors, double[] _curValues) {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
                 Color.Red,
@@ -99,11 +93,10 @@ namespace MCT
                 Color.Olive
                 };
             Bar = new List<BarItem>();
-            for (int i = 0; i < _nSensors; i++)
-            {
-                double[] x_value = new double[1] { i + 1};
+            for (int i = 0; i < _nSensors; i++) {
+                double[] x_value = new double[1] { i + 1 };
                 double[] y_value = new double[1] { _curValues[i] };
-                Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + (i+1)), x_value, y_value, Colors[i]));
+                Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + (i + 1)), x_value, y_value, Colors[i]));
             }
             z.XAxis.Scale.Min = Bar[0].Points[0].X - 1;
             z.XAxis.Scale.Max = Bar[Bar.Count - 1].Points[0].X + 1;
@@ -111,38 +104,33 @@ namespace MCT
 
             BarInitialized = true;
         }
-        public void ReceiveData(double[] _sensor_values)
-        {
+        public void ReceiveData(double[] _sensor_values) {
             SensorValues = _sensor_values;
         }
-        private protected void RefreshBars()
-        {
+        private protected void RefreshBars() {
             double[] _sensor_values = SensorValues;
 
             int _index = 0;
-            foreach (BarItem _b in Bar)
-            {
+            foreach (BarItem _b in Bar) {
                 _b.Clear();
                 _b.AddPoint(_index + 1, _sensor_values[_index]);
                 _index++;
             }
-           
+
             zedGraphControl1.Refresh();
         }
 
-        private protected void RealTimeValues_Load(object sender, EventArgs e)
-        {
+        private protected void RealTimeValues_Load(object sender, EventArgs e) {
             CenterToScreen();
             timer_visualiser.Interval = Sampling_rate;
 
             timer_visualiser.Start();
 
-            
+
         }
 
-        private void timer_visualiser_Tick(object sender, EventArgs e)
-        {
-            if(BarInitialized)
+        private void timer_visualiser_Tick(object sender, EventArgs e) {
+            if (BarInitialized)
                 RefreshBars();
         }
     }

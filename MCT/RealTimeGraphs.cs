@@ -8,12 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MCT
-{
-    public partial class RealTimeGraphs : Form
-    {
-        public RealTimeGraphs()
-        {
+namespace MCT {
+    public partial class RealTimeGraphs : Form {
+        public RealTimeGraphs() {
             InitializeComponent();
         }
     }

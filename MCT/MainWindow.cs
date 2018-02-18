@@ -13,12 +13,9 @@ using System.IO.Ports;
 using System.Diagnostics;
 
 
-namespace MCT
-{
-    public partial class MainWindow : Form
-    {
-        public MainWindow()
-        {
+namespace MCT {
+    public partial class MainWindow : Form {
+        public MainWindow() {
             InitializeComponent();
             CenterToScreen();
         }
@@ -38,8 +35,7 @@ namespace MCT
         private protected int Total_sensors { get => _total_sensors; set => _total_sensors = value; }
         private protected double[] SerialData { get => serialData; set => serialData = value; }
 
-        private string DemoMode()
-        {
+        private string DemoMode() {
             Random _rnd = new Random();
             int _number_of_sensors;
             if (Total_sensors == 0)
@@ -49,15 +45,13 @@ namespace MCT
 
             string serial_value = "MCT";
 
-            for (int i = 0; i < _number_of_sensors; i++)
-            {
-                serial_value += "|"+_rnd.Next(20, 45);
+            for (int i = 0; i < _number_of_sensors; i++) {
+                serial_value += "|" + _rnd.Next(20, 45);
             }
-            
+
             return serial_value;
         }
-        private double[] ReceiveData()
-        {
+        private double[] ReceiveData() {
             double[] _SerialData = new double[Total_sensors];
             string[] _data = new string[] { "" };
 #if demo
@@ -77,10 +71,8 @@ namespace MCT
 #endif
 
             int _index = 0;
-            foreach (string _s in _data)
-            {
-                if (_s != "MCT")
-                {
+            foreach (string _s in _data) {
+                if (_s != "MCT") {
                     _SerialData[_index] = Convert.ToDouble(_s);
                     _index++;
                 }
@@ -88,23 +80,20 @@ namespace MCT
 
             return _SerialData;
         }
-        private double[] TransmitData()
-        {
+        private double[] TransmitData() {
             return SerialData;
         }
-        private string DetectCOM()
-        {
+        private string DetectCOM() {
             SerialPort _serialPort = new SerialPort();
             string _serial_content = "";
             string _value = "";
 
-            foreach (string _s in SerialPort.GetPortNames())
-            {
+            foreach (string _s in SerialPort.GetPortNames()) {
 
                 if (!_serialPort.IsOpen)
                     _serialPort.Open();
 
-                
+
 #if demo
                 _serial_content = DemoMode();
 #elif !demo
@@ -123,11 +112,9 @@ namespace MCT
             }
             return _value;
         }
-        private int DetectNumberOfSensors(SerialPort _serialPort)
-        {
+        private int DetectNumberOfSensors(SerialPort _serialPort) {
             int _value = 0;
-            try
-            {
+            try {
                 if (!_serialPort.IsOpen)
                     _serialPort.Open();
 #if !demo
@@ -137,21 +124,18 @@ namespace MCT
 #endif
                 _serialPort.Close();
             }
-            catch
-            {
+            catch {
                 MessageBox.Show("Could not acquire the number of sensors.");
             }
             return _value;
         }
-        private void SetupSensors(int _number_of_sensors)
-        {
+        private void SetupSensors(int _number_of_sensors) {
             cb_sensors = new List<CheckBox>();
             gb_sensors.Controls.Clear();
             int column = 0;
             int row = 0;
 
-            for (int i = 0; i < _number_of_sensors; i++)
-            {
+            for (int i = 0; i < _number_of_sensors; i++) {
                 cb_sensors.Add(new CheckBox());
                 cb_sensors[i].Name = "cb_sensor_" + (i + 1);
                 cb_sensors[i].Text = "Sensor " + (i + 1);
@@ -170,14 +154,12 @@ namespace MCT
                         );
                 column++;
 
-                if (((-15 * column) + (column * (cb_sensors[i].Width)) > gb_sensors.Width))
-                {
+                if (((-15 * column) + (column * (cb_sensors[i].Width)) > gb_sensors.Width)) {
                     column = 0;
                     row++;
                 }
 
-                if ((15 + (row * 25) + cb_sensors[i].Height) > gb_sensors.Height)
-                {
+                if ((15 + (row * 25) + cb_sensors[i].Height) > gb_sensors.Height) {
                     gb_sensors.Height += cb_sensors[i].Height;
                     Height += cb_sensors[i].Height;
                     gb_auto_mode.Location = new Point(gb_auto_mode.Location.X, gb_auto_mode.Location.Y + cb_sensors[i].Height);
@@ -190,20 +172,17 @@ namespace MCT
             lb_sensors_instructions.Visible = false;
             SerialData = new double[Total_sensors];
         }
-        private void SetDTR(bool _state)
-        {
+        private void SetDTR(bool _state) {
             DTRenableToolStripMenuItem.Checked = _state;
             DTRdisableToolStripMenuItem.Checked = !_state;
             tb_DTR_state.BackColor = _state ? Color.Green : Color.Red;
         }
-        private void SetRTS(bool _state)
-        {
+        private void SetRTS(bool _state) {
             RTSenableToolStripMenuItem.Checked = _state;
             RTSdisableToolStripMenuItem.Checked = !_state;
             tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
         }
-        private void Start()
-        {
+        private void Start() {
             btn_start_stop.Text = "Stop";
             Started = true;
 
@@ -220,8 +199,7 @@ namespace MCT
 
             timer_logger.Start();
         }
-        private void Stop()
-        {
+        private void Stop() {
             btn_start_stop.Text = "Start";
             Started = false;
 
@@ -229,8 +207,7 @@ namespace MCT
             btn_reset.Enabled = true;
             btn_save.Enabled = true;
         }
-        private void Reset()
-        {
+        private void Reset() {
             gb_sampling_info.Enabled = true;
             lb_USB_port.Text = "Selected USB port:";
             lb_sampling_rate.Text = "Sampling rate:";
@@ -242,7 +219,7 @@ namespace MCT
 
             cb_scheduled_monitor.Enabled = true;
             gb_auto_mode.Enabled = cb_scheduled_monitor.Checked;
-            
+
             btn_detect_sensors.Enabled = true;
             gb_sensors.Controls.Clear();
             cb_sensors = new List<CheckBox>();
@@ -252,10 +229,9 @@ namespace MCT
             btn_start_stop.Enabled = false;
 
             Started = false;
-            
+
         }
-        private void ApplicationRestart()
-        {
+        private void ApplicationRestart() {
             DialogResult _dg = MessageBox.Show("Are you sure you want to restart \nthe application?",
                 "Application restart",
                 MessageBoxButtons.YesNo,
@@ -266,8 +242,7 @@ namespace MCT
             else
                 return;
         }
-        private void ApplicationExit()
-        {
+        private void ApplicationExit() {
             DialogResult _dg = MessageBox.Show("Are you sure you want to exit the application?",
                 "Exit application",
                 MessageBoxButtons.YesNo,
@@ -279,10 +254,9 @@ namespace MCT
                 return;
         }
 
-        private void btn_detect_sensors_Click(object sender, EventArgs e)
-        {
+        private void btn_detect_sensors_Click(object sender, EventArgs e) {
             string _portname = DetectCOM();
-            SerialPort = _portname!="" ? new SerialPort(_portname) : null;
+            SerialPort = _portname != "" ? new SerialPort(_portname) : null;
 
             if (SerialPort == null)
                 return;
@@ -292,80 +266,68 @@ namespace MCT
 
             dTRToolStripMenuItem.Enabled = true;
             rTSToolStripMenuItem.Enabled = true;
-            
+
             Total_sensors = DetectNumberOfSensors(SerialPort);
             SetupSensors(Total_sensors);
 
             lb_USB_port.Text = "Selected USB port: " + SerialPort.PortName;
             lb_sensors_number.Text = "Number of detected sensors: " + Total_sensors;
-            track_sampling_rate.Enabled=true;
+            track_sampling_rate.Enabled = true;
             SamplingTime = track_sampling_rate.Value = 500;
-            
+
 
 
             SetDTR(true);
             SetRTS(true);
         }
 
-        private void cb_scheduled_monitor_CheckedChanged(object sender, EventArgs e)
-        {
+        private void cb_scheduled_monitor_CheckedChanged(object sender, EventArgs e) {
             gb_auto_mode.Enabled = ((CheckBox)sender).Checked;
         }
 
-        private void btn_start_stop_Click(object sender, EventArgs e)
-        {
-            if (!Started)
-            {
+        private void btn_start_stop_Click(object sender, EventArgs e) {
+            if (!Started) {
                 Start();
             }
             else
                 Stop();
         }
 
-        private void btn_reset_Click(object sender, EventArgs e)
-        {
+        private void btn_reset_Click(object sender, EventArgs e) {
             Reset();
         }
 
-        private void DTRenableToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void DTRenableToolStripMenuItem_Click(object sender, EventArgs e) {
             SetDTR(true);
         }
 
-        private void DTRdisableToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void DTRdisableToolStripMenuItem_Click(object sender, EventArgs e) {
             SetDTR(false);
         }
 
-        private void RTSenableToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void RTSenableToolStripMenuItem_Click(object sender, EventArgs e) {
             SetRTS(true);
         }
 
-        private void RTSdisableToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void RTSdisableToolStripMenuItem_Click(object sender, EventArgs e) {
             SetRTS(false);
         }
 
-        private void track_sampling_rate_Scroll(object sender, EventArgs e)
-        {
-            SamplingTime = ((TrackBar)sender).Value > 0? ((TrackBar)sender).Value : ((TrackBar)sender).Value+1;
+        private void track_sampling_rate_Scroll(object sender, EventArgs e) {
+            SamplingTime = ((TrackBar)sender).Value > 0 ? ((TrackBar)sender).Value : ((TrackBar)sender).Value + 1;
             timer_logger.Interval = SamplingTime;
             lb_sampling_rate.Text = "Sampling rate: " + track_sampling_rate.Value;
         }
 
-        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e) {
             ApplicationRestart();
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
             ApplicationExit();
         }
 
-        private void realtimeValuesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void realtimeValuesToolStripMenuItem_Click(object sender, EventArgs e) {
             if (cb_sensors.Count == 0)
                 return;
 
@@ -380,14 +342,13 @@ namespace MCT
             ValuesForm.Show();
         }
 
-        private void timer_logger_Tick(object sender, EventArgs e)
-        {
+        private void timer_logger_Tick(object sender, EventArgs e) {
             timer_logger.Stop();
             SerialData = ReceiveData();
             if (ValuesForm != null)
                 ValuesForm.ReceiveData(serialData);
             timer_logger.Start();
-            
+
         }
     }
 }
