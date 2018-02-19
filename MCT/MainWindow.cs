@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Management;
 using System.IO.Ports;
 using System.Diagnostics;
+using System.IO;
 
 
 namespace MCT {
@@ -19,6 +20,9 @@ namespace MCT {
             InitializeComponent();
             CenterToScreen();
         }
+        
+        private protected string _logs = Directory.GetCurrentDirectory() + "/.tmp/_temporary/_tmpLOGS";
+        private int sample_number;
 
         private protected RealTimeValues ValuesForm;
 
@@ -35,6 +39,18 @@ namespace MCT {
         private protected int Total_sensors { get => _total_sensors; set => _total_sensors = value; }
         private protected double[] SerialData { get => serialData; set => serialData = value; }
 
+        private void CreateHiddenDir() {
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/.tmp/_temporary")) {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/.tmp/_temporary");
+                DirectoryInfo dirinfo = new DirectoryInfo(Directory.GetCurrentDirectory() + "/.tmp");
+                dirinfo.Attributes = FileAttributes.Hidden;
+                dirinfo = new DirectoryInfo(Directory.GetCurrentDirectory() + "/.tmp/_temporary");
+                dirinfo.Attributes = FileAttributes.Hidden;
+
+            }
+            if (File.Exists(_logs))
+                File.Delete(_logs);
+        }
         private string DemoMode() {
             Random _rnd = new Random();
             int _number_of_sensors;
@@ -253,7 +269,40 @@ namespace MCT {
             else
                 return;
         }
+        private protected void SaveData(double[] _serialData) {
+            if (!File.Exists(_logs)) {
+                StreamWriter _writer = new StreamWriter(_logs);
+                string _header = "MCT|" + DateTime.Now.ToString("dd/MM/yyyy|HH:mm:ss");
+                foreach (CheckBox _cb in cb_sensors) {
+                    if (_cb.Checked)
+                        _header += "|" + _cb.Text;
+                }
+                _writer.WriteLine(_header);
+                _writer.Close();
+                sample_number = 1;
+            }
+            else {
+                StreamReader _reader = new StreamReader(_logs);
+                string _wholeFile = _reader.ReadToEnd()+"\n";
+                _reader.Close();
 
+
+                StreamWriter _writer = new StreamWriter(_logs);
+                string _line = "Sample=" + sample_number + "|Time=" + DateTime.Now.ToString("HH:mm:ss");
+                int _index = 1;
+                foreach(double _v in _serialData) {
+                    if(cb_sensors[_index-1].Checked) {
+                        _line += "|Sensor="+_index+"-value=" + _v ;
+                    }
+                    _index++;
+                }
+                _wholeFile += _line;
+                _writer.Write(_wholeFile);
+                _writer.Close();
+                sample_number++;
+            }
+        }
+        
         private void btn_detect_sensors_Click(object sender, EventArgs e) {
             string _portname = DetectCOM();
             SerialPort = _portname != "" ? new SerialPort(_portname) : null;
@@ -345,10 +394,15 @@ namespace MCT {
         private void timer_logger_Tick(object sender, EventArgs e) {
             timer_logger.Stop();
             SerialData = ReceiveData();
+            SaveData(serialData);
             if (ValuesForm != null)
                 ValuesForm.ReceiveData(serialData);
             timer_logger.Start();
 
+        }
+        
+        private void MainWindow_Load(object sender, EventArgs e) {
+            CreateHiddenDir();
         }
     }
 }
