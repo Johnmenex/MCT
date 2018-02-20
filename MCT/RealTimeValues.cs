@@ -33,6 +33,8 @@ namespace MCT {
         private protected GraphPane z;
         private protected List<BarItem> _bar;
         private protected double[] _sensorValues;
+        private List<GroupBox> gb_threshold;
+
 
         private protected int NumberOfSensors { get => _number_of_sensors; set => _number_of_sensors = value; }
         private protected List<BarItem> Bar { get => _bar; set => _bar = value; }
@@ -40,7 +42,84 @@ namespace MCT {
         private protected bool GraphPaneInitialized { get => graphPaneInitialized; set => graphPaneInitialized = value; }
         private protected bool BarInitialized { get => barInitialized; set => barInitialized = value; }
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
+        private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
+        private GroupBox gb_general = new GroupBox();
+        private void initUI() {
+            int column = 0;
+            int row = 0;
+            Gb_threshold = new List<GroupBox>();
+            for (int i = 0; i < _number_of_sensors; i++) {
 
+                Gb_threshold.Add(new GroupBox());
+                
+                //create cb_sensor
+                CheckBox cb_threshold = new CheckBox();
+                cb_threshold.Location = new Point(4, 15);
+                cb_threshold.AutoSize = true;
+                cb_threshold.Name = "cb_sensor" + i;
+                cb_threshold.Text = "Sensor" + (i + 1);
+                cb_threshold.Checked = false;
+                cb_threshold.Show();
+                Gb_threshold[i].Controls.Add(cb_threshold);
+                //
+                //create min_label
+                System.Windows.Forms.Label lb_min = new System.Windows.Forms.Label();
+                lb_min.AutoSize = true;
+                lb_min.Name = "lb_min";
+                lb_min.Text = "Min:";
+                lb_min.Location = new Point(2, cb_threshold.Location.Y + cb_threshold.Height + 5);
+                lb_min.Show();
+                Gb_threshold[i].Controls.Add(lb_min);
+                //
+                //create min_nuD
+                NumericUpDown nUD_min = new NumericUpDown();
+                nUD_min.Minimum = -999;
+                nUD_min.Maximum = 999;
+                nUD_min.Width = 40;
+                nUD_min.Location = new Point(lb_min.Location.X + lb_min.Width + 3, lb_min.Location.Y - 5);
+                nUD_min.Show();
+                Gb_threshold[i].Controls.Add(nUD_min);
+                //
+                //create max_label
+                System.Windows.Forms.Label lb_max = new System.Windows.Forms.Label();
+                lb_max.AutoSize = true;
+                lb_max.Name = "lb_max";
+                lb_max.Text = "Max:";
+                lb_max.Location = new Point(2, lb_min.Location.Y + lb_min.Height + 10);
+                lb_max.Show();
+                Gb_threshold[i].Controls.Add(lb_max);
+                //
+                //create max_nUD
+                NumericUpDown nUD_max = new NumericUpDown();
+                nUD_max.Minimum = -999;
+                nUD_max.Maximum = 999;
+                nUD_max.Width = 40;
+                nUD_max.Location = new Point(lb_max.Location.X + lb_max.Width, lb_max.Location.Y - 5);
+                nUD_max.Show();
+                Gb_threshold[i].Controls.Add(nUD_max);
+                //
+                //Set the dynamic location of each groupbox
+                Gb_threshold[i].AutoSize = true;
+                Gb_threshold[i].Width = cb_threshold.Width;
+                
+                Gb_threshold[i].Location = new Point(
+                    5 + (column * (Gb_threshold[i].Width + 25)),
+                    15 + (row * Gb_threshold[i].Height)
+                    );
+                column++;
+                if ((5 + (column * (Gb_threshold[i].Width + 25))) > gb_parent.Width) {
+                    if (column != _number_of_sensors) {
+                        gb_parent.Height += Gb_threshold[i].Height + 10;
+                        Height += Gb_threshold[i].Height + 5;
+                    }
+                    column = 0;
+                    row++;
+                }
+                //
+                Gb_threshold[i].Show();
+                gb_parent.Controls.Add(Gb_threshold[i]);
+            }
+        }
         private protected void InitGraphPane() {
             z = zedGraphControl1.GraphPane;
             //z.Rect = new RectangleF(new PointF(2, 2), new SizeF(Width, Height));
@@ -123,7 +202,7 @@ namespace MCT {
         private protected void RealTimeValues_Load(object sender, EventArgs e) {
             CenterToScreen();
             timer_visualiser.Interval = Sampling_rate;
-
+            initUI();
             timer_visualiser.Start();
 
 

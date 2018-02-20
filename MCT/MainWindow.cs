@@ -55,7 +55,7 @@ namespace MCT {
             Random _rnd = new Random();
             int _number_of_sensors;
             if (Total_sensors == 0)
-                _number_of_sensors = _rnd.Next(4, 12);
+                _number_of_sensors = _rnd.Next(3, 11);
             else
                 _number_of_sensors = Total_sensors;
 
