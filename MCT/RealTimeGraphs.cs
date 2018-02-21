@@ -21,6 +21,8 @@ namespace MCT {
                 return;
 
             InitializeComponent();
+            NumberOfSensors = _n_sensors;
+            InitCurve(NumberOfSensors, _current_Values);
         }
 
         public void ReceiveData(double[] _sensor_values) {
@@ -28,11 +30,14 @@ namespace MCT {
         }
 
         private protected GraphPane z;
-        private protected List<CurveItem> _curves;
-        double[] _sensorValues;
+        private protected List<CurveItem> _curve;
+        private protected double[] _sensorValues;
+        private protected int _number_of_sensors;
 
-        private protected List<CurveItem> Curves { get => _curves; set => _curves = value; }
+        private protected List<CurveItem> Curve { get => _curve; set => _curve = value; }
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
+        private protected int NumberOfSensors { get => _number_of_sensors; set => _number_of_sensors = value; }
+
         //bool _allow_scroll = false;
         private protected void InitGraphPane() {
             //_allow_scroll = true;
@@ -71,6 +76,32 @@ namespace MCT {
             z.AxisChange();
             zedGraphControl1.IsAntiAlias = true;
             zedGraphControl1.Refresh();
+        }
+
+        private protected void InitCurve(int _nSensors, double[] _curValues) {
+            List<Color> Colors = new List<Color>() {
+                Color.Green,
+                Color.Red,
+                Color.Black,
+                Color.Yellow,
+                Color.Blue,
+                Color.Brown,
+                Color.Purple,
+                Color.Orange,
+                Color.Gray,
+                Color.LightBlue,
+                Color.DarkGreen,
+                Color.Olive
+                };
+            _curve = new List<CurveItem>();
+            for (int i = 0; i < NumberOfSensors; i++) {
+                double[] x_value = new double[1] { i + 1 };
+                double[] y_value = new double[1] { _curValues[i] };
+                //Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + (i + 1)), x_value, y_value, Colors[i]));
+                Curve.Add(zedGraphControl1.GraphPane.AddCurve("Sensor" + (i + 1), x_value, y_value, Colors[i]));
+            }
+
+
         }
 
         private void RealTimeGraphs_Load(object sender, EventArgs e) {

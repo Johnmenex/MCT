@@ -413,7 +413,7 @@ namespace MCT {
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
             _current_Values = ReceiveData();
-            GraphsForm = new RealTimeGraphs();
+            GraphsForm = new RealTimeGraphs(Total_sensors, _current_Values, SamplingTime);
             
 #elif !demo
             GraphsForm = new RealTimeValues(Total_sensors, _current_values, SamplingTime);
