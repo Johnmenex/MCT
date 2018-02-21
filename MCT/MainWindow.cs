@@ -395,8 +395,14 @@ namespace MCT {
             timer_logger.Stop();
             SerialData = ReceiveData();
             SaveData(serialData);
+
+
             if (ValuesForm != null)
                 ValuesForm.ReceiveData(serialData);
+            if (GraphsForm != null) {
+                GraphsForm.ReceiveData(serialData, sample_number);
+            }
+
             timer_logger.Start();
 
         }

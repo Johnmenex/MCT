@@ -21,22 +21,34 @@ namespace MCT {
                 return;
 
             InitializeComponent();
+            SamplingTime = _sampling_rate;
             NumberOfSensors = _n_sensors;
+            InitGraphPane();
             InitCurve(NumberOfSensors, _current_Values);
         }
 
-        public void ReceiveData(double[] _sensor_values) {
+        public void ReceiveData(double[] _sensor_values,int _sampleNumber) {
             SensorValues = _sensor_values;
+            SampleNumber = _sampleNumber;
         }
 
         private protected GraphPane z;
         private protected List<CurveItem> _curve;
         private protected double[] _sensorValues;
         private protected int _number_of_sensors;
+        private protected int samplenumber;
+        private int samplingTime;
+
+        private protected bool graphPaneInitialized;
+        private protected bool curveInitialized;
 
         private protected List<CurveItem> Curve { get => _curve; set => _curve = value; }
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
         private protected int NumberOfSensors { get => _number_of_sensors; set => _number_of_sensors = value; }
+        private protected bool GraphPaneInitialized { get => graphPaneInitialized; set => graphPaneInitialized = value; }
+        private protected bool CurveInitialized { get => curveInitialized; set => curveInitialized = value; }
+        private protected int SampleNumber { get => samplenumber; set => samplenumber = value; }
+        private protected int SamplingTime { get => samplingTime; set => samplingTime = value; }
 
         //bool _allow_scroll = false;
         private protected void InitGraphPane() {
@@ -76,8 +88,9 @@ namespace MCT {
             z.AxisChange();
             zedGraphControl1.IsAntiAlias = true;
             zedGraphControl1.Refresh();
-        }
 
+            GraphPaneInitialized = true;
+        }
         private protected void InitCurve(int _nSensors, double[] _curValues) {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
@@ -97,15 +110,35 @@ namespace MCT {
             for (int i = 0; i < NumberOfSensors; i++) {
                 double[] x_value = new double[1] { i + 1 };
                 double[] y_value = new double[1] { _curValues[i] };
-                //Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + (i + 1)), x_value, y_value, Colors[i]));
                 Curve.Add(zedGraphControl1.GraphPane.AddCurve("Sensor" + (i + 1), x_value, y_value, Colors[i]));
             }
 
+            CurveInitialized = true;
+        }
 
+        private protected void DrawNextSpot() {
+
+            int i = 0;
+            foreach (CurveItem _c in Curve) {
+                _c.AddPoint(SampleNumber, _sensorValues[i]);
+                i++;
+            }
+            z.AxisChange();
+            zedGraphControl1.Refresh();
         }
 
         private void RealTimeGraphs_Load(object sender, EventArgs e) {
-            InitGraphPane();
+            CenterToScreen();
+            timer_visualizer.Interval = SamplingTime;
+            timer_visualizer.Start();
+        }
+
+        private void timer_visualizer_Tick(object sender, EventArgs e) {
+            if (CurveInitialized) {
+                timer_visualizer.Stop();
+                DrawNextSpot();
+                timer_visualizer.Start();
+            }
         }
     }
 }

@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer_visualizer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // zedGraphControl1
@@ -41,6 +41,10 @@
             this.zedGraphControl1.ScrollMinY2 = 0D;
             this.zedGraphControl1.Size = new System.Drawing.Size(813, 439);
             this.zedGraphControl1.TabIndex = 0;
+            // 
+            // timer_visualizer
+            // 
+            this.timer_visualizer.Tick += new System.EventHandler(this.timer_visualizer_Tick);
             // 
             // RealTimeGraphs
             // 
@@ -58,6 +62,6 @@
         #endregion
 
         private ZedGraph.ZedGraphControl zedGraphControl1;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timer_visualizer;
     }
 }
