@@ -201,6 +201,27 @@ namespace MCT {
 
             zedGraphControl1.Refresh();
         }
+        private protected void CheckThresholds() {
+            int _index = 0;
+            foreach (GroupBox _gb in gb_parent.Controls) {
+                if (((CheckBox)_gb.Controls[0]).Checked) {
+                    if((double)((NumericUpDown)_gb.Controls[2]).Value > _sensorValues[_index])
+                        ((NumericUpDown)_gb.Controls[2]).BackColor = Color.Red;
+                    else
+                    ((NumericUpDown)_gb.Controls[2]).BackColor = Color.FromKnownColor((KnownColor.Control));
+
+                    if ((double)((NumericUpDown)_gb.Controls[4]).Value < _sensorValues[_index])
+                        ((NumericUpDown)_gb.Controls[4]).BackColor = Color.Red;
+                    else
+                        ((NumericUpDown)_gb.Controls[4]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                }
+                else {
+                    ((NumericUpDown)_gb.Controls[2]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                    ((NumericUpDown)_gb.Controls[4]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                }
+                _index++;
+            }
+        }
 
         private protected void RealTimeValues_Load(object sender, EventArgs e) {
             CenterToScreen();
@@ -214,6 +235,9 @@ namespace MCT {
         private void timer_visualiser_Tick(object sender, EventArgs e) {
             if (BarInitialized)
                 RefreshBars();
+
+
+            CheckThresholds();
         }
     }
 }
