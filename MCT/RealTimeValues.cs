@@ -26,6 +26,10 @@ namespace MCT {
             InitBar(NumberOfSensors, _current_Values);
 
         }
+        public void ReceiveData(double[] _sensor_values) {
+            SensorValues = _sensor_values;
+        }
+
         private bool graphPaneInitialized;
         private bool barInitialized;
         private protected int sampling_rate;
@@ -44,7 +48,8 @@ namespace MCT {
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
         private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
         private GroupBox gb_general = new GroupBox();
-        private void initUI() {
+
+        private protected void initUI() {
             int column = 0;
             int row = 0;
             Gb_threshold = new List<GroupBox>();
@@ -183,9 +188,7 @@ namespace MCT {
 
             BarInitialized = true;
         }
-        public void ReceiveData(double[] _sensor_values) {
-            SensorValues = _sensor_values;
-        }
+       
         private protected void RefreshBars() {
             double[] _sensor_values = SensorValues;
 
