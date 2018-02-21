@@ -118,7 +118,7 @@
             this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Enabled = false;
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // DTRenableToolStripMenuItem
@@ -142,7 +142,7 @@
             this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Enabled = false;
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // RTSenableToolStripMenuItem
@@ -180,6 +180,7 @@
             this.realtimeGraphsToolStripMenuItem.Name = "realtimeGraphsToolStripMenuItem";
             this.realtimeGraphsToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.realtimeGraphsToolStripMenuItem.Text = "Real-time Graphs";
+            this.realtimeGraphsToolStripMenuItem.Click += new System.EventHandler(this.realtimeGraphsToolStripMenuItem_Click);
             // 
             // recordingsToolStripMenuItem
             // 

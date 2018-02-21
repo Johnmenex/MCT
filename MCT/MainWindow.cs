@@ -25,6 +25,7 @@ namespace MCT {
         private int sample_number;
 
         private protected RealTimeValues ValuesForm;
+        private protected RealTimeGraphs GraphsForm;
 
         private protected SerialPort SerialPort;
         private protected List<CheckBox> cb_sensors;
@@ -402,6 +403,23 @@ namespace MCT {
         
         private void MainWindow_Load(object sender, EventArgs e) {
             CreateHiddenDir();
+        }
+
+        private void realtimeGraphsToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (cb_sensors.Count == 0)
+                return;
+
+#if demo
+            Random _rnd = new Random();
+            double[] _current_Values = new double[Total_sensors];
+            _current_Values = ReceiveData();
+            GraphsForm = new RealTimeGraphs();
+            
+#elif !demo
+            GraphsForm = new RealTimeValues(Total_sensors, _current_values, SamplingTime);
+            
+#endif
+            ValuesForm.Show();
         }
     }
 }
