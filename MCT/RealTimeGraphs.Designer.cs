@@ -50,6 +50,7 @@
             this.Controls.Add(this.zedGraphControl1);
             this.Name = "RealTimeGraphs";
             this.Text = "RealTimeGraphs";
+            this.Load += new System.EventHandler(this.RealTimeGraphs_Load);
             this.ResumeLayout(false);
 
         }

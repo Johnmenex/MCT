@@ -419,7 +419,7 @@ namespace MCT {
             GraphsForm = new RealTimeValues(Total_sensors, _current_values, SamplingTime);
             
 #endif
-            ValuesForm.Show();
+            GraphsForm.Show();
         }
     }
 }
