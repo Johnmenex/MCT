@@ -104,16 +104,24 @@ namespace MCT {
             SerialPort _serialPort = new SerialPort();
             string _serial_content = "";
             string _value = "";
-            MessageBox.Show("DetectingCOM");
+            
+            
             foreach (string _s in SerialPort.GetPortNames()) {
-                if (!_serialPort.IsOpen)
-                    _serialPort.Open();
-                _serial_content = _serialPort.ReadExisting();
-                _serialPort.Close();
-                if (_serial_content.Contains(""))
-                    _value = _s;
-                else
-                    _value = "";
+                _serialPort.PortName = _s;
+
+                try {
+                    if (!_serialPort.IsOpen)
+                        _serialPort.Open();
+                    _serial_content = _serialPort.ReadLine();
+                    
+                    _serialPort.Close();
+                    if (_serial_content.Contains("MCT|"))
+                        _value = _s;
+                    else
+                        _value = "";
+
+                }
+                catch {}
             }
             return _value;
         }
@@ -299,7 +307,10 @@ namespace MCT {
 
 
             if (SerialPort == null) {
-                MessageBox.Show("Null serialport");
+                MessageBox.Show("No COM devices were detected.",
+                    "Serial port error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 #endif
@@ -422,7 +433,7 @@ namespace MCT {
             GraphsForm = new RealTimeGraphs(Total_sensors, _current_Values, SamplingTime);
             
 #elif !demo
-            GraphsForm = new RealTimeValues(Total_sensors, _current_values, SamplingTime);
+            GraphsForm = new RealTimeGraphs(Total_sensors, SerialData, SamplingTime);
             
 #endif
             GraphsForm.Show();
