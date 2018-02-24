@@ -1,4 +1,4 @@
-﻿//#define demo
+﻿#define demo
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -60,7 +60,7 @@ namespace MCT {
             Random _rnd = new Random();
             int _number_of_sensors;
             
-            if (Total_sensors == 0)
+            if (!SensorsDetected)
                 _number_of_sensors = _rnd.Next(5, 11);
             else
                 _number_of_sensors = Total_sensors;
@@ -256,6 +256,7 @@ namespace MCT {
             btn_start_stop.Enabled = false;
 
             Started = false;
+            SensorsDetected = false;
 
         }
         private void ApplicationRestart() {
