@@ -244,6 +244,11 @@ namespace MCT {
 
             btn_detect_sensors.Enabled = true;
             gb_sensors.Controls.Clear();
+            gb_sensors.Size = new Size(262, 127);
+            gb_sampling_info.Size = new Size(200, 203);
+            gb_auto_mode.Location = new Point(12, 252);
+            Size = new Size(509, 399);
+
             cb_sensors = new List<CheckBox>();
 
             btn_reset.Enabled = false;
