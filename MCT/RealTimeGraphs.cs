@@ -27,16 +27,15 @@ namespace MCT {
             InitCurve(NumberOfSensors, _current_Values);
         }
 
-        public void ReceiveData(double[] _sensor_values,int _sampleNumber) {
+        public void ReceiveData(double[] _sensor_values) {
             SensorValues = _sensor_values;
-            SampleNumber = _sampleNumber;
         }
 
         private protected GraphPane z;
         private protected List<CurveItem> _curve;
         private protected double[] _sensorValues;
         private protected int _number_of_sensors;
-        private protected int samplenumber;
+        private protected int samplenumber = 1;
         private int samplingTime;
 
         private protected bool graphPaneInitialized;
@@ -107,18 +106,19 @@ namespace MCT {
                 Color.Olive
                 };
             _curve = new List<CurveItem>();
+            
             for (int i = 0; i < NumberOfSensors; i++) {
-                double[] x_value = new double[1] { i + 1 };
+                double[] x_value = new double[1] { 1 };
                 double[] y_value = new double[1] { _curValues[i] };
                 Curve.Add(zedGraphControl1.GraphPane.AddCurve("Sensor" + (i + 1), x_value, y_value, Colors[i]));
             }
 
             CurveInitialized = true;
         }
-
         private protected void DrawNextSpot() {
 
             int i = 0;
+            SampleNumber++;
             foreach (CurveItem _c in Curve) {
                 _c.AddPoint(SampleNumber, _sensorValues[i]);
                 i++;

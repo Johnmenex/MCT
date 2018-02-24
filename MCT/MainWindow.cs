@@ -1,4 +1,4 @@
-﻿#define demo
+﻿//#define demo
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +23,8 @@ namespace MCT {
         
         private protected string _logs = Directory.GetCurrentDirectory() + "/.tmp/_temporary/_tmpLOGS";
         private int sample_number;
+        private int _detector_counter = 0;
+        private string SerialDataToAnalyze;
 
         private protected RealTimeValues ValuesForm;
         private protected RealTimeGraphs GraphsForm;
@@ -30,15 +32,17 @@ namespace MCT {
         private protected SerialPort SerialPort;
         private protected List<CheckBox> cb_sensors;
         private protected int _total_sensors = 0;
+        private protected bool sensorsDetected = false;
 
         private protected bool _started = false;
         private protected int _samplingTime = 0;
-        private double[] serialData;
+        private protected double[] serialData;
 
         private protected bool Started { get => _started; set => _started = value; }
         private protected int SamplingTime { get => _samplingTime; set => _samplingTime = value; }
         private protected int Total_sensors { get => _total_sensors; set => _total_sensors = value; }
         private protected double[] SerialData { get => serialData; set => serialData = value; }
+        private protected bool SensorsDetected { get => sensorsDetected; set => sensorsDetected = value; }
 
         private void CreateHiddenDir() {
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "/.tmp/_temporary")) {
@@ -57,18 +61,18 @@ namespace MCT {
             int _number_of_sensors;
             
             if (Total_sensors == 0)
-                _number_of_sensors = _rnd.Next(3, 11);
+                _number_of_sensors = _rnd.Next(5, 11);
             else
                 _number_of_sensors = Total_sensors;
-            string serial_value = "MCT";
+            string serial_value = "";
 
             for (int i = 0; i < _number_of_sensors; i++) {
-                serial_value += "|" + _rnd.Next(20, 45);
+                serial_value += _rnd.Next(20, 45) + "|";
             }
-
+            serial_value = serial_value.Remove(serial_value.Length - 1, 1);
             return serial_value;
         }
-        private double[] ReceiveData() {
+        private double[] ReceiveData(string _dataToAnalyze) {
             double[] _SerialData = new double[Total_sensors];
             string[] _data = new string[] { "" };
 #if demo
@@ -76,7 +80,11 @@ namespace MCT {
 #elif !demo
             try
             {
-                _data = SerialPort.ReadExisting().Split('|');
+                if (_dataToAnalyze.Contains("[MCT|") && _dataToAnalyze.Contains("]")) {
+                    _dataToAnalyze = _dataToAnalyze.Remove(_dataToAnalyze.IndexOf('['), 5);
+                    _dataToAnalyze = _dataToAnalyze.Remove(_dataToAnalyze.IndexOf(']'), _dataToAnalyze.Length - _dataToAnalyze.IndexOf(']'));
+                    _data = _dataToAnalyze.Split('|');
+                }
             }
             catch {
                 timer_logger.Stop();
@@ -89,10 +97,8 @@ namespace MCT {
 
             int _index = 0;
             foreach (string _s in _data) {
-                if (_s != "MCT") {
-                    _SerialData[_index] = Convert.ToDouble(_s);
-                    _index++;
-                }
+                _SerialData[_index] = Convert.ToDouble(_s);
+                _index++;
             }
 
             return _SerialData;
@@ -101,7 +107,7 @@ namespace MCT {
             return SerialData;
         }
         private string DetectCOM() {
-            SerialPort _serialPort = new SerialPort();
+            SerialPort _serialPort = new SerialPort(); //temporary serial port
             string _serial_content = "";
             string _value = "";
             
@@ -112,7 +118,7 @@ namespace MCT {
                 try {
                     if (!_serialPort.IsOpen)
                         _serialPort.Open();
-                    _serial_content = _serialPort.ReadLine();
+                    _serial_content = _serialPort.ReadExisting();
                     
                     _serialPort.Close();
                     if (_serial_content.Contains("MCT|"))
@@ -125,21 +131,22 @@ namespace MCT {
             }
             return _value;
         }
-        private int DetectNumberOfSensors(SerialPort _serialPort) {
+        private int DetectNumberOfSensors(string _DataToAnalyze) {
             int _value = 0;
+
             try {
-                if (!_serialPort.IsOpen)
-                    _serialPort.Open();
 #if !demo
-                _value = _serialPort.ReadExisting().Split('|').Length - 1;
+                    _DataToAnalyze = _DataToAnalyze.Remove(0, _DataToAnalyze.IndexOf('['));
+                    _DataToAnalyze = _DataToAnalyze.Remove(_DataToAnalyze.IndexOf('['), 5);
+                    _DataToAnalyze = _DataToAnalyze.Remove(_DataToAnalyze.IndexOf(']'), _DataToAnalyze.Length - _DataToAnalyze.IndexOf(']'));
+                    _value = _DataToAnalyze.Split('|').Length;
 #elif demo
                 _value = DemoMode().Split('|').Length - 1;
 #endif
-                _serialPort.Close();
             }
-            catch {
-                MessageBox.Show("Could not acquire the number of sensors.");
-            }
+            catch {}
+            if (_value != 0)
+                SensorsDetected = true;
             return _value;
         }
         private void SetupSensors(int _number_of_sensors) {
@@ -189,11 +196,13 @@ namespace MCT {
             DTRenableToolStripMenuItem.Checked = _state;
             DTRdisableToolStripMenuItem.Checked = !_state;
             tb_DTR_state.BackColor = _state ? Color.Green : Color.Red;
+            SerialPort.DtrEnable = _state;
         }
         private void SetRTS(bool _state) {
             RTSenableToolStripMenuItem.Checked = _state;
             RTSdisableToolStripMenuItem.Checked = !_state;
             tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
+            SerialPort.RtsEnable = _state;
         }
         private void Start() {
             btn_start_stop.Text = "Stop";
@@ -300,19 +309,41 @@ namespace MCT {
             }
         }
         
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e) {
+            string _temporarySerialData;
+            _temporarySerialData = SerialPort.ReadLine();
+            if (_temporarySerialData.Contains("[MCT|") && _temporarySerialData.Contains("]")) {
+                SerialDataToAnalyze = _temporarySerialData;
+            }
+            SerialPort.DiscardInBuffer();
+        }
+
         private void btn_detect_sensors_Click(object sender, EventArgs e) {
 #if !demo
+            SensorsDetected = false;
+            lb_sensors_instructions.Text = "      Detecting number " +
+                                           "\n           of sensors...";
             string _portname = DetectCOM();
-            SerialPort = _portname != "" ? new SerialPort(_portname) : null;
 
+            if (_portname != "") {
+                SerialPort = new SerialPort(_portname);
+                SetDTR(true);
+                SetRTS(true);
+                if (!SerialPort.IsOpen)
+                    SerialPort.Open();
+                SerialPort.DiscardInBuffer();
+                SerialPort.DataReceived += SerialPort_DataReceived;
+                SerialPort.DiscardInBuffer();
 
-            if (SerialPort == null) {
-                MessageBox.Show("No COM devices were detected.",
-                    "Serial port error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
             }
+            else
+                if (SerialPort == null) {
+                    MessageBox.Show("No COM devices were detected.",
+                        "Serial port error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
 #endif
             btn_start_stop.Text = "Start";
             btn_start_stop.Enabled = true;
@@ -321,24 +352,36 @@ namespace MCT {
             rTSToolStripMenuItem.Enabled = true;
 
 #if !demo
-
-            Total_sensors = DetectNumberOfSensors(SerialPort);
-            lb_USB_port.Text = "Selected USB port: " + SerialPort.PortName;
+            Timer _detector = new Timer();
+            _detector.Interval = 500;
+            _detector.Tick += _detector_Tick;
+            _detector.Start();
+            do {
+                Total_sensors = DetectNumberOfSensors(SerialDataToAnalyze);
+                lb_USB_port.Text = "Selected USB port: " + SerialPort.PortName;
+                Application.DoEvents();
+            } while (_detector.Enabled);
 #elif demo
-            Total_sensors = DemoMode().Split('|').Length - 1;
+
+
+            if (SensorsDetected)
+                return;
+            Total_sensors = DemoMode().Split('|').Length;
             lb_USB_port.Text = "Selected USB port: " + "Demo COM1";
+            SensorsDetected = true;
 
 #endif
             SetupSensors(Total_sensors);
             
             lb_sensors_number.Text = "Number of detected sensors: " + Total_sensors;
             track_sampling_rate.Enabled = true;
-            SamplingTime = track_sampling_rate.Value = 500;
-
-
-
-            SetDTR(true);
-            SetRTS(true);
+            timer_logger.Interval = SamplingTime = track_sampling_rate.Value = 500;
+        }
+        
+        private void _detector_Tick(object sender, EventArgs e) {
+            _detector_counter++;
+            if (_detector_counter > 10 || SensorsDetected)
+                ((Timer)sender).Stop();
         }
 
         private void cb_scheduled_monitor_CheckedChanged(object sender, EventArgs e) {
@@ -351,6 +394,7 @@ namespace MCT {
             }
             else
                 Stop();
+            
         }
 
         private void btn_reset_Click(object sender, EventArgs e) {
@@ -394,7 +438,7 @@ namespace MCT {
 #if demo
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
-            _current_Values = ReceiveData();
+            _current_Values = ReceiveData("");
             ValuesForm = new RealTimeValues(Total_sensors, _current_Values, SamplingTime);
 #elif !demo
             ValuesForm = new RealTimeValues(Total_sensors, serialData, SamplingTime);
@@ -404,14 +448,14 @@ namespace MCT {
 
         private void timer_logger_Tick(object sender, EventArgs e) {
             timer_logger.Stop();
-            SerialData = ReceiveData();
+            SerialData = ReceiveData(SerialDataToAnalyze);
             SaveData(serialData);
 
 
             if (ValuesForm != null)
                 ValuesForm.ReceiveData(serialData);
             if (GraphsForm != null) {
-                GraphsForm.ReceiveData(serialData, sample_number);
+                GraphsForm.ReceiveData(serialData);
             }
 
             timer_logger.Start();
@@ -429,7 +473,7 @@ namespace MCT {
 #if demo
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
-            _current_Values = ReceiveData();
+            _current_Values = ReceiveData("");
             GraphsForm = new RealTimeGraphs(Total_sensors, _current_Values, SamplingTime);
             
 #elif !demo
