@@ -178,13 +178,13 @@ namespace MCT {
                     column = 0;
                     row++;
                 }
-
-                if ((15 + (row * 25) + cb_sensors[i].Height) > gb_sensors.Height) {
-                    gb_sensors.Height += cb_sensors[i].Height;
-                    Height += cb_sensors[i].Height;
-                    gb_auto_mode.Location = new Point(gb_auto_mode.Location.X, gb_auto_mode.Location.Y + cb_sensors[i].Height);
-                    gb_sampling_info.Height += cb_sensors[i].Height;
-                }
+                if (i < _number_of_sensors - 1)
+                    if ((15 + (row * 25) + cb_sensors[i].Height) > gb_sensors.Height) {
+                        gb_sensors.Height += cb_sensors[i].Height;
+                        Height += cb_sensors[i].Height;
+                        gb_auto_mode.Location = new Point(gb_auto_mode.Location.X, gb_auto_mode.Location.Y + cb_sensors[i].Height);
+                        gb_sampling_info.Height += cb_sensors[i].Height;
+                    }
 
                 gb_sensors.Controls.Add(cb_sensors[i]);
 
