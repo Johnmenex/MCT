@@ -1,4 +1,4 @@
-﻿#define demo
+﻿//#define demo
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -219,6 +219,9 @@ namespace MCT {
             dTRToolStripMenuItem.Enabled = false;
             rTSToolStripMenuItem.Enabled = false;
 
+            realtimeGraphsToolStripMenuItem.Enabled = true;
+            realtimeValuesToolStripMenuItem.Enabled = true;
+
             timer_logger.Start();
         }
         private void Stop() {
@@ -228,6 +231,9 @@ namespace MCT {
             timer_logger.Stop();
             btn_reset.Enabled = true;
             btn_save.Enabled = true;
+
+            realtimeGraphsToolStripMenuItem.Enabled = false;
+            realtimeValuesToolStripMenuItem.Enabled = false;
         }
         private void Reset() {
             gb_sampling_info.Enabled = true;
@@ -242,6 +248,10 @@ namespace MCT {
             cb_scheduled_monitor.Enabled = true;
             gb_auto_mode.Enabled = cb_scheduled_monitor.Checked;
 
+            realtimeGraphsToolStripMenuItem.Enabled = false;
+            realtimeValuesToolStripMenuItem.Enabled = false;
+            
+            
             btn_detect_sensors.Enabled = true;
             gb_sensors.Controls.Clear();
             gb_sensors.Size = new Size(262, 127);
@@ -314,13 +324,14 @@ namespace MCT {
                 sample_number++;
             }
         }
-        
+
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e) {
             string _temporarySerialData;
             _temporarySerialData = SerialPort.ReadLine();
             if (_temporarySerialData.Contains("[MCT|") && _temporarySerialData.Contains("]")) {
                 SerialDataToAnalyze = _temporarySerialData;
             }
+
             SerialPort.DiscardInBuffer();
         }
 
