@@ -350,15 +350,12 @@ namespace MCT {
                     return;
                 }
 #endif
-            btn_start_stop.Text = "Start";
-            btn_start_stop.Enabled = true;
 
-            dTRToolStripMenuItem.Enabled = true;
-            rTSToolStripMenuItem.Enabled = true;
 
 #if !demo
-            Timer _detector = new Timer();
-            _detector.Interval = 500;
+            Timer _detector = new Timer {
+                Interval = 500
+            };
             _detector.Tick += _detector_Tick;
             _detector.Start();
             do {
@@ -376,6 +373,12 @@ namespace MCT {
             SensorsDetected = true;
 
 #endif
+            btn_start_stop.Text = "Start";
+            btn_start_stop.Enabled = true;
+
+            dTRToolStripMenuItem.Enabled = true;
+            rTSToolStripMenuItem.Enabled = true;
+
             SetupSensors(Total_sensors);
             
             lb_sensors_number.Text = "Number of detected sensors: " + Total_sensors;
