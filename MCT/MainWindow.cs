@@ -34,6 +34,10 @@ namespace MCT {
         private protected int _total_sensors = 0;
         private protected bool sensorsDetected = false;
 
+        private protected bool startDateReached = false;
+        private protected bool stopDateReached = false;
+        private protected bool scheduledMonitorSet = false;
+
         private protected bool _started = false;
         private protected int _samplingTime = 0;
         private protected double[] serialData;
@@ -43,6 +47,9 @@ namespace MCT {
         private protected int Total_sensors { get => _total_sensors; set => _total_sensors = value; }
         private protected double[] SerialData { get => serialData; set => serialData = value; }
         private protected bool SensorsDetected { get => sensorsDetected; set => sensorsDetected = value; }
+        private protected bool StartDateReached { get => startDateReached; set => startDateReached = value; }
+        private protected bool StopDateReached { get => stopDateReached; set => stopDateReached = value; }
+        private protected bool ScheduledMonitorSet { get => scheduledMonitorSet; set => scheduledMonitorSet = value; }
 
         private void CreateHiddenDir() {
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "/.tmp/_temporary")) {
@@ -81,6 +88,7 @@ namespace MCT {
             try
             {
                 if (_dataToAnalyze.Contains("[MCT|") && _dataToAnalyze.Contains("]")) {
+                    _dataToAnalyze = _dataToAnalyze.Remove(0, _dataToAnalyze.IndexOf('['));
                     _dataToAnalyze = _dataToAnalyze.Remove(_dataToAnalyze.IndexOf('['), 5);
                     _dataToAnalyze = _dataToAnalyze.Remove(_dataToAnalyze.IndexOf(']'), _dataToAnalyze.Length - _dataToAnalyze.IndexOf(']'));
                     _data = _dataToAnalyze.Split('|');
@@ -232,6 +240,9 @@ namespace MCT {
             btn_reset.Enabled = true;
             btn_save.Enabled = true;
 
+            cb_scheduled_monitor.Enabled = true;
+            gb_auto_mode.Enabled = true;
+
             realtimeGraphsToolStripMenuItem.Enabled = false;
             realtimeValuesToolStripMenuItem.Enabled = false;
         }
@@ -267,6 +278,10 @@ namespace MCT {
 
             Started = false;
             SensorsDetected = false;
+
+            StartDateReached = false;
+            StopDateReached = false;
+            ScheduledMonitorSet = false;
 
         }
         private void ApplicationRestart() {
@@ -407,13 +422,53 @@ namespace MCT {
         private void cb_scheduled_monitor_CheckedChanged(object sender, EventArgs e) {
             gb_auto_mode.Enabled = ((CheckBox)sender).Checked;
         }
+        private void ScheduledStart() {
 
-        private void btn_start_stop_Click(object sender, EventArgs e) {
-            if (!Started) {
+            ScheduledMonitorSet = !ScheduledMonitorSet;
+            if(ScheduledMonitorSet) {
+                _DateCheck.Tick += _DateCheck_Tick;
+                btn_start_stop.Text = "Stop";
+                _DateCheck.Start();
+            }
+            else {
+                btn_start_stop.Text = "Start";
+                _DateCheck.Stop();
+            }
+
+            
+        }
+
+        private void _DateCheck_Tick(object sender, EventArgs e) {
+            if (DateTime.Now.ToString("dd/MM/yyyy H:m") == dt_start_monitor.Value.ToString("dd/MM/yyyy ") + nUD_start_hour.Value + ":" + nUD_start_minute.Value) {
+
+                StartDateReached = true;
                 Start();
             }
-            else
+
+            if (DateTime.Now.ToString("dd/MM/yyyy H:m") == dt_stop_monitor.Value.ToString("dd/MM/yyyy ") + nUD_stop_hour.Value + ":" + nUD_stop_minute.Value) {
+                StopDateReached = true;
+                _DateCheck.Stop();
                 Stop();
+            }
+        }
+
+        private Timer _DateCheck = new Timer {
+            Interval = 1000
+        };
+        private void btn_start_stop_Click(object sender, EventArgs e) {
+            if (!Started) {
+                if (cb_scheduled_monitor.Checked) {
+                    ScheduledStart();
+                }
+                else
+                    Start();
+            }
+            else {
+                if (_DateCheck.Enabled)
+                    _DateCheck.Stop();
+                ScheduledMonitorSet = false;
+                Stop();
+            }
             
         }
 

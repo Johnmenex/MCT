@@ -67,12 +67,12 @@
             this.lb_scheduled_minute = new System.Windows.Forms.Label();
             this.lb_scheduled_hour = new System.Windows.Forms.Label();
             this.lb_scheduled_date = new System.Windows.Forms.Label();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.nUD_stop_minute = new System.Windows.Forms.NumericUpDown();
+            this.nUD_stop_hour = new System.Windows.Forms.NumericUpDown();
+            this.nUD_start_hour = new System.Windows.Forms.NumericUpDown();
+            this.nUD_start_minute = new System.Windows.Forms.NumericUpDown();
+            this.dt_stop_monitor = new System.Windows.Forms.DateTimePicker();
+            this.dt_start_monitor = new System.Windows.Forms.DateTimePicker();
             this.lb_finish_date = new System.Windows.Forms.Label();
             this.lb_start_date = new System.Windows.Forms.Label();
             this.timer_logger = new System.Windows.Forms.Timer(this.components);
@@ -82,10 +82,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.track_sampling_rate)).BeginInit();
             this.gb_buttons.SuspendLayout();
             this.gb_auto_mode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_stop_minute)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_stop_hour)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_start_hour)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_start_minute)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -118,7 +118,7 @@
             this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Enabled = false;
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // DTRenableToolStripMenuItem
@@ -142,7 +142,7 @@
             this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Enabled = false;
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // RTSenableToolStripMenuItem
@@ -448,12 +448,12 @@
             this.gb_auto_mode.Controls.Add(this.lb_scheduled_minute);
             this.gb_auto_mode.Controls.Add(this.lb_scheduled_hour);
             this.gb_auto_mode.Controls.Add(this.lb_scheduled_date);
-            this.gb_auto_mode.Controls.Add(this.numericUpDown4);
-            this.gb_auto_mode.Controls.Add(this.numericUpDown3);
-            this.gb_auto_mode.Controls.Add(this.numericUpDown2);
-            this.gb_auto_mode.Controls.Add(this.numericUpDown1);
-            this.gb_auto_mode.Controls.Add(this.dateTimePicker2);
-            this.gb_auto_mode.Controls.Add(this.dateTimePicker1);
+            this.gb_auto_mode.Controls.Add(this.nUD_stop_minute);
+            this.gb_auto_mode.Controls.Add(this.nUD_stop_hour);
+            this.gb_auto_mode.Controls.Add(this.nUD_start_hour);
+            this.gb_auto_mode.Controls.Add(this.nUD_start_minute);
+            this.gb_auto_mode.Controls.Add(this.dt_stop_monitor);
+            this.gb_auto_mode.Controls.Add(this.dt_start_monitor);
             this.gb_auto_mode.Controls.Add(this.lb_finish_date);
             this.gb_auto_mode.Controls.Add(this.lb_start_date);
             this.gb_auto_mode.Enabled = false;
@@ -491,47 +491,47 @@
             this.lb_scheduled_date.TabIndex = 8;
             this.lb_scheduled_date.Text = "Date";
             // 
-            // numericUpDown4
+            // nUD_stop_minute
             // 
-            this.numericUpDown4.Location = new System.Drawing.Point(401, 64);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown4.TabIndex = 7;
+            this.nUD_stop_minute.Location = new System.Drawing.Point(401, 64);
+            this.nUD_stop_minute.Name = "nUD_stop_minute";
+            this.nUD_stop_minute.Size = new System.Drawing.Size(43, 20);
+            this.nUD_stop_minute.TabIndex = 7;
             // 
-            // numericUpDown3
+            // nUD_stop_hour
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(345, 64);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown3.TabIndex = 6;
+            this.nUD_stop_hour.Location = new System.Drawing.Point(345, 64);
+            this.nUD_stop_hour.Name = "nUD_stop_hour";
+            this.nUD_stop_hour.Size = new System.Drawing.Size(43, 20);
+            this.nUD_stop_hour.TabIndex = 6;
             // 
-            // numericUpDown2
+            // nUD_start_hour
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(345, 31);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown2.TabIndex = 5;
+            this.nUD_start_hour.Location = new System.Drawing.Point(345, 31);
+            this.nUD_start_hour.Name = "nUD_start_hour";
+            this.nUD_start_hour.Size = new System.Drawing.Size(43, 20);
+            this.nUD_start_hour.TabIndex = 5;
             // 
-            // numericUpDown1
+            // nUD_start_minute
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(401, 31);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown1.TabIndex = 4;
+            this.nUD_start_minute.Location = new System.Drawing.Point(401, 31);
+            this.nUD_start_minute.Name = "nUD_start_minute";
+            this.nUD_start_minute.Size = new System.Drawing.Size(43, 20);
+            this.nUD_start_minute.TabIndex = 4;
             // 
-            // dateTimePicker2
+            // dt_stop_monitor
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(114, 64);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(215, 20);
-            this.dateTimePicker2.TabIndex = 3;
+            this.dt_stop_monitor.Location = new System.Drawing.Point(114, 64);
+            this.dt_stop_monitor.Name = "dt_stop_monitor";
+            this.dt_stop_monitor.Size = new System.Drawing.Size(215, 20);
+            this.dt_stop_monitor.TabIndex = 3;
             // 
-            // dateTimePicker1
+            // dt_start_monitor
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(114, 31);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(215, 20);
-            this.dateTimePicker1.TabIndex = 2;
+            this.dt_start_monitor.Location = new System.Drawing.Point(114, 31);
+            this.dt_start_monitor.Name = "dt_start_monitor";
+            this.dt_start_monitor.Size = new System.Drawing.Size(215, 20);
+            this.dt_start_monitor.TabIndex = 2;
             // 
             // lb_finish_date
             // 
@@ -580,10 +580,10 @@
             this.gb_buttons.PerformLayout();
             this.gb_auto_mode.ResumeLayout(false);
             this.gb_auto_mode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_stop_minute)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_stop_hour)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_start_hour)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUD_start_minute)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -629,12 +629,12 @@
         private System.Windows.Forms.Label lb_scheduled_minute;
         private System.Windows.Forms.Label lb_scheduled_hour;
         private System.Windows.Forms.Label lb_scheduled_date;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.NumericUpDown nUD_stop_minute;
+        private System.Windows.Forms.NumericUpDown nUD_stop_hour;
+        private System.Windows.Forms.NumericUpDown nUD_start_hour;
+        private System.Windows.Forms.NumericUpDown nUD_start_minute;
+        private System.Windows.Forms.DateTimePicker dt_stop_monitor;
+        private System.Windows.Forms.DateTimePicker dt_start_monitor;
         private System.Windows.Forms.Label lb_finish_date;
         private System.Windows.Forms.Label lb_start_date;
         private System.Windows.Forms.ToolStripMenuItem DTRenableToolStripMenuItem;
