@@ -51,6 +51,38 @@ namespace MCT {
         private protected bool StopDateReached { get => stopDateReached; set => stopDateReached = value; }
         private protected bool ScheduledMonitorSet { get => scheduledMonitorSet; set => scheduledMonitorSet = value; }
 
+        private Timer _DateCheck = new Timer {
+            Interval = 1000
+        };
+        private void _DateCheck_Tick(object sender, EventArgs e) {
+            if (DateTime.Now.ToString("dd/MM/yyyy H:m") == dt_start_monitor.Value.ToString("dd/MM/yyyy ") + nUD_start_hour.Value + ":" + nUD_start_minute.Value) {
+
+                StartDateReached = true;
+                Start();
+            }
+
+            if (DateTime.Now.ToString("dd/MM/yyyy H:m") == dt_stop_monitor.Value.ToString("dd/MM/yyyy ") + nUD_stop_hour.Value + ":" + nUD_stop_minute.Value) {
+                StopDateReached = true;
+                _DateCheck.Stop();
+                Stop();
+            }
+        }
+
+        private void ScheduledStart() {
+
+            ScheduledMonitorSet = !ScheduledMonitorSet;
+            if (ScheduledMonitorSet) {
+                _DateCheck.Tick += _DateCheck_Tick;
+                btn_start_stop.Text = "Stop";
+                _DateCheck.Start();
+            }
+            else {
+                btn_start_stop.Text = "Start";
+                _DateCheck.Stop();
+            }
+
+
+        }
         private void CreateHiddenDir() {
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "/.tmp/_temporary")) {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/.tmp/_temporary");
@@ -422,39 +454,7 @@ namespace MCT {
         private void cb_scheduled_monitor_CheckedChanged(object sender, EventArgs e) {
             gb_auto_mode.Enabled = ((CheckBox)sender).Checked;
         }
-        private void ScheduledStart() {
-
-            ScheduledMonitorSet = !ScheduledMonitorSet;
-            if(ScheduledMonitorSet) {
-                _DateCheck.Tick += _DateCheck_Tick;
-                btn_start_stop.Text = "Stop";
-                _DateCheck.Start();
-            }
-            else {
-                btn_start_stop.Text = "Start";
-                _DateCheck.Stop();
-            }
-
-            
-        }
-
-        private void _DateCheck_Tick(object sender, EventArgs e) {
-            if (DateTime.Now.ToString("dd/MM/yyyy H:m") == dt_start_monitor.Value.ToString("dd/MM/yyyy ") + nUD_start_hour.Value + ":" + nUD_start_minute.Value) {
-
-                StartDateReached = true;
-                Start();
-            }
-
-            if (DateTime.Now.ToString("dd/MM/yyyy H:m") == dt_stop_monitor.Value.ToString("dd/MM/yyyy ") + nUD_stop_hour.Value + ":" + nUD_stop_minute.Value) {
-                StopDateReached = true;
-                _DateCheck.Stop();
-                Stop();
-            }
-        }
-
-        private Timer _DateCheck = new Timer {
-            Interval = 1000
-        };
+        
         private void btn_start_stop_Click(object sender, EventArgs e) {
             if (!Started) {
                 if (cb_scheduled_monitor.Checked) {
