@@ -158,6 +158,7 @@ namespace MCT {
 
             z.YAxis.Title.Text = "Temperature";
             z.YAxis.IsVisible = true;
+            
 
             GraphPaneInitialized = true;
         }

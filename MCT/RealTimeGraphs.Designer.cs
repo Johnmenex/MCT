@@ -26,6 +26,7 @@
             this.components = new System.ComponentModel.Container();
             this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.timer_visualizer = new System.Windows.Forms.Timer(this.components);
+            this.gb_parent = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
             // zedGraphControl1
@@ -46,11 +47,21 @@
             // 
             this.timer_visualizer.Tick += new System.EventHandler(this.timer_visualizer_Tick);
             // 
+            // gb_parent
+            // 
+            this.gb_parent.Location = new System.Drawing.Point(13, 459);
+            this.gb_parent.Name = "gb_parent";
+            this.gb_parent.Size = new System.Drawing.Size(813, 140);
+            this.gb_parent.TabIndex = 2;
+            this.gb_parent.TabStop = false;
+            this.gb_parent.Text = "Thresholds";
+            // 
             // RealTimeGraphs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 596);
+            this.ClientSize = new System.Drawing.Size(838, 611);
+            this.Controls.Add(this.gb_parent);
             this.Controls.Add(this.zedGraphControl1);
             this.Name = "RealTimeGraphs";
             this.Text = "RealTimeGraphs";
@@ -63,5 +74,6 @@
 
         private ZedGraph.ZedGraphControl zedGraphControl1;
         private System.Windows.Forms.Timer timer_visualizer;
+        private System.Windows.Forms.GroupBox gb_parent;
     }
 }

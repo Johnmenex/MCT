@@ -100,7 +100,7 @@ namespace MCT {
             int _number_of_sensors;
             
             if (!SensorsDetected)
-                _number_of_sensors = _rnd.Next(5, 11);
+                _number_of_sensors = _rnd.Next(8, 8);
             else
                 _number_of_sensors = Total_sensors;
             string serial_value = "";
