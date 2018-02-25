@@ -223,11 +223,37 @@ namespace MCT {
             int i = 0;
             SampleNumber++;
             foreach (CurveItem _c in Curve) {
-                _c.AddPoint(SampleNumber, _sensorValues[i]);
+                _c.AddPoint(SampleNumber, SensorValues[i]);
                 i++;
             }
             z.AxisChange();
             zedGraphControl1.Refresh();
+        }
+        private protected void CheckThresholds() {
+            int _index = 0;
+            foreach (GroupBox _gb in gb_parent.Controls) {
+                if (((CheckBox)_gb.Controls[0]).Checked)
+                    if (((CheckBox)_gb.Controls[1]).Checked) {
+                        if ((double)((NumericUpDown)_gb.Controls[3]).Value > _sensorValues[_index])
+                            ((NumericUpDown)_gb.Controls[3]).BackColor = Color.Red;
+                        else
+                            ((NumericUpDown)_gb.Controls[3]).BackColor = Color.FromKnownColor((KnownColor.Control));
+
+                        if ((double)((NumericUpDown)_gb.Controls[5]).Value < _sensorValues[_index])
+                            ((NumericUpDown)_gb.Controls[5]).BackColor = Color.Red;
+                        else
+                            ((NumericUpDown)_gb.Controls[5]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                    }
+                    else {
+                        ((NumericUpDown)_gb.Controls[3]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                        ((NumericUpDown)_gb.Controls[5]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                    }
+                else {
+                    ((NumericUpDown)_gb.Controls[3]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                    ((NumericUpDown)_gb.Controls[5]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                }
+                _index++;
+            }
         }
 
         private void RealTimeGraphs_Load(object sender, EventArgs e) {
@@ -242,6 +268,7 @@ namespace MCT {
                 timer_visualizer.Stop();
                 DrawNextSpot();
                 timer_visualizer.Start();
+                CheckThresholds();
             }
         }
     }
