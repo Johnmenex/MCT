@@ -137,6 +137,7 @@ namespace MCT {
                 nUD_min.Maximum = 999;
                 nUD_min.Width = 40;
                 nUD_min.Location = new Point(lb_min.Location.X + lb_min.Width + 3, lb_min.Location.Y - 5);
+                nUD_min.BackColor = Color.FromKnownColor(KnownColor.Control);
                 nUD_min.Show();
                 Gb_threshold[i].Controls.Add(nUD_min);
                 //
@@ -155,6 +156,7 @@ namespace MCT {
                 nUD_max.Maximum = 999;
                 nUD_max.Width = 40;
                 nUD_max.Location = new Point(lb_max.Location.X + lb_max.Width, lb_max.Location.Y - 5);
+                nUD_max.BackColor = Color.FromKnownColor(KnownColor.Control);
                 nUD_max.Show();
                 Gb_threshold[i].Controls.Add(nUD_max);
                 //
