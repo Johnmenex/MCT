@@ -191,8 +191,8 @@ namespace MCT {
         }
 
         private void Cb_display_CheckedChanged(object sender, EventArgs e) {
-            Curve.Find(x => x.Label.Text.Remove(0, 6)[0].ToString() == (((CheckBox)sender).Name.Remove(0, 10))).IsVisible = ((CheckBox)sender).Checked;
-            Curve.Find(x => x.Label.Text.Remove(0, 6)[0].ToString() == (((CheckBox)sender).Name.Remove(0, 10))).Label.IsVisible = ((CheckBox)sender).Checked;
+            Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].IsVisible = ((CheckBox)sender).Checked;
+            Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].Label.IsVisible = ((CheckBox)sender).Checked;
         }
 
         private protected void InitCurve(int _nSensors, double[] _curValues) {
