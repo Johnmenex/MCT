@@ -56,13 +56,13 @@ namespace MCT {
             for (int i = 0; i < _number_of_sensors; i++) {
 
                 Gb_threshold.Add(new GroupBox());
-                
+                Gb_threshold[i].Text = "Sensor " + (i + 1);
                 //create cb_sensor
                 CheckBox cb_threshold = new CheckBox();
                 cb_threshold.Location = new Point(4, 15);
                 cb_threshold.AutoSize = true;
                 cb_threshold.Name = "cb_sensor" + i;
-                cb_threshold.Text = "Sensor" + (i + 1);
+                cb_threshold.Text = "Threshold";
                 cb_threshold.Checked = false;
                 cb_threshold.Show();
                 Gb_threshold[i].Controls.Add(cb_threshold);
@@ -109,15 +109,21 @@ namespace MCT {
                 Gb_threshold[i].AutoSize = true;
                 Gb_threshold[i].Width = cb_threshold.Width;
                 
+                if(row<=0)
                 Gb_threshold[i].Location = new Point(
-                    5 + (column * (Gb_threshold[i].Width + 25)),
+                    5 + (column * (Gb_threshold[i].Width + 30)),
                     15 + (row * Gb_threshold[i].Height)
                     );
+                else
+                    Gb_threshold[i].Location = new Point(
+                    5 + (column * (Gb_threshold[i].Width + 30)),
+                    15 + (row * Gb_threshold[i].Height+5)
+                    );
                 column++;
-                if ((5 + (column * (Gb_threshold[i].Width + 25))) > gb_parent.Width) {
+                if ((5 + (column * (Gb_threshold[i].Width + 30))) > gb_parent.Width) {
                     if (column != _number_of_sensors) {
-                        gb_parent.Height += Gb_threshold[i].Height + 10;
-                        Height += Gb_threshold[i].Height + 5;
+                        gb_parent.Height += Gb_threshold[i].Height;
+                        Height += Gb_threshold[i].Height;
                     }
                     column = 0;
                     row++;

@@ -1,4 +1,4 @@
-﻿//#define demo
+﻿#define demo
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -100,7 +100,7 @@ namespace MCT {
             int _number_of_sensors;
             
             if (!SensorsDetected)
-                _number_of_sensors = _rnd.Next(8, 8);
+                _number_of_sensors = _rnd.Next(11,13);
             else
                 _number_of_sensors = Total_sensors;
             string serial_value = "";
