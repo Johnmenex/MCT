@@ -105,17 +105,18 @@ namespace MCT {
                 CheckBox cb_display = new CheckBox();
                 cb_display.Location = new Point(4, 15);
                 cb_display.AutoSize = true;
-                cb_display.Name = "cb_display" + i;
+                cb_display.Name = "cb_display" + (i + 1);
                 cb_display.Text = "Show";
                 cb_display.Checked = true;
                 cb_display.Show();
+                cb_display.CheckedChanged += Cb_display_CheckedChanged;
                 Gb_threshold[i].Controls.Add(cb_display);
                 //
                 //create cb_sensor
                 CheckBox cb_threshold = new CheckBox();
                 cb_threshold.Location = new Point(4, cb_display.Location.Y + cb_display.Height + 5);
                 cb_threshold.AutoSize = true;
-                cb_threshold.Name = "cb_sensor" + i;
+                cb_threshold.Name = "cb_sensor" + (i + 1);
                 cb_threshold.Text = "Threshold";
                 cb_threshold.Checked = false;
                 cb_threshold.Show();
@@ -186,6 +187,12 @@ namespace MCT {
                 gb_parent.Controls.Add(Gb_threshold[i]);
             }
         }
+
+        private void Cb_display_CheckedChanged(object sender, EventArgs e) {
+            Curve.Find(x => x.Label.Text.Remove(0, 6)[0].ToString() == (((CheckBox)sender).Name.Remove(0, 10))).IsVisible = ((CheckBox)sender).Checked;
+            Curve.Find(x => x.Label.Text.Remove(0, 6)[0].ToString() == (((CheckBox)sender).Name.Remove(0, 10))).Label.IsVisible = ((CheckBox)sender).Checked;
+        }
+
         private protected void InitCurve(int _nSensors, double[] _curValues) {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
