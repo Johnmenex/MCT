@@ -1,4 +1,4 @@
-﻿#define demo
+﻿//#define demo
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -406,6 +406,10 @@ namespace MCT {
                         "Serial port error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
+                lb_sensors_instructions.Text= "Press the \"Detect sensors\"\n"+
+                                              "button for the sensors to\n"+
+                                              "be detected and displayed.";
+
                     return;
                 }
 #endif
