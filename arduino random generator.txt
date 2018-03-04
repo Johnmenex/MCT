@@ -1,0 +1,17 @@
+void setup() {
+  Serial.begin(9600); 
+
+}
+int sensors = random(12,12);
+
+void loop() {
+  String _data="[MCT";
+  for(int i=0; i<sensors; i++){
+    _data+="|" + String(random(10,50));
+  }
+  _data += "]";
+  Serial.println(_data);
+  delay(100);
+  Serial.flush();
+
+}
