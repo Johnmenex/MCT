@@ -371,7 +371,14 @@ namespace MCT {
                 sample_number++;
             }
         }
-
+        private List<int> GetActiveSensors() {
+            List<int> _active_sensors = new List<int>();
+            foreach (CheckBox _cb in cb_sensors) {
+                if (_cb.Checked)
+                    _active_sensors.Add(Convert.ToInt32(_cb.Name.Split('_')[2]));
+            }
+            return _active_sensors;
+        }
         public void savefile(string type) {
             if (type == "txt") {
                 saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -610,14 +617,6 @@ namespace MCT {
 
         private void btn_save_Click(object sender, EventArgs e) {
             savefile("txt");
-        }
-        private List<int> GetActiveSensors() {
-            List<int> _active_sensors = new List<int>();
-            foreach (CheckBox _cb in cb_sensors) {
-                if (_cb.Checked)
-                    _active_sensors.Add(Convert.ToInt32(_cb.Name.Split('_')[2]));
-            }
-            return _active_sensors;
         }
     }
 }
