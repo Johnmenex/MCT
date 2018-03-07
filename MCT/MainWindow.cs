@@ -1,4 +1,4 @@
-﻿//#define demo
+﻿#define demo
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

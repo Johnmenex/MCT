@@ -31,6 +31,7 @@ namespace MCT {
             SensorValues = _sensor_values;
         }
 
+        private CheckBox cb_Allow_Scroll;
         private protected GraphPane z;
         private protected List<CurveItem> _curve;
         private protected double[] _sensorValues;
@@ -50,22 +51,15 @@ namespace MCT {
         private protected int SampleNumber { get => samplenumber; set => samplenumber = value; }
         private protected int SamplingTime { get => samplingTime; set => samplingTime = value; }
         private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
-
-        //bool _allow_scroll = false;
+        
         private protected void InitGraphPane() {
-            //_allow_scroll = true;
-
             
             z = zedGraphControl1.GraphPane;
             z.XAxis.Scale.MinorStep = 1;
-
+            
             z.XAxis.Scale.Max = 20; //values range on X axis
-            //z.YAxis.Scale.Max = 100; //values range on Y axis
-            z.YAxis.Scale.MaxAuto = true;
-            z.YAxis.Scale.MinAuto = true;
-
-
-            zedGraphControl1.ScrollMaxX = 21;
+            
+            zedGraphControl1.IsShowHScrollBar = true;
 
             z.XAxis.MajorGrid.DashOff = 0;
             z.YAxis.MajorGrid.DashOff = 0;
@@ -83,14 +77,25 @@ namespace MCT {
             z.XAxis.Title.Text = "Samples";
             z.YAxis.Title.Text = "Temperature";
             z.Title.Text = "Realtime monitoring";
-
-
-
+            
             z.AxisChange();
             zedGraphControl1.IsAntiAlias = true;
             zedGraphControl1.Refresh();
 
             GraphPaneInitialized = true;
+            cb_Allow_Scroll = new CheckBox {
+                Checked = true,
+                BackColor = Color.FromKnownColor(KnownColor.White),
+                Location = new Point(zedGraphControl1.Location.X + 5,
+                                     zedGraphControl1.Location.Y + zedGraphControl1.Controls[0].Location.Y - zedGraphControl1.Controls[0].Height * 2
+                                     ),
+                Visible = true,
+                Enabled = true,
+                Text = "Auto-follow"
+            };
+            Controls.Add(cb_Allow_Scroll);
+            cb_Allow_Scroll.Show();
+            cb_Allow_Scroll.BringToFront();
         }
         private protected void initUI() {
             int column = 0;
@@ -194,7 +199,23 @@ namespace MCT {
             Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].IsVisible = ((CheckBox)sender).Checked;
             Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].Label.IsVisible = ((CheckBox)sender).Checked;
         }
+        private void AutoFollowGraphLine() {
+            if (!cb_Allow_Scroll.Checked)
+                return;
 
+            if (SampleNumber >= 15 && samplenumber <= 20) {
+                z.XAxis.Scale.Max = samplenumber + 5;
+                z.XAxis.Scale.Min = samplenumber > 15 ? samplenumber - 15 : 0;
+                zedGraphControl1.ScrollMaxX = z.XAxis.Scale.Max;
+            }
+            else {
+                if (samplenumber >= 20) {
+                    z.XAxis.Scale.Max = SampleNumber + 5;
+                    z.XAxis.Scale.Min = samplenumber - 20;
+                    zedGraphControl1.ScrollMaxX = z.XAxis.Scale.Max - z.XAxis.Scale.Min;
+                }
+            }
+        }
         private protected void InitCurve(int _nSensors, double[] _curValues) {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
@@ -228,6 +249,7 @@ namespace MCT {
                 _c.AddPoint(SampleNumber, SensorValues[i]);
                 i++;
             }
+            AutoFollowGraphLine();
             z.AxisChange();
             zedGraphControl1.Refresh();
         }
