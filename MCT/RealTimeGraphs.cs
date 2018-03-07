@@ -93,7 +93,8 @@ namespace MCT {
                                      ),
                 Visible = true,
                 Enabled = true,
-                Text = "Auto-follow"
+                AutoSize = true,
+                Text = "Keep - track of incoming values"
             };
             Controls.Add(cb_Allow_Scroll);
             cb_Allow_Scroll.Show();
