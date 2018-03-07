@@ -372,6 +372,52 @@ namespace MCT {
             }
         }
 
+        public void savefile(string type) {
+            if (type == "txt") {
+                saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveFileDialog1.FileName = "";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                    if (File.Exists(saveFileDialog1.FileName)) {
+                        File.Delete(saveFileDialog1.FileName);
+                    }
+                    File.Copy(_logs, saveFileDialog1.FileName);
+                }
+            }
+            /*
+            else if (type == "txt") {
+                saveFileDialog1.Filter = "TEXT files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveFileDialog1.FileName = "";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                    if (File.Exists(saveFileDialog1.FileName)) {
+                        File.Delete(saveFileDialog1.FileName);
+                    }
+                    File.Copy(dir + "\\convertedXML.txt", saveFileDialog1.FileName);
+                }
+            }
+            else if (type == "xlsx") {
+                saveFileDialog1.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                saveFileDialog1.FileName = "";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                    if (File.Exists(saveFileDialog1.FileName)) {
+                        File.Delete(saveFileDialog1.FileName);
+                    }
+                    File.Copy(dir + "\\convertedXML.xlsx", saveFileDialog1.FileName);
+                    if (File.Exists(dir + "\\convertedXML.xlsx")) {
+                        COMrelease();
+                        Application.DoEvents();
+                        File.Delete(dir + "\\convertedXML.xlsx");
+                    }
+                }
+                else
+                    if (File.Exists(dir + "\\convertedXML.xlsx")) {
+                    COMrelease();
+                    Application.DoEvents();
+                    File.Delete(dir + "\\convertedXML.xlsx");
+                }
+                
+            }*/
+        }
+
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e) {
             string _temporarySerialData;
             _temporarySerialData = SerialPort.ReadLine();
@@ -560,6 +606,10 @@ namespace MCT {
             
 #endif
             GraphsForm.Show();
+        }
+
+        private void btn_save_Click(object sender, EventArgs e) {
+            savefile("txt");
         }
     }
 }

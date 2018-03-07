@@ -76,6 +76,7 @@
             this.lb_finish_date = new System.Windows.Forms.Label();
             this.lb_start_date = new System.Windows.Forms.Label();
             this.timer_logger = new System.Windows.Forms.Timer(this.components);
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             this.gb_sensors.SuspendLayout();
             this.gb_sampling_info.SuspendLayout();
@@ -118,7 +119,7 @@
             this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Enabled = false;
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // DTRenableToolStripMenuItem
@@ -142,7 +143,7 @@
             this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Enabled = false;
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // RTSenableToolStripMenuItem
@@ -316,6 +317,7 @@
             this.btn_save.TabIndex = 4;
             this.btn_save.Text = "Save";
             this.btn_save.UseVisualStyleBackColor = true;
+            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
             // 
             // btn_detect_sensors
             // 
@@ -643,6 +645,7 @@
         private System.Windows.Forms.ToolStripMenuItem RTSdisableToolStripMenuItem;
         private System.Windows.Forms.Label lb_sensors_instructions;
         private System.Windows.Forms.Timer timer_logger;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 
