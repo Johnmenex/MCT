@@ -564,7 +564,7 @@ namespace MCT {
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
             _current_Values = ReceiveData("");
-            ValuesForm = new RealTimeValues(Total_sensors, _current_Values, SamplingTime);
+            ValuesForm = new RealTimeValues(GetActiveSensors(), _current_Values, SamplingTime);
 #elif !demo
             ValuesForm = new RealTimeValues(Total_sensors, serialData, SamplingTime);
 #endif

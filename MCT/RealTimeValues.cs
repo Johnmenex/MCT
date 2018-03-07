@@ -14,17 +14,17 @@ namespace MCT {
         public RealTimeValues() {
             InitializeComponent();
         }
-
-        public RealTimeValues(int _n_sensors, double[] _current_Values, int _sampling_rate) {
-            if (_n_sensors == 0)
+        
+        public RealTimeValues(List<int> _active_sensors, double[] _current_Values, int _sampling_rate) {
+            if (_active_sensors == null || _active_sensors.Count == 0)
                 return;
 
             InitializeComponent();
             Sampling_rate = _sampling_rate;
-            NumberOfSensors = _n_sensors;
+            ActiveSensors = _active_sensors;
+            NumberOfSensors = _active_sensors.Count;
             InitGraphPane();
             InitBar(NumberOfSensors, _current_Values);
-
         }
         public void ReceiveData(double[] _sensor_values) {
             SensorValues = _sensor_values;
@@ -34,6 +34,7 @@ namespace MCT {
         private bool barInitialized;
         private protected int sampling_rate;
         private protected int _number_of_sensors;
+        private List<int> _activeSensors;
         private protected GraphPane z;
         private protected List<BarItem> _bar;
         private protected double[] _sensorValues;
@@ -47,21 +48,23 @@ namespace MCT {
         private protected bool BarInitialized { get => barInitialized; set => barInitialized = value; }
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
         private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
+        private List<int> ActiveSensors { get => _activeSensors; set => _activeSensors = value; }
+
         private GroupBox gb_general = new GroupBox();
 
         private protected void initUI() {
             int column = 0;
             int row = 0;
             Gb_threshold = new List<GroupBox>();
-            for (int i = 0; i < _number_of_sensors; i++) {
+            for (int i = 0; i < NumberOfSensors; i++) {
 
                 Gb_threshold.Add(new GroupBox());
-                Gb_threshold[i].Text = "Sensor " + (i + 1);
+                Gb_threshold[i].Text = "Sensor " + ActiveSensors[i];
                 //create cb_sensor
                 CheckBox cb_threshold = new CheckBox();
                 cb_threshold.Location = new Point(4, 15);
                 cb_threshold.AutoSize = true;
-                cb_threshold.Name = "cb_sensor" + i;
+                cb_threshold.Name = "cb_sensor" + ActiveSensors[i];
                 cb_threshold.Text = "Threshold";
                 cb_threshold.Checked = false;
                 cb_threshold.Show();
@@ -121,7 +124,7 @@ namespace MCT {
                     );
                 column++;
                 if ((5 + (column * (Gb_threshold[i].Width + 30))) > gb_parent.Width) {
-                    if (column != _number_of_sensors) {
+                    if (column != NumberOfSensors) {
                         gb_parent.Height += Gb_threshold[i].Height;
                         Height += Gb_threshold[i].Height;
                     }
@@ -189,7 +192,7 @@ namespace MCT {
             for (int i = 0; i < _nSensors; i++) {
                 double[] x_value = new double[1] { i + 1 };
                 double[] y_value = new double[1] { _curValues[i] };
-                Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + (i + 1)), x_value, y_value, Colors[i]));
+                Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + ActiveSensors[i]), x_value, y_value, Colors[i]));
             }
             z.XAxis.Scale.Min = Bar[0].Points[0].X - 1;
             z.XAxis.Scale.Max = Bar[Bar.Count - 1].Points[0].X + 1;
