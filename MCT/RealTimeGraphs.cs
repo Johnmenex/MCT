@@ -15,14 +15,14 @@ namespace MCT {
             InitializeComponent();
         }
 
-
-        public RealTimeGraphs(int _n_sensors, double[] _current_Values, int _sampling_rate) {
-            if (_n_sensors == 0)
+        public RealTimeGraphs(List<int> _active_sensors, double[] _current_Values, int _sampling_rate) {
+            if (_active_sensors == null || _active_sensors.Count==0)
                 return;
 
             InitializeComponent();
             SamplingTime = _sampling_rate;
-            NumberOfSensors = _n_sensors;
+            ActiveSensors = _active_sensors;
+            NumberOfSensors = _active_sensors.Count;
             InitGraphPane();
             InitCurve(NumberOfSensors, _current_Values);
         }
@@ -35,11 +35,12 @@ namespace MCT {
         private protected GraphPane z;
         private protected List<CurveItem> _curve;
         private protected double[] _sensorValues;
+        private List<int> _activeSensors;
         private protected int _number_of_sensors;
         private protected int samplenumber = 1;
         private protected int samplingTime;
         private protected List<GroupBox> gb_threshold;
-
+        
         private protected bool graphPaneInitialized;
         private protected bool curveInitialized;
 
@@ -51,7 +52,8 @@ namespace MCT {
         private protected int SampleNumber { get => samplenumber; set => samplenumber = value; }
         private protected int SamplingTime { get => samplingTime; set => samplingTime = value; }
         private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
-        
+        private List<int> ActiveSensors { get => _activeSensors; set => _activeSensors = value; }
+
         private protected void InitGraphPane() {
             
             z = zedGraphControl1.GraphPane;
@@ -101,10 +103,10 @@ namespace MCT {
             int column = 0;
             int row = 0;
             Gb_threshold = new List<GroupBox>();
-            for (int i = 0; i < _number_of_sensors; i++) {
+            for (int i = 0; i < NumberOfSensors; i++) {
                 //create each groupbox
                 Gb_threshold.Add(new GroupBox());
-                Gb_threshold[i].Text = "Sensor " + (i + 1);
+                Gb_threshold[i].Text = "Sensor " + ActiveSensors[i];
                 //
                 //create cb_display
                 CheckBox cb_display = new CheckBox();
@@ -121,7 +123,7 @@ namespace MCT {
                 CheckBox cb_threshold = new CheckBox();
                 cb_threshold.Location = new Point(4, cb_display.Location.Y + cb_display.Height + 5);
                 cb_threshold.AutoSize = true;
-                cb_threshold.Name = "cb_sensor" + (i + 1);
+                cb_threshold.Name = "cb_sensor" + ActiveSensors[i];
                 cb_threshold.Text = "Threshold";
                 cb_threshold.Checked = false;
                 cb_threshold.Show();
@@ -182,7 +184,7 @@ namespace MCT {
                 }
                 column++;
                 if ((5 + (column * (Gb_threshold[i].Width + 30))) > gb_parent.Width) {
-                    if (column != _number_of_sensors) {
+                    if (column != NumberOfSensors) {
                         gb_parent.Height += Gb_threshold[i].Height + 10;
                         Height += Gb_threshold[i].Height + 5;
                     }
@@ -236,7 +238,7 @@ namespace MCT {
             for (int i = 0; i < NumberOfSensors; i++) {
                 double[] x_value = new double[1] { 1 };
                 double[] y_value = new double[1] { _curValues[i] };
-                Curve.Add(zedGraphControl1.GraphPane.AddCurve("Sensor" + (i + 1), x_value, y_value, Colors[i]));
+                Curve.Add(zedGraphControl1.GraphPane.AddCurve("Sensor" + ActiveSensors[i], x_value, y_value, Colors[i]));
             }
 
             CurveInitialized = true;

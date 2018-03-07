@@ -599,7 +599,7 @@ namespace MCT {
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
             _current_Values = ReceiveData("");
-            GraphsForm = new RealTimeGraphs(Total_sensors, _current_Values, SamplingTime);
+            GraphsForm = new RealTimeGraphs(GetActiveSensors(), _current_Values, SamplingTime);
             
 #elif !demo
             GraphsForm = new RealTimeGraphs(Total_sensors, SerialData, SamplingTime);
@@ -617,10 +617,6 @@ namespace MCT {
                 if (_cb.Checked)
                     _active_sensors.Add(Convert.ToInt32(_cb.Name.Split('_')[2]));
             }
-
-            foreach (int _i in _active_sensors)
-                MessageBox.Show(_i + "");
-
             return _active_sensors;
         }
     }
