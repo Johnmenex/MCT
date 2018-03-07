@@ -611,5 +611,17 @@ namespace MCT {
         private void btn_save_Click(object sender, EventArgs e) {
             savefile("txt");
         }
+        private List<int> GetActiveSensors() {
+            List<int> _active_sensors = new List<int>();
+            foreach (CheckBox _cb in cb_sensors) {
+                if (_cb.Checked)
+                    _active_sensors.Add(Convert.ToInt32(_cb.Name.Split('_')[2]));
+            }
+
+            foreach (int _i in _active_sensors)
+                MessageBox.Show(_i + "");
+
+            return _active_sensors;
+        }
     }
 }
