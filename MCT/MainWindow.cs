@@ -100,7 +100,7 @@ namespace MCT {
             int _number_of_sensors;
             
             if (!SensorsDetected)
-                _number_of_sensors = _rnd.Next(11,13);
+                _number_of_sensors = _rnd.Next(5,13);
             else
                 _number_of_sensors = Total_sensors;
             string serial_value = "";
@@ -341,7 +341,7 @@ namespace MCT {
         private protected void SaveData(double[] _serialData) {
             if (!File.Exists(_logs)) {
                 StreamWriter _writer = new StreamWriter(_logs);
-                string _header = "MCT|" + DateTime.Now.ToString("dd/MM/yyyy|HH:mm:ss");
+                string _header = "MCT|" + DateTime.Now.ToString("dd/MM/yyyy|HH:mm:ss") + "|" + SamplingTime;
                 foreach (CheckBox _cb in cb_sensors) {
                     if (_cb.Checked)
                         _header += "|" + _cb.Text;
@@ -573,7 +573,7 @@ namespace MCT {
             _current_Values = ReceiveData("");
             ValuesForm = new RealTimeValues(GetActiveSensors(), _current_Values, SamplingTime);
 #elif !demo
-            ValuesForm = new RealTimeValues(Total_sensors, serialData, SamplingTime);
+            ValuesForm = new RealTimeValues(GetActiveSensors(), serialData, SamplingTime);
 #endif
             ValuesForm.Show();
         }
@@ -609,7 +609,7 @@ namespace MCT {
             GraphsForm = new RealTimeGraphs(GetActiveSensors(), _current_Values, SamplingTime);
             
 #elif !demo
-            GraphsForm = new RealTimeGraphs(Total_sensors, SerialData, SamplingTime);
+            GraphsForm = new RealTimeGraphs(GetActiveSensors(), SerialData, SamplingTime);
             
 #endif
             GraphsForm.Show();
@@ -617,6 +617,11 @@ namespace MCT {
 
         private void btn_save_Click(object sender, EventArgs e) {
             savefile("txt");
+        }
+
+        private void compareRecordingsToolStripMenuItem_Click(object sender, EventArgs e) {
+            OpenLogs _o = new OpenLogs();
+            _o.ShowDialog();
         }
     }
 }

@@ -39,6 +39,7 @@ namespace MCT {
         private protected List<BarItem> _bar;
         private protected double[] _sensorValues;
         private List<GroupBox> gb_threshold;
+        private List<string> labelNames;
 
 
         private protected int NumberOfSensors { get => _number_of_sensors; set => _number_of_sensors = value; }
@@ -49,6 +50,7 @@ namespace MCT {
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
         private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
         private List<int> ActiveSensors { get => _activeSensors; set => _activeSensors = value; }
+        private List<string> LabelNames { get => labelNames; set => labelNames = value; }
 
         private GroupBox gb_general = new GroupBox();
 
@@ -189,10 +191,12 @@ namespace MCT {
                 Color.Olive
                 };
             Bar = new List<BarItem>();
+            LabelNames = new List<string>();
             for (int i = 0; i < _nSensors; i++) {
                 double[] x_value = new double[1] { i + 1 };
                 double[] y_value = new double[1] { _curValues[i] };
                 Bar.Add(zedGraphControl1.GraphPane.AddBar(("Sensor" + ActiveSensors[i]), x_value, y_value, Colors[i]));
+                LabelNames.Add(Bar[i].Label.Text);
             }
             z.XAxis.Scale.Min = Bar[0].Points[0].X - 1;
             z.XAxis.Scale.Max = Bar[Bar.Count - 1].Points[0].X + 1;
@@ -208,6 +212,7 @@ namespace MCT {
             foreach (BarItem _b in Bar) {
                 _b.Clear();
                 _b.AddPoint(_index + 1, _sensor_values[_index]);
+                _b.Label.Text = LabelNames[_index] + " - " + _sensorValues[_index];
                 _index++;
             }
 

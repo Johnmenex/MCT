@@ -199,6 +199,7 @@
             this.compareRecordingsToolStripMenuItem.Name = "compareRecordingsToolStripMenuItem";
             this.compareRecordingsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.compareRecordingsToolStripMenuItem.Text = "Compare Recordings";
+            this.compareRecordingsToolStripMenuItem.Click += new System.EventHandler(this.compareRecordingsToolStripMenuItem_Click);
             // 
             // excelCompatibilityToolStripMenuItem
             // 
@@ -233,13 +234,13 @@
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.manualToolStripMenuItem.Text = "Manual";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // applicationToolStripMenuItem

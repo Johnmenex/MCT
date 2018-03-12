@@ -34,6 +34,7 @@ namespace MCT {
         private CheckBox cb_Allow_Scroll;
         private protected GraphPane z;
         private protected List<CurveItem> _curve;
+        private protected List<string> labelNames;
         private protected double[] _sensorValues;
         private List<int> _activeSensors;
         private protected int _number_of_sensors;
@@ -53,6 +54,7 @@ namespace MCT {
         private protected int SamplingTime { get => samplingTime; set => samplingTime = value; }
         private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
         private List<int> ActiveSensors { get => _activeSensors; set => _activeSensors = value; }
+        private protected List<string> LabelNames { get => labelNames; set => labelNames = value; }
 
         private protected void InitGraphPane() {
             
@@ -235,11 +237,13 @@ namespace MCT {
                 Color.Olive
                 };
             _curve = new List<CurveItem>();
+            LabelNames = new List<string>();
             
             for (int i = 0; i < NumberOfSensors; i++) {
                 double[] x_value = new double[1] { 1 };
                 double[] y_value = new double[1] { _curValues[i] };
                 Curve.Add(zedGraphControl1.GraphPane.AddCurve("Sensor" + ActiveSensors[i], x_value, y_value, Colors[i]));
+                LabelNames.Add(Curve[i].Label.Text);
             }
 
             CurveInitialized = true;
@@ -250,6 +254,8 @@ namespace MCT {
             SampleNumber++;
             foreach (CurveItem _c in Curve) {
                 _c.AddPoint(SampleNumber, SensorValues[i]);
+                _c.Label.Text = LabelNames[i] + " - " + SensorValues[i];
+
                 i++;
             }
             AutoFollowGraphLine();
