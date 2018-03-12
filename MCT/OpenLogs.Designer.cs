@@ -45,6 +45,7 @@
             this.btn_clear_sessions.TabIndex = 1;
             this.btn_clear_sessions.Text = "Clear Sessions";
             this.btn_clear_sessions.UseVisualStyleBackColor = true;
+            this.btn_clear_sessions.Click += new System.EventHandler(this.btn_clear_sessions_Click);
             // 
             // OpenLogs
             // 

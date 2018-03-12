@@ -100,6 +100,18 @@ namespace MCT {
             //labels.Show();
             return labels;
         }
+        private void ClearSessions() {
+            for (int i = Controls.Count - 1; i >= 0; i--) 
+                if (Controls[i].GetType() == typeof(GroupBox)) 
+                    Controls.Remove(Controls[i]);
+
+            SensorsAdded = 0;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Invalidate();
+            AutoSize = false;
+            Width = btn_clear_sessions.Location.X + btn_clear_sessions.Width + 30;
+        }
 
         private void btn_add_session_Click(object sender, EventArgs e) {
             //reads file - gets header
@@ -138,7 +150,11 @@ namespace MCT {
             Controls.Add(gb_SessionParent);
             SensorsAdded++;
         }
-        
+
+        private void btn_clear_sessions_Click(object sender, EventArgs e) {
+            ClearSessions();
+        }
+
         /*
         private class FormControls {
 
