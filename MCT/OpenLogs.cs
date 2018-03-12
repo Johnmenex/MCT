@@ -44,7 +44,6 @@ namespace MCT {
             _reader.Close();
             return _value;
         }
-        private List<GroupBox> list_gb = new List<GroupBox>();
 
         private GroupBox SetupSessionInfoGroupBox(string _SessionDate, string _SessionTime, string _SessionSamplingTime, int _NumberOfSensors) {
             GroupBox labels = new GroupBox();
@@ -78,7 +77,7 @@ namespace MCT {
             Label lb_sampling_time = new Label();
             lb_sampling_time.AutoSize = true;
             lb_sampling_time.Name = "lb_sampling_time_session_" + (SensorsAdded + 1);
-            lb_sampling_time.Text = "Sampling time: " + _SessionSamplingTime;
+            lb_sampling_time.Text = "Sampling time: " + (Convert.ToDouble(_SessionSamplingTime) / 1000) + " s";
             lb_sampling_time.Location = new Point(lb_number_of_sensors.Location.X, lb_number_of_sensors.Location.Y + lb_number_of_sensors.Height - 7);
 
             Button btn_plot = new Button();
@@ -93,7 +92,7 @@ namespace MCT {
             labels.Controls.Add(lb_number_of_sensors);
             labels.Controls.Add(lb_sampling_time);
             labels.Controls.Add(btn_plot);
-            labels.Width = btn_plot.Location.X + btn_plot.Width + 5;
+            labels.Width = lb_sampling_time.Location.X + lb_sampling_time.Width + 5;
             labels.Height = lb_time_created.Location.Y + lb_time_created.Height+10;
 
             //labels.Location = new Point(3, ((button1.Location.Y + button1.Height + 5) + ((SensorsAdded) * (labels.Height + 10))));

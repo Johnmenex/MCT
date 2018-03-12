@@ -119,7 +119,7 @@
             this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Enabled = false;
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // DTRenableToolStripMenuItem
@@ -143,7 +143,7 @@
             this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Enabled = false;
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // RTSenableToolStripMenuItem
@@ -234,13 +234,13 @@
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.manualToolStripMenuItem.Text = "Manual";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // applicationToolStripMenuItem
