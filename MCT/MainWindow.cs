@@ -627,5 +627,85 @@ namespace MCT {
             OpenLogs _o = new OpenLogs();
             _o.ShowDialog();
         }
+
+        private string OpenLogfile() {
+            OpenFileDialog _ofd = new OpenFileDialog();
+            _ofd.Title = "Choose Log file for conversion...";
+            string _filename = "";
+            _ofd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (_ofd.ShowDialog() == DialogResult.OK)
+                _filename = _ofd.FileName;
+
+            return _filename;
+        }
+
+        private string SetSaveLocation() {
+            SaveFileDialog _sfd = new SaveFileDialog();
+            _sfd.Title = "Save CSV as...";
+            string _filename = "";
+            _sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (_sfd.ShowDialog() == DialogResult.OK)
+                _filename = _sfd.FileName;
+
+            return _filename;
+        }
+
+        private void LogParser() {
+            string _LogToParse = OpenLogfile();
+            string _CSVSavePath = SetSaveLocation();
+            if (_LogToParse == "" || _CSVSavePath=="")
+                return;
+
+            List<string> _LogToList = new List<string>();
+            
+            string _cur_line = "";
+            StreamReader _rdr = new StreamReader(_LogToParse);
+            do {
+                _cur_line = _rdr.ReadLine();
+                if (_cur_line != "")
+                    _LogToList.Add(_cur_line);
+            } while (!_rdr.EndOfStream);
+            _rdr.Close();
+
+            string _header = _LogToList[0];
+            _LogToList.RemoveAt(0);
+
+            string _csv_header = "Acquisition time";
+            for (int i = 4; i < _header.Split('|').Length; i++) {
+                _csv_header += ",Sensor#,Value";
+            }
+            
+            List<List<string>> _ParsedList = new List<List<string>>();
+            int _list_index = 0;
+            foreach(string _s in _LogToList) {
+                _ParsedList.Add(new List<string>());
+                string[] _s_split = _s.Split('|');
+                for (int i = 1; i < _s_split.Length; i++)
+                    if (!_s_split[i].Contains('-'))
+                        _ParsedList[_list_index].Add(_s_split[i].Split('=')[1]);
+                    else {
+                        string[] _s_2nd_split = _s_split[i].Split('-');
+                        foreach(string _ss in _s_2nd_split) {
+                            _ParsedList[_list_index].Add(_ss.Split('=')[1]);
+                        }
+                    }
+                _list_index++;
+            }
+            StreamWriter _wrt = new StreamWriter(_CSVSavePath);
+            _wrt.WriteLine(_csv_header);
+            foreach(List<string> _l in _ParsedList) {
+                string _tmp = "";
+                foreach (string _s in _l) {
+                    _tmp += _s + ",";
+                }
+                _tmp = _tmp.Remove(_tmp.Length - 1);
+                _wrt.WriteLine(_tmp);
+            }
+            _wrt.Close();
+        }
+
+        private void convertLogFileToTxtToolStripMenuItem_Click(object sender, EventArgs e) {
+            LogParser();
+        }
     }
 }

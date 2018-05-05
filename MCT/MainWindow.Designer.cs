@@ -215,6 +215,7 @@
             this.convertLogFileToTxtToolStripMenuItem.Name = "convertLogFileToTxtToolStripMenuItem";
             this.convertLogFileToTxtToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.convertLogFileToTxtToolStripMenuItem.Text = "Convert log file to csv";
+            this.convertLogFileToTxtToolStripMenuItem.Click += new System.EventHandler(this.convertLogFileToTxtToolStripMenuItem_Click);
             // 
             // convertLogFileToXlsxToolStripMenuItem
             // 
