@@ -236,13 +236,17 @@ namespace MCT {
             DTRenableToolStripMenuItem.Checked = _state;
             DTRdisableToolStripMenuItem.Checked = !_state;
             tb_DTR_state.BackColor = _state ? Color.Green : Color.Red;
+#if !demo
             SerialPort.DtrEnable = _state;
+#endif
         }
         private void SetRTS(bool _state) {
             RTSenableToolStripMenuItem.Checked = _state;
             RTSdisableToolStripMenuItem.Checked = !_state;
             tb_RTS_state.BackColor = _state ? Color.Green : Color.Red;
+#if !demo
             SerialPort.RtsEnable = _state;
+#endif
         }
         private void Start() {
             btn_start_stop.Text = "Stop";
