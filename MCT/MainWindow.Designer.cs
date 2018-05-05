@@ -38,8 +38,8 @@
             this.recordingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compareRecordingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.excelCompatibilityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertXmlFileToTxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertXmlFileToXlsxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertLogFileToTxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertLogFileToXlsxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,7 +119,7 @@
             this.DTRdisableToolStripMenuItem});
             this.dTRToolStripMenuItem.Enabled = false;
             this.dTRToolStripMenuItem.Name = "dTRToolStripMenuItem";
-            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.dTRToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.dTRToolStripMenuItem.Text = "DTR";
             // 
             // DTRenableToolStripMenuItem
@@ -143,7 +143,7 @@
             this.RTSdisableToolStripMenuItem});
             this.rTSToolStripMenuItem.Enabled = false;
             this.rTSToolStripMenuItem.Name = "rTSToolStripMenuItem";
-            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
+            this.rTSToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
             // RTSenableToolStripMenuItem
@@ -204,23 +204,23 @@
             // excelCompatibilityToolStripMenuItem
             // 
             this.excelCompatibilityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.convertXmlFileToTxtToolStripMenuItem,
-            this.convertXmlFileToXlsxToolStripMenuItem});
+            this.convertLogFileToTxtToolStripMenuItem,
+            this.convertLogFileToXlsxToolStripMenuItem});
             this.excelCompatibilityToolStripMenuItem.Name = "excelCompatibilityToolStripMenuItem";
             this.excelCompatibilityToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.excelCompatibilityToolStripMenuItem.Text = "Excel compatibility";
             // 
-            // convertXmlFileToTxtToolStripMenuItem
+            // convertLogFileToTxtToolStripMenuItem
             // 
-            this.convertXmlFileToTxtToolStripMenuItem.Name = "convertXmlFileToTxtToolStripMenuItem";
-            this.convertXmlFileToTxtToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.convertXmlFileToTxtToolStripMenuItem.Text = "Convert xml file to txt";
+            this.convertLogFileToTxtToolStripMenuItem.Name = "convertLogFileToTxtToolStripMenuItem";
+            this.convertLogFileToTxtToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.convertLogFileToTxtToolStripMenuItem.Text = "Convert log file to csv";
             // 
-            // convertXmlFileToXlsxToolStripMenuItem
+            // convertLogFileToXlsxToolStripMenuItem
             // 
-            this.convertXmlFileToXlsxToolStripMenuItem.Name = "convertXmlFileToXlsxToolStripMenuItem";
-            this.convertXmlFileToXlsxToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.convertXmlFileToXlsxToolStripMenuItem.Text = "Convert xml file to xlsx";
+            this.convertLogFileToXlsxToolStripMenuItem.Name = "convertLogFileToXlsxToolStripMenuItem";
+            this.convertLogFileToXlsxToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.convertLogFileToXlsxToolStripMenuItem.Text = "Convert log file to xlsx";
             // 
             // helpToolStripMenuItem
             // 
@@ -604,8 +604,8 @@
         private System.Windows.Forms.ToolStripMenuItem recordingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem compareRecordingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem excelCompatibilityToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem convertXmlFileToTxtToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem convertXmlFileToXlsxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertLogFileToTxtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertLogFileToXlsxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
