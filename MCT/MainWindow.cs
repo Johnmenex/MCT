@@ -650,7 +650,7 @@ namespace MCT {
             return _filename;
         }
 
-        private void LogParser() {
+        private void LogToCSV() {
             string _LogToParse = OpenLogfile();
             string _CSVSavePath = SetSaveLocation();
             if (_LogToParse == "" || _CSVSavePath=="")
@@ -705,7 +705,7 @@ namespace MCT {
         }
 
         private void convertLogFileToTxtToolStripMenuItem_Click(object sender, EventArgs e) {
-            LogParser();
+            LogToCSV();
         }
     }
 }
