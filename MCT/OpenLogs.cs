@@ -120,12 +120,14 @@ namespace MCT {
             //3) Label with sensors
             //4) Label with Sampling rate
             //5) Checkbox for each sensor
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowOnly;
+            
             string _Fileheader = GetFileHeader();
             if (_Fileheader == "")
                 return;
-            
+
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowOnly;
+
             string _SessionDate = _Fileheader.Split('|')[1];
             string _SessionTime = _Fileheader.Split('|')[2];
             string _SessionSamplingTime = _Fileheader.Split('|')[3];
