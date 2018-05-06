@@ -650,14 +650,9 @@ namespace MCT {
             return _filename;
         }
 
-        private void LogToCSV() {
-            string _LogToParse = OpenLogfile();
-            string _CSVSavePath = SetSaveLocation();
-            if (_LogToParse == "" || _CSVSavePath=="")
-                return;
-
+        private List<List<string>> LogParser(string _LogToParse) {
             List<string> _LogToList = new List<string>();
-            
+
             string _cur_line = "";
             StreamReader _rdr = new StreamReader(_LogToParse);
             do {
@@ -670,14 +665,9 @@ namespace MCT {
             string _header = _LogToList[0];
             _LogToList.RemoveAt(0);
 
-            string _csv_header = "Acquisition time";
-            for (int i = 4; i < _header.Split('|').Length; i++) {
-                _csv_header += ",Sensor#,Value";
-            }
-            
             List<List<string>> _ParsedList = new List<List<string>>();
             int _list_index = 0;
-            foreach(string _s in _LogToList) {
+            foreach (string _s in _LogToList) {
                 _ParsedList.Add(new List<string>());
                 string[] _s_split = _s.Split('|');
                 for (int i = 1; i < _s_split.Length; i++)
@@ -685,12 +675,38 @@ namespace MCT {
                         _ParsedList[_list_index].Add(_s_split[i].Split('=')[1]);
                     else {
                         string[] _s_2nd_split = _s_split[i].Split('-');
-                        foreach(string _ss in _s_2nd_split) {
+                        foreach (string _ss in _s_2nd_split) {
                             _ParsedList[_list_index].Add(_ss.Split('=')[1]);
                         }
                     }
                 _list_index++;
             }
+
+            List<string> _parsed_header = new List<string>();
+            _parsed_header.Add("Acquisition time");
+            for (int i = 4; i < _header.Split('|').Length; i++) {
+                _parsed_header.Add(",Sensor#,Value");
+            }
+            _ParsedList.Add(_parsed_header);
+
+            return _ParsedList;
+        }
+
+        private void LogToCSV() {
+            string _LogToParse = OpenLogfile();
+            if (_LogToParse == "")
+                return;
+            string _CSVSavePath = SetSaveLocation();
+            if (_CSVSavePath=="")
+                return;
+
+            List<List<string>> _ParsedList = LogParser(_LogToParse);
+            string _csv_header = "";
+            foreach(string _s in _ParsedList[_ParsedList.Count - 1]) {
+                _csv_header += _s;
+            }
+            _ParsedList.RemoveAt(_ParsedList.Count - 1);
+
             StreamWriter _wrt = new StreamWriter(_CSVSavePath);
             _wrt.WriteLine(_csv_header);
             foreach(List<string> _l in _ParsedList) {
