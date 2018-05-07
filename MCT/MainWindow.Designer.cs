@@ -222,6 +222,7 @@
             this.convertLogFileToXlsxToolStripMenuItem.Name = "convertLogFileToXlsxToolStripMenuItem";
             this.convertLogFileToXlsxToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.convertLogFileToXlsxToolStripMenuItem.Text = "Convert log file to xlsx";
+            this.convertLogFileToXlsxToolStripMenuItem.Click += new System.EventHandler(this.convertLogFileToXlsxToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 

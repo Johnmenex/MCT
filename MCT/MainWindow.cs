@@ -13,6 +13,9 @@ using System.IO.Ports;
 using System.Diagnostics;
 using System.IO;
 
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+
 
 namespace MCT {
     public partial class MainWindow : Form {
@@ -639,14 +642,18 @@ namespace MCT {
             return _filename;
         }
 
-        private string SetSaveLocation() {
+        private string SetSaveLocation(string _type) {
             SaveFileDialog _sfd = new SaveFileDialog();
-            _sfd.Title = "Save CSV as...";
+            _sfd.Title = "Save as...";
             string _filename = "";
-            _sfd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            _sfd.Filter = _type == "csv" ?
+                "Text files (*.txt)|*.txt|All files (*.*)|*.*" :
+                "Excel files (*.xls)|*.xls|Excel files(*.xlsx)|*.xlsx";
             if (_sfd.ShowDialog() == DialogResult.OK)
                 _filename = _sfd.FileName;
 
+            if (File.Exists(_filename))
+                File.Delete(_filename);
             return _filename;
         }
 
@@ -696,7 +703,7 @@ namespace MCT {
             string _LogToParse = OpenLogfile();
             if (_LogToParse == "")
                 return;
-            string _CSVSavePath = SetSaveLocation();
+            string _CSVSavePath = SetSaveLocation("csv");
             if (_CSVSavePath=="")
                 return;
 
@@ -723,5 +730,82 @@ namespace MCT {
         private void convertLogFileToTxtToolStripMenuItem_Click(object sender, EventArgs e) {
             LogToCSV();
         }
+        
+        private void convertLogFileToXlsxToolStripMenuItem_Click(object sender, EventArgs e) {
+            string _LogToParse = OpenLogfile();
+            if (_LogToParse == "")
+                return;
+
+            string _ExcelSavePath = SetSaveLocation("excel");
+            if (_ExcelSavePath == "")
+                return;
+
+            List<List<string>> _ParsedList = LogParser(_LogToParse);
+
+            try {
+                Excel.Application _excl = new Excel.Application();
+
+                Excel.Workbook _xlWorkBook;
+                Excel.Worksheet _xlWorkSheet;
+
+                _xlWorkBook = _excl.Workbooks.Add();
+                _xlWorkSheet = _excl.Worksheets.get_Item(1);
+
+                int _row, _col;
+                _row = _col = 1;
+
+
+                foreach(string _s in _ParsedList[_ParsedList.Count - 1]) {
+                    if (!_s.Contains(',')) {
+                        _xlWorkSheet.Cells[_row, _col] = _s;
+                        ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s.Length;
+                        ((Excel.Range)_xlWorkSheet.Cells[_row,_col]).Font.Bold = true;
+
+                    }
+                    else {
+                        foreach (string _s_split in _s.Split(',')) {
+                            if (_s_split != "") {
+                                _col++;
+                                _xlWorkSheet.Cells[_row, _col] = _s_split;
+                                _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                                _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                                ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s_split.Length+2;
+                                ((Excel.Range)_xlWorkSheet.Cells[_row, _col]).Font.Bold = true;
+                            }
+                        }
+                    }
+                }
+                _ParsedList.RemoveAt(_ParsedList.Count - 1);
+
+                foreach (List<string> _list in _ParsedList) {
+                    _row++;
+                    _col = 1;
+                    foreach(string _s in _list) {
+                        _xlWorkSheet.Cells[_row, _col] = _s;
+                        if (_row % 2 == 0)
+                            ((Excel.Range)(_xlWorkSheet.Cells[_row, _col])).Interior.Color = Color.LightGray;
+                        
+                        _col++;
+                    }
+                    Application.DoEvents();
+                }
+
+                _xlWorkBook.SaveAs(_ExcelSavePath);
+                ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
+
+            }
+            catch(Exception _z) {
+                MessageBox.Show(_z.ToString(), "Unexpected error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
+class ExcelProcessIdByHandle {
+    [DllImport("user32.dll")]
+    private static extern int GetWindowThreadProcessId(int hWnd, out int lpdwProcessId);
+
+    public static Process GetExcelProcess(Excel.Application excelApp) {
+        GetWindowThreadProcessId(excelApp.Hwnd, out int id);
+        return Process.GetProcessById(id);
     }
 }
