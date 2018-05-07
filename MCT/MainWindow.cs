@@ -772,6 +772,18 @@ namespace MCT {
                 }
                 _ParsedList.RemoveAt(_ParsedList.Count - 1);
 
+                //<progress form initialization>
+                Progress prog_form = new Progress();
+                Point loc = new Point();
+                loc.X = this.Size.Width + this.Location.X;
+                loc.Y = this.Location.Y;
+                prog_form.GetSet_location(loc);
+                prog_form.stop.Text = "Stop";
+                prog_form.progressBar1.Maximum = _ParsedList.Count;
+                prog_form.progressBar1.Step = 1;
+                prog_form.Show();
+                //</progress form initialization>
+                bool _stopped_by_user = false;
                 foreach (List<string> _list in _ParsedList) {
                     _row++;
                     _col = 1;
@@ -782,8 +794,35 @@ namespace MCT {
 
                         _col++;
                     }
+                    if (prog_form.stopped) {
+                        DialogResult _dg = MessageBox.Show(
+                            "Log File conversion has been stopped.\nDo you want to resume the process?", 
+                            "Conversion stopped...", 
+                            MessageBoxButtons.YesNo, 
+                            MessageBoxIcon.Information
+                            );
+                        if (_dg == DialogResult.No) {
+                            _stopped_by_user = true;
+                            prog_form.Dispose();
+                            ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
+                            break;
+                        }
+                        else
+                            prog_form.stopped = false;
+                    }
+                    prog_form.progressBar1.Value++;
+                    prog_form.current_samples_LB.Text = "Converting: " + prog_form.progressBar1.Value + " / " + _ParsedList.Count + " samples.";
+                    prog_form.conversion_progress_LB.Text = "Conversion in progress... " + (100 * prog_form.progressBar1.Value) / _ParsedList.Count + " %";
                     Application.DoEvents();
                 }
+                if (_stopped_by_user)
+                    return;
+                prog_form.progressBar1.Value = prog_form.progressBar1.Maximum;
+                prog_form.conversion_progress_LB.Text = "Conversion finished!";
+                prog_form.stop.Text = "Close";
+                prog_form.current_samples_LB.Text = "Converted: " + prog_form.progressBar1.Value + " / " + _ParsedList.Count + " samples.";
+
+
 
                 _xlWorkBook.SaveAs(_ExcelSavePath);
                 ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
