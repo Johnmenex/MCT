@@ -726,12 +726,7 @@ namespace MCT {
             }
             _wrt.Close();
         }
-
-        private void convertLogFileToTxtToolStripMenuItem_Click(object sender, EventArgs e) {
-            LogToCSV();
-        }
-        
-        private void convertLogFileToXlsxToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void LogToExcel() {
             string _LogToParse = OpenLogfile();
             if (_LogToParse == "")
                 return;
@@ -755,11 +750,11 @@ namespace MCT {
                 _row = _col = 1;
 
 
-                foreach(string _s in _ParsedList[_ParsedList.Count - 1]) {
+                foreach (string _s in _ParsedList[_ParsedList.Count - 1]) {
                     if (!_s.Contains(',')) {
                         _xlWorkSheet.Cells[_row, _col] = _s;
                         ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s.Length;
-                        ((Excel.Range)_xlWorkSheet.Cells[_row,_col]).Font.Bold = true;
+                        ((Excel.Range)_xlWorkSheet.Cells[_row, _col]).Font.Bold = true;
 
                     }
                     else {
@@ -769,7 +764,7 @@ namespace MCT {
                                 _xlWorkSheet.Cells[_row, _col] = _s_split;
                                 _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
                                 _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlVAlign.xlVAlignCenter;
-                                ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s_split.Length+2;
+                                ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s_split.Length + 2;
                                 ((Excel.Range)_xlWorkSheet.Cells[_row, _col]).Font.Bold = true;
                             }
                         }
@@ -780,11 +775,11 @@ namespace MCT {
                 foreach (List<string> _list in _ParsedList) {
                     _row++;
                     _col = 1;
-                    foreach(string _s in _list) {
+                    foreach (string _s in _list) {
                         _xlWorkSheet.Cells[_row, _col] = _s;
                         if (_row % 2 == 0)
                             ((Excel.Range)(_xlWorkSheet.Cells[_row, _col])).Interior.Color = Color.LightGray;
-                        
+
                         _col++;
                     }
                     Application.DoEvents();
@@ -794,9 +789,17 @@ namespace MCT {
                 ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
 
             }
-            catch(Exception _z) {
+            catch (Exception _z) {
                 MessageBox.Show(_z.ToString(), "Unexpected error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void convertLogFileToTxtToolStripMenuItem_Click(object sender, EventArgs e) {
+            LogToCSV();
+        }
+        
+        private void convertLogFileToXlsxToolStripMenuItem_Click(object sender, EventArgs e) {
+            LogToExcel();
         }
     }
 }
