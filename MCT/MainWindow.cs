@@ -294,6 +294,8 @@ namespace MCT {
             tb_DTR_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
             tb_RTS_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
             lb_sensors_number.Text = "Number of detected sensors: ";
+            lb_sensors_instructions.Visible = true;
+            gb_sensors.Controls.Add(lb_sensors_instructions);
 
             cb_scheduled_monitor.Enabled = true;
             gb_auto_mode.Enabled = cb_scheduled_monitor.Checked;
