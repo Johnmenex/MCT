@@ -685,6 +685,10 @@ namespace MCT {
             return _filename;
         }
 
+        private bool GetLogValidity(string _FileHeader) {
+            return _FileHeader != null ? (_FileHeader.Contains("MCT|") ? true : false) : false;
+        }
+
         private List<List<string>> LogParser(string _LogToParse) {
             List<string> _LogToList = new List<string>();
 
@@ -731,6 +735,18 @@ namespace MCT {
             string _LogToParse = OpenLogfile();
             if (_LogToParse == "")
                 return;
+            else{
+                StreamReader _r = new StreamReader(_LogToParse);
+                if (!GetLogValidity(_r.ReadLine())) {
+                    MessageBox.Show(
+                        "You have chosen an incompatible Log file.\n" +
+                        "Please try again.", "File error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    _r.Close();
+                    return;
+                }
+            }
             string _CSVSavePath = SetSaveLocation("csv");
             if (_CSVSavePath=="")
                 return;
@@ -758,6 +774,18 @@ namespace MCT {
             string _LogToParse = OpenLogfile();
             if (_LogToParse == "")
                 return;
+            else {
+                StreamReader _r = new StreamReader(_LogToParse);
+                if (!GetLogValidity(_r.ReadLine())) {
+                    MessageBox.Show(
+                        "You have chosen an incompatible Log file.\n" +
+                        "Please try again.", "File error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    _r.Close();
+                    return;
+                }
+            }
 
             string _ExcelSavePath = SetSaveLocation("excel");
             if (_ExcelSavePath == "")

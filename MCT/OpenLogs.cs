@@ -135,6 +135,10 @@ namespace MCT {
             AutoSize = false;
             Width = btn_clear_sessions.Location.X + btn_clear_sessions.Width + 30;
         }
+        
+        private bool GetLogValidity(string _FileHeader) {
+            return _FileHeader != null ? (_FileHeader.Contains("MCT|") ? true : false) : false;
+        }
 
         private void btn_add_session_Click(object sender, EventArgs e) {
             //reads file - gets header
@@ -148,6 +152,14 @@ namespace MCT {
             string _Fileheader = GetFileHeader();
             if (_Fileheader == "")
                 return;
+            else if(!GetLogValidity(_Fileheader)) {
+                MessageBox.Show(
+                    "You have chosen an incompatible Log file.\n" +
+                    "Please try again.", "File error", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error);
+                return;
+            }
 
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowOnly;
