@@ -331,6 +331,8 @@ namespace MCT {
             btn_detect_sensors.Enabled = true;
             gb_sensors.Controls.Clear();
             gb_sensors.Size = new Size(262, 127);
+            lb_sensors_instructions.Visible = true;
+            gb_sensors.Controls.Add(lb_sensors_instructions);
             gb_sampling_info.Size = new Size(200, 203);
             gb_auto_mode.Location = new Point(12, 252);
             Size = new Size(509, 399);
