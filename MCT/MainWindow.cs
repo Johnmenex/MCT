@@ -414,6 +414,11 @@ namespace MCT {
             }
             return _active_sensors;
         }
+        private void SetSensorsCheckboxStatus(bool _state)
+        {
+            foreach(CheckBox _cb in cb_sensors)
+                _cb.Enabled = _state;
+        }
         public void savefile(string type) {
             if (type == "txt") {
                 saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -554,12 +559,15 @@ namespace MCT {
                 }
                 else
                     Start();
+
+                SetSensorsCheckboxStatus(false);
             }
             else {
                 if (_DateCheck.Enabled)
                     _DateCheck.Stop();
                 ScheduledMonitorSet = false;
                 Stop();
+                SetSensorsCheckboxStatus(true);
             }
             
         }
