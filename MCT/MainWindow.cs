@@ -310,6 +310,9 @@ namespace MCT {
             realtimeValuesToolStripMenuItem.Enabled = false;
         }
         private void Reset() {
+            if (File.Exists(_logs))
+                File.Delete(_logs);
+
             gb_sampling_info.Enabled = true;
             lb_USB_port.Text = "Selected USB port:";
             lb_sampling_rate.Text = "Sampling rate:";
@@ -428,6 +431,7 @@ namespace MCT {
                         File.Delete(saveFileDialog1.FileName);
                     }
                     File.Copy(_logs, saveFileDialog1.FileName);
+                    File.Delete(_logs);
                 }
             }
             /*
