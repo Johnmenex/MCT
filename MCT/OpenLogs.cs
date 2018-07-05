@@ -135,7 +135,7 @@ namespace MCT {
 
         public void btn_choseSensorsToPlot_Click(object sender, EventArgs e,List<string> _SessionSensors, int _SensorsNumber,int _SessionNumber)
         {
-            SensorsToPlot _SensorsSelectionForm = new SensorsToPlot(_SessionSensors, _SensorsNumber, SessionsAdded);
+            SensorsToPlot _SensorsSelectionForm = new SensorsToPlot(_SessionSensors, _SensorsNumber, _SessionNumber);
             if(_SensorsSelectionForm.ShowDialog() == DialogResult.OK)
             {
                 SessionSensors[_SessionNumber - 1] = new List<string>();
