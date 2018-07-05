@@ -42,8 +42,8 @@ namespace MCT {
         }
 
         //FormControls FormControls_;
-        private int _sensorsAdded = 0;
-        private int SensorsAdded { get => _sensorsAdded; set => _sensorsAdded = value; }
+        private int _sessionsAdded = 0;
+        private int SessionsAdded { get => _sessionsAdded; set => _sessionsAdded = value; }
 
         private void InitUI() {
             //AutoSize = true;
@@ -72,7 +72,7 @@ namespace MCT {
         private GroupBox SetupSessionInfoGroupBox(string _SessionDate, string _SessionTime, string _SessionSamplingTime, int _NumberOfSensors) {
             GroupBox labels = new GroupBox();
             //labels.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            labels.Name = "ParentGB_" + SensorsAdded;
+            labels.Name = "ParentGB_" + SessionsAdded;
             labels.Text = "Session information";
             labels.BringToFront();
             //labels.AutoSize = true;
@@ -81,41 +81,41 @@ namespace MCT {
             Label lb_date_created = new Label();
             lb_date_created.AutoSize = true;
             lb_date_created.Width -= 15;
-            lb_date_created.Name = "lb_date_" + (SensorsAdded + 1);
+            lb_date_created.Name = "lb_date_" + (SessionsAdded + 1);
             lb_date_created.Text = "Creation Date\n " + _SessionDate;
             lb_date_created.Location = new Point(3, 20);
 
             Label lb_time_created = new Label();
             lb_time_created.AutoSize = true;
             lb_time_created.Width -= 15;
-            lb_time_created.Name = "lb_time_" + (SensorsAdded + 1);
+            lb_time_created.Name = "lb_time_" + (SessionsAdded + 1);
             lb_time_created.Text = "Creation Time\n    " + _SessionTime;
             lb_time_created.Location = new Point(lb_date_created.Location.X, lb_date_created.Location.Y + lb_date_created.Height+5);
 
             Label lb_number_of_sensors = new Label();
             lb_number_of_sensors.AutoSize = true;
-            lb_number_of_sensors.Name = "lb_sensors_number_session_" + (SensorsAdded + 1);
+            lb_number_of_sensors.Name = "lb_sensors_number_session_" + (SessionsAdded + 1);
             lb_number_of_sensors.Text = "Sensors number: " + _NumberOfSensors;
             lb_number_of_sensors.Location = new Point(lb_time_created.Location.X + lb_time_created.Width, lb_date_created.Location.Y);
 
             Label lb_sampling_time = new Label();
             lb_sampling_time.AutoSize = true;
-            lb_sampling_time.Name = "lb_sampling_time_session_" + (SensorsAdded + 1);
+            lb_sampling_time.Name = "lb_sampling_time_session_" + (SessionsAdded + 1);
             lb_sampling_time.Text = "Sampling time: " + (Convert.ToDouble(_SessionSamplingTime) / 1000) + " s";
             lb_sampling_time.Location = new Point(lb_number_of_sensors.Location.X, lb_number_of_sensors.Location.Y + lb_number_of_sensors.Height - 7);
 
-            Button btn_plot = new Button();
-            btn_plot.AutoSize = true;
-            btn_plot.Name = "btn_plot_" + (_NumberOfSensors + 1);
-            btn_plot.Text = "Display sensors";
-            btn_plot.Location = new Point(lb_number_of_sensors.Location.X+3, lb_sampling_time.Location.Y + lb_sampling_time.Height - 7);
-
+            Button btn_choseSensorsToPlot = new Button();
+            btn_choseSensorsToPlot.AutoSize = true;
+            btn_choseSensorsToPlot.Name = "btn_plot_" + (_NumberOfSensors + 1);
+            btn_choseSensorsToPlot.Text = "Choose sensors";
+            btn_choseSensorsToPlot.Location = new Point(lb_number_of_sensors.Location.X+3, lb_sampling_time.Location.Y + lb_sampling_time.Height - 7);
+            btn_choseSensorsToPlot.Click += (sender, EventArgs) => { btn_choseSensorsToPlot_Click(sender, EventArgs, _NumberOfSensors, (Convert.ToInt32(labels.Name.Split('_')[1]) + 1)); };
 
             labels.Controls.Add(lb_date_created);
             labels.Controls.Add(lb_time_created);
             labels.Controls.Add(lb_number_of_sensors);
             labels.Controls.Add(lb_sampling_time);
-            labels.Controls.Add(btn_plot);
+            labels.Controls.Add(btn_choseSensorsToPlot);
             labels.Width = lb_sampling_time.Location.X + lb_sampling_time.Width + 5;
             labels.Height = lb_time_created.Location.Y + lb_time_created.Height+10;
 
@@ -123,12 +123,29 @@ namespace MCT {
             //labels.Show();
             return labels;
         }
+
+        public void btn_choseSensorsToPlot_Click(object sender, EventArgs e, int _SensorsNumber,int _SessionNumber)
+        {
+            SensorsToPlot _SensorsSelectionForm = new SensorsToPlot(_SensorsNumber, SessionsAdded);
+            if(_SensorsSelectionForm.ShowDialog() == DialogResult.OK)
+            {
+                string _s = "";
+                int _index = 0;
+                foreach(CheckBox _cb in _SensorsSelectionForm.SensorsToshow)
+                {
+                    _s += _cb.Checked ? "Sensor " + (_index + 1) + " " + _cb.Checked + "\n" : "";
+                    _index++;
+                }
+                MessageBox.Show(_s);
+            }
+        }
+
         private void ClearSessions() {
             for (int i = Controls.Count - 1; i >= 0; i--) 
                 if (Controls[i].GetType() == typeof(GroupBox)) 
                     Controls.Remove(Controls[i]);
 
-            SensorsAdded = 0;
+            SessionsAdded = 0;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             Invalidate();
@@ -172,20 +189,20 @@ namespace MCT {
             GroupBox SessionInformation = SetupSessionInfoGroupBox(_SessionDate, _SessionTime, _SessionSamplingTime, _NumberOfSensors);
 
             GroupBox gb_SessionParent = new GroupBox();
-            gb_SessionParent.Name = "gb_parrent_session_" + (SensorsAdded + 1);
-            gb_SessionParent.Text = "File " + (SensorsAdded + 1) + " options";
+            gb_SessionParent.Name = "gb_parrent_session_" + (SessionsAdded + 1);
+            gb_SessionParent.Text = "File " + (SessionsAdded + 1) + " options";
             gb_SessionParent.BringToFront();
 
             gb_SessionParent.Controls.Add(SessionInformation);
             SessionInformation.Location = new Point(5, 15);
             gb_SessionParent.Width = SessionInformation.Width + 10;
             gb_SessionParent.Height = SessionInformation.Height + 20;
-            gb_SessionParent.Location = new Point(7, ((btn_add_session.Location.Y + btn_add_session.Height + 5) + ((SensorsAdded) * (gb_SessionParent.Height+5))));
+            gb_SessionParent.Location = new Point(7, ((btn_add_session.Location.Y + btn_add_session.Height + 5) + ((SessionsAdded) * (gb_SessionParent.Height+5))));
             
 
             
             Controls.Add(gb_SessionParent);
-            SensorsAdded++;
+            SessionsAdded++;
         }
 
         private void btn_clear_sessions_Click(object sender, EventArgs e) {

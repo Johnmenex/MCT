@@ -83,6 +83,12 @@
     <Compile Include="RealTimeValues.Designer.cs">
       <DependentUpon>RealTimeValues.cs</DependentUpon>
     </Compile>
+    <Compile Include="SensorsToPlot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SensorsToPlot.Designer.cs">
+      <DependentUpon>SensorsToPlot.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -106,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RealTimeValues.resx">
       <DependentUpon>RealTimeValues.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SensorsToPlot.resx">
+      <DependentUpon>SensorsToPlot.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
