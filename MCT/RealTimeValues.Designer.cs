@@ -68,6 +68,8 @@
             this.ClientSize = new System.Drawing.Size(838, 596);
             this.Controls.Add(this.gb_parent);
             this.Controls.Add(this.zedGraphControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MinimizeBox = false;
             this.Name = "RealTimeValues";
             this.Text = "RealTimeValues";
             this.Load += new System.EventHandler(this.RealTimeValues_Load);

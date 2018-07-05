@@ -54,7 +54,8 @@
             this.ClientSize = new System.Drawing.Size(212, 64);
             this.Controls.Add(this.btn_clear_sessions);
             this.Controls.Add(this.btn_add_session);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
             this.Name = "OpenLogs";
             this.Text = "OpenLogs";
             this.ResumeLayout(false);

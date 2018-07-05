@@ -570,7 +570,9 @@
             this.Controls.Add(this.gb_sampling_info);
             this.Controls.Add(this.gb_sensors);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "MainWindow";
             this.Text = "Control Panel";
             this.Load += new System.EventHandler(this.MainWindow_Load);
