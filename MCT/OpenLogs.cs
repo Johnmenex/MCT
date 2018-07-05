@@ -61,18 +61,22 @@ namespace MCT {
 
             return _filename;
         }
-        private string GetFileHeader() {
+        private string[] GetFileHeader() {
             string _path = Openfile();
+            string[] _info = new string[2];
             if (_path == "")
-                return "";
+                return _info;
             StreamReader _reader = new StreamReader(_path);
             
             string _value = _reader.ReadLine();
             _reader.Close();
-            return _value;
+
+            _info[0] = _path;
+            _info[1] = _value;
+            return _info;
         }
 
-        private GroupBox SetupSessionInfoGroupBox(string _SessionDate, string _SessionTime, string _SessionSamplingTime, int _NumberOfSensors) {
+        private GroupBox SetupSessionInfoGroupBox(string _FilePath, string _SessionDate, string _SessionTime, string _SessionSamplingTime, int _NumberOfSensors) {
             GroupBox labels = new GroupBox();
             //labels.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             labels.Name = "ParentGB_" + SessionsAdded;
@@ -80,6 +84,11 @@ namespace MCT {
             labels.BringToFront();
             //labels.AutoSize = true;
             Controls.Add(labels);
+
+            Label Filename = new Label();
+            Filename.Name = "FileName_" + SessionsAdded;
+            Filename.Text = _FilePath;
+            Filename.Visible = false;
 
             Label lb_date_created = new Label();
             lb_date_created.AutoSize = true;
@@ -120,6 +129,7 @@ namespace MCT {
                     (Convert.ToInt32(labels.Name.Split('_')[1]) + 1));
             };
 
+            labels.Controls.Add(Filename);
             labels.Controls.Add(lb_date_created);
             labels.Controls.Add(lb_time_created);
             labels.Controls.Add(lb_number_of_sensors);
@@ -153,6 +163,7 @@ namespace MCT {
                 if (Controls[i].GetType() == typeof(GroupBox)) 
                     Controls.Remove(Controls[i]);
 
+            _sessionSensors = new List<List<string>>();
             SessionsAdded = 0;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -173,9 +184,10 @@ namespace MCT {
             //3) Label with sensors
             //4) Label with Sampling rate
             //5) Checkbox for each sensor
-            
-            string _Fileheader = GetFileHeader();
-            if (_Fileheader == "")
+            string[] _FileInfo = GetFileHeader();
+            string _FilePath = _FileInfo[0];
+            string _Fileheader = _FileInfo[1];
+            if (_Fileheader == "" || _Fileheader==null)
                 return;
             else if(!GetLogValidity(_Fileheader)) {
                 MessageBox.Show(
@@ -194,7 +206,7 @@ namespace MCT {
             string _SessionSamplingTime = _Fileheader.Split('|')[3];
             int _NumberOfSensors = _Fileheader.Split('|').Length - 4;
 
-            GroupBox SessionInformation = SetupSessionInfoGroupBox(_SessionDate, _SessionTime, _SessionSamplingTime, _NumberOfSensors);
+            GroupBox SessionInformation = SetupSessionInfoGroupBox(_FilePath, _SessionDate, _SessionTime, _SessionSamplingTime, _NumberOfSensors);
 
             GroupBox gb_SessionParent = new GroupBox();
             gb_SessionParent.Name = "gb_parrent_session_" + (SessionsAdded + 1);
@@ -209,18 +221,29 @@ namespace MCT {
             
             Controls.Add(gb_SessionParent);
 
-            Button btn_PlotSessions = new Button
-            {
+            Button btn_PlotSessions = new Button {
                 Name = "btn_PlotSessions",
                 Text = "Plot Sessions",
-                Location = new Point(gb_SessionParent.Location.X,gb_SessionParent.Location.Y+gb_SessionParent.Height+10)
+                Location = new Point(gb_SessionParent.Location.X, gb_SessionParent.Location.Y + gb_SessionParent.Height + 10)
             };
+            btn_PlotSessions.Click += (object sender1, EventArgs e1) => { Btn_PlotSessions_Click(sender1, e1); };
 
             if (Controls.ContainsKey("btn_PlotSessions"))
                 Controls.Remove(Controls.Find("btn_PlotSessions", false)[0]);
             Controls.Add(btn_PlotSessions);
-            SessionSensors.Add(new List<string>());
+            SessionSensors.Add(new List<string>()); //contains the sensors of every session that will be displayed
             SessionsAdded++;
+        }
+
+        private void Btn_PlotSessions_Click(object sender, EventArgs e)
+        {
+            List<string> _SessionLogs = new List<string>();
+            for(int i=0;i<SessionsAdded;i++) {
+                 _SessionLogs.Add(Controls.Find("FileName_" + i, true)[0].Text);
+            }
+            OverviewPlots overviewPlots = new OverviewPlots(_SessionLogs);
+            overviewPlots.Show();
+
         }
 
         private void btn_clear_sessions_Click(object sender, EventArgs e) {
