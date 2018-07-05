@@ -45,6 +45,9 @@ namespace MCT {
         private int _sessionsAdded = 0;
         private int SessionsAdded { get => _sessionsAdded; set => _sessionsAdded = value; }
 
+        private List<List<string>> _sessionSensors = new List<List<string>>();
+        private List<List<string>> SessionSensors { get => _sessionSensors; set => _sessionSensors = value; }
+
         private void InitUI() {
             //AutoSize = true;
             //AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -109,7 +112,13 @@ namespace MCT {
             btn_choseSensorsToPlot.Name = "btn_plot_" + (_NumberOfSensors + 1);
             btn_choseSensorsToPlot.Text = "Choose sensors";
             btn_choseSensorsToPlot.Location = new Point(lb_number_of_sensors.Location.X+3, lb_sampling_time.Location.Y + lb_sampling_time.Height - 7);
-            btn_choseSensorsToPlot.Click += (sender, EventArgs) => { btn_choseSensorsToPlot_Click(sender, EventArgs, _NumberOfSensors, (Convert.ToInt32(labels.Name.Split('_')[1]) + 1)); };
+            btn_choseSensorsToPlot.Click += (sender, EventArgs) => 
+            {
+                btn_choseSensorsToPlot_Click(sender, EventArgs, 
+                    SessionSensors[Convert.ToInt32(labels.Name.Split('_')[1])], 
+                    _NumberOfSensors, 
+                    (Convert.ToInt32(labels.Name.Split('_')[1]) + 1));
+            };
 
             labels.Controls.Add(lb_date_created);
             labels.Controls.Add(lb_time_created);
@@ -124,19 +133,18 @@ namespace MCT {
             return labels;
         }
 
-        public void btn_choseSensorsToPlot_Click(object sender, EventArgs e, int _SensorsNumber,int _SessionNumber)
+        public void btn_choseSensorsToPlot_Click(object sender, EventArgs e,List<string> _SessionSensors, int _SensorsNumber,int _SessionNumber)
         {
-            SensorsToPlot _SensorsSelectionForm = new SensorsToPlot(_SensorsNumber, SessionsAdded);
+            SensorsToPlot _SensorsSelectionForm = new SensorsToPlot(_SessionSensors, _SensorsNumber, SessionsAdded);
             if(_SensorsSelectionForm.ShowDialog() == DialogResult.OK)
             {
-                string _s = "";
-                int _index = 0;
-                foreach(CheckBox _cb in _SensorsSelectionForm.SensorsToshow)
+                SessionSensors[_SessionNumber - 1] = new List<string>();
+                foreach (CheckBox _cb in _SensorsSelectionForm.SensorsToshow)
                 {
-                    _s += _cb.Checked ? "Sensor " + (_index + 1) + " " + _cb.Checked + "\n" : "";
-                    _index++;
+                    //save the checked sensors in order to remember 
+                    //which ones user selected when that session is reopened
+                    SessionSensors[_SessionNumber-1].Add(_cb.Checked+""); 
                 }
-                MessageBox.Show(_s);
             }
         }
 
@@ -202,6 +210,7 @@ namespace MCT {
 
             
             Controls.Add(gb_SessionParent);
+            SessionSensors.Add(new List<string>());
             SessionsAdded++;
         }
 

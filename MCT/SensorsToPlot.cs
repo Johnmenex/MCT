@@ -12,20 +12,29 @@ namespace MCT
 {
     public partial class SensorsToPlot : Form
     {
-        public SensorsToPlot(int _NumberOfSessionSensors, int _SessionID)
+        public SensorsToPlot(List<string> _SessionSensors, int _NumberOfSessionSensors, int _SessionID)
         {
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowOnly;
 
             InitializeComponent();
-            SetInterface(_NumberOfSessionSensors, _SessionID);
+            SetInterface(_SessionSensors, _NumberOfSessionSensors, _SessionID);
         }
         private List<CheckBox> _sensorsToshow = new List<CheckBox>();
         public List<CheckBox> SensorsToshow { get => _sensorsToshow; }
+
+
         Button btn_setSensors;
 
-        private void SetInterface(int _NumberOfSessionSensors, int _SessionID)
+        private void SetInterface(List<string> _SessionSensors, int _NumberOfSessionSensors, int _SessionID)
         {
+            //MessageBox.Show(_SessionSensors.Count+"");
+            string __s = "";
+                foreach(string _s in _SessionSensors)
+                {
+                    __s += _s + "\n";
+                }
+                //MessageBox.Show(__s);
             
             Text = "Session" + _SessionID + " - Sensors ";
             FormBorderStyle = FormBorderStyle.Fixed3D;
@@ -54,6 +63,9 @@ namespace MCT
                     10 + (column * ((_tmpCB.Width) - 20)),
                     5 + (row * 25)
                     ),
+                    Checked = _SessionSensors.Count > 0 ?
+                        _SessionSensors[i].Contains("True") ? true : false
+                        : true
 
                 });
 
