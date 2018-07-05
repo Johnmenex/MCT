@@ -207,9 +207,18 @@ namespace MCT {
             gb_SessionParent.Height = SessionInformation.Height + 20;
             gb_SessionParent.Location = new Point(7, ((btn_add_session.Location.Y + btn_add_session.Height + 5) + ((SessionsAdded) * (gb_SessionParent.Height+5))));
             
-
-            
             Controls.Add(gb_SessionParent);
+
+            Button btn_PlotSessions = new Button
+            {
+                Name = "btn_PlotSessions",
+                Text = "Plot Sessions",
+                Location = new Point(gb_SessionParent.Location.X,gb_SessionParent.Location.Y+gb_SessionParent.Height+10)
+            };
+
+            if (Controls.ContainsKey("btn_PlotSessions"))
+                Controls.Remove(Controls.Find("btn_PlotSessions", false)[0]);
+            Controls.Add(btn_PlotSessions);
             SessionSensors.Add(new List<string>());
             SessionsAdded++;
         }
