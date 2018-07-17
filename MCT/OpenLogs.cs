@@ -241,7 +241,7 @@ namespace MCT {
             for(int i=0;i<SessionsAdded;i++) {
                  _SessionLogs.Add(Controls.Find("FileName_" + i, true)[0].Text);
             }
-            OverviewPlots overviewPlots = new OverviewPlots(_SessionLogs);
+            OverviewPlots overviewPlots = new OverviewPlots(_SessionLogs,SessionSensors);
             overviewPlots.Show();
 
         }
