@@ -239,7 +239,7 @@ namespace MCT {
         {
             List<string> _SessionLogs = new List<string>();
             for(int i=0;i<SessionsAdded;i++) {
-                 _SessionLogs.Add(Controls.Find("FileName_" + i, true)[0].Text);
+                 _SessionLogs.Add(Controls.Find("FileName_" + i, true)[0].Text); //add all sessions log filenames to a list, and send that to the OverViewPlots constructor
             }
             OverviewPlots overviewPlots = new OverviewPlots(_SessionLogs,SessionSensors);
             overviewPlots.Show();
@@ -249,50 +249,7 @@ namespace MCT {
         private void btn_clear_sessions_Click(object sender, EventArgs e) {
             ClearSessions();
         }
-
-        /*
-        private class FormControls {
-
-            public Button SpawnButton(Point location, string text, string name) {
-                return new Button {
-                    AutoSize = true,
-                    Text = text,
-                    Name = name,
-                    Location = location,
-                    Visible = true
-                };
-            }
-            public GroupBox SpawnGroupBox(Point location, string text, string name) {
-
-                return new GroupBox {
-                    AutoSize = true,
-                    Text = text,
-                    Name = name,
-                    Location = location,
-                    Visible = true
-                };
-            }
-            public CheckBox SpawnCheckBox(Point location, string text, string name, CheckState checkState) {
-                return new CheckBox {
-                    AutoSize = true,
-                    Text = text,
-                    Name = name,
-                    Location = location,
-                    Visible = true,
-                    CheckState = checkState
-                };
-            }
-            public Label SpawnLabel(Point location, string text, string name) {
-                return new Label {
-                    AutoSize = true,
-                    Text = text,
-                    Name = name,
-                    Location = location,
-                    Visible = true
-                };
-            }
-        }
-        */
+        
     }
     
 }
