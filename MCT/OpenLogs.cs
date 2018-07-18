@@ -232,6 +232,9 @@ namespace MCT {
                 Controls.Remove(Controls.Find("btn_PlotSessions", false)[0]);
             Controls.Add(btn_PlotSessions);
             SessionSensors.Add(new List<string>()); //contains the sensors of every session that will be displayed
+            for(int i = 0; i < _NumberOfSensors; i++) {
+                SessionSensors[SessionSensors.Count - 1].Add("True"); //initialize each list's elements with "True" in case user plots all session's sensors
+            }
             SessionsAdded++;
         }
 
