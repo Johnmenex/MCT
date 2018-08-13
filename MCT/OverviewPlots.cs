@@ -99,6 +99,7 @@ namespace MCT {
             int _number_of_sensors = 0;
 
             List<List<int>> _init_values = new List<List<int>>();
+            List<List<int>> _init_labels = new List<List<int>>();
             
             foreach (List<List<string>> _session in _Values) {
 
@@ -111,9 +112,10 @@ namespace MCT {
                 _colors.Add(new List<string>());
 
                 _init_values.Add(new List<int>());
+                _init_labels.Add(new List<int>());
                 for (int i = 1; i < _tmp.Length; i++) {
                     _init_values[_init_values.Count - 1].Add(Convert.ToInt32(_tmp[i].Split('-')[1]));
-
+                    _init_labels[_init_labels.Count - 1].Add(Convert.ToInt32(_tmp[i].Split('-')[0]));
                     int _r, _g, _b;
                     _r = _g = _b = 0;
                     do {
@@ -136,7 +138,7 @@ namespace MCT {
                 int _cc = 0;
                 foreach (int _sensor_value in _session) {
                     Curve.Add(z_Graph.GraphPane.AddCurve(
-                        "Session: " + (_session_index + 1) + "-Sensor: " + (_cc + 1),
+                        "Session: " + (_session_index + 1) + "-Sensor: " + (_init_labels[_session_index][_cc]),
                         new double[1] { 1 },
                         new double[1] { _sensor_value },
                         Color.FromArgb(
