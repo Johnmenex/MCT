@@ -18,7 +18,6 @@ namespace MCT {
             
             SetInterface();
             
-
             
             List<List<string>> _RawData = ParseFiles(LogFilePaths);
             List<List<List<string>>> _Values = SeperateValues(_RawData, _ActiveSensors);  
@@ -31,15 +30,27 @@ namespace MCT {
         private bool curveInitialized;
         private List<CurveItem> curve;
 
+        private ListBox _listbox;
+
         private protected bool CurveInitialized { get => curveInitialized; set => curveInitialized = value; }
         private protected List<CurveItem> Curve { get => curve; set => curve = value; }
+        
 
         private void SetInterface() {
+            
+            MaximizeBox = false;
             Location = new Point(0, 0);
-            Height = (Screen.PrimaryScreen.WorkingArea.Height * 5) / 7;
-            Width = (Screen.PrimaryScreen.WorkingArea.Width * 5) / 7;
+            Bounds = Screen.PrimaryScreen.Bounds;
+            z_Graph.Height = Height - 50;
+            z_Graph.Width = Width - 200;
 
-
+            _listbox = new ListBox
+            {
+                Location = new Point(z_Graph.Location.X + z_Graph.Width + 10, z_Graph.Location.Y),
+                Height = z_Graph.Height,
+            };
+            Controls.Add(_listbox);
+            
             InitGraphPane();
         }
         //Parse to be done here
@@ -84,6 +95,9 @@ namespace MCT {
             z.XAxis.Title.Text = "Samples";
             z.YAxis.Title.Text = "Temperature";
             z.Title.Text = "Realtime monitoring";
+
+            z.Legend.Position = LegendPos.BottomFlushLeft;
+            z.Legend.FontSpec.Size = 6;
 
             z.AxisChange();
             z_Graph.IsAntiAlias = true;
@@ -133,7 +147,9 @@ namespace MCT {
             /*LabelNames = new List<string>();
             */
             int _session_index = 0;
+
             foreach(List<int> _session in _init_values) {
+
 
                 int _cc = 0;
                 foreach (int _sensor_value in _session) {
@@ -196,6 +212,8 @@ namespace MCT {
         }
         private void Plot(List<List<List<string>>> _values) {
 
+            int maxSamples = 0;
+
             int _session_index = 0;
             foreach(List<List<string>> _session in _values) {
                 double _samples_index = 1;
@@ -209,6 +227,10 @@ namespace MCT {
                             }
                     }
                     _samples_index++;
+
+                    //will be used to set the width of the Listbox
+                    maxSamples = maxSamples < _samples_index ? (int)_samples_index : maxSamples; 
+                    
                 }
                 _session_index++;
                 z.AxisChange();
