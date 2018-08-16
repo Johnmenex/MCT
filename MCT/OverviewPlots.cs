@@ -222,26 +222,51 @@ namespace MCT {
 
             int _session_index = 0;
             foreach(List<List<string>> _session in _values) {
+                if (_session_index != 0) _listbox.Items.Add("");
+                _listbox.Items.Add("================================");
+                _listbox.Items.Add("============Session " + (_session_index + 1) + "============");
+                _listbox.Items.Add("================================");
+                _listbox.Items.Add("");
                 double _samples_index = 1;
                 foreach (List<string> _sample in _session) {
+                    _listbox.Items.Add("============Sample " + _samples_index+"============");
                     int _sensor_index = 0;
-                    foreach(string _sensor_value in _sample) {
+                    string _sample_time = "";
+                    foreach (string _sensor_value in _sample) {
+                        
                         if (_samples_index != 0)
-                            if (!_sensor_value.Contains(':')) {
+                            if (!_sensor_value.Contains(':'))
+                            {
                                 Curve[_sensor_index].AddPoint(_samples_index, Convert.ToDouble(_sensor_value.Split('-')[1]));
+                                string _list_item = Convert.ToDouble(_sensor_value.Split('-')[0]) > 9? 
+                                        "Sensor: " + _sensor_value.Split('-')[0] + " | Value= " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time 
+                                        :
+                                        "Sensor:  " + _sensor_value.Split('-')[0] + " | Value = " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time;
+                                _listbox.Items.Add(_list_item);
                                 _sensor_index++;
                             }
+                            else
+                                _sample_time = _sensor_value;
                     }
                     _samples_index++;
-
-                    //will be used to set the width of the Listbox
-                    maxSamples = maxSamples < _samples_index ? (int)_samples_index : maxSamples; 
                     
                 }
                 _session_index++;
                 z.AxisChange();
                 z_Graph.Refresh();
             }
+
+            int calculated_width = ("Sensor: XX | Value= XX | Time: HH:MM:SS").Length * 6;
+            _listbox.Width = calculated_width;
+            FinalizeUI();
+        }
+
+        private void FinalizeUI()
+        {
+            int _scrollBar_width = SystemInformation.VerticalScrollBarWidth;
+            _listbox.Location = new Point((Width - _listbox.Width - _scrollBar_width), _listbox.Location.Y);
+            _listbox.ScrollAlwaysVisible = true;
+            z_Graph.Width = Width - _listbox.Width - _scrollBar_width - 5;
         }
     }
 }
