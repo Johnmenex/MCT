@@ -42,7 +42,7 @@ namespace MCT {
             Location = new Point(0, 0);
             Bounds = Screen.PrimaryScreen.Bounds;
             z_Graph.Height = Height - 50;
-            z_Graph.Width = Width - 200;
+            z_Graph.Width = Width - (Width / 4);
 
             _listbox = new ListBox
             {
@@ -93,9 +93,15 @@ namespace MCT {
             z.YAxis.MinorGrid.IsVisible = true;
 
             z.XAxis.Title.Text = "Samples";
-            z.YAxis.Title.Text = "Temperature";
-            z.Title.Text = "Realtime monitoring";
+            z.XAxis.Title.FontSpec.Size = 7;
+            z.XAxis.Scale.FontSpec.Size = 7;
 
+            z.YAxis.Title.Text = "Temperature";
+            z.YAxis.Title.FontSpec.Size = 7;
+            z.YAxis.Scale.FontSpec.Size = 7;
+
+            z.Title.Text = "Logs Overview";
+            z.Title.FontSpec.Size = 10;
             z.Legend.Position = LegendPos.BottomFlushLeft;
             z.Legend.FontSpec.Size = 6;
 
