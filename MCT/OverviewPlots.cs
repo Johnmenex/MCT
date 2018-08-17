@@ -28,12 +28,12 @@ namespace MCT {
 
         private protected GraphPane z;
         private bool curveInitialized;
-        private List<CurveItem> curve;
+        private List<List<CurveItem>> curve;
 
         private ListBox _listbox;
 
         private protected bool CurveInitialized { get => curveInitialized; set => curveInitialized = value; }
-        private protected List<CurveItem> Curve { get => curve; set => curve = value; }
+        private protected List<List<CurveItem>> Curve { get => curve; set => curve = value; }
         
 
         private void SetInterface() {
@@ -149,17 +149,17 @@ namespace MCT {
                 }
             }
 
-            Curve = new List<CurveItem>();
+            Curve = new List<List<CurveItem>>();
             /*LabelNames = new List<string>();
             */
             int _session_index = 0;
 
             foreach(List<int> _session in _init_values) {
-
+                Curve.Add(new List<CurveItem>());
 
                 int _cc = 0;
                 foreach (int _sensor_value in _session) {
-                    Curve.Add(z_Graph.GraphPane.AddCurve(
+                    Curve[_session_index].Add(z_Graph.GraphPane.AddCurve(
                         "Session: " + (_session_index + 1) + "-Sensor: " + (_init_labels[_session_index][_cc]),
                         new double[1] { 1 },
                         new double[1] { _sensor_value },
@@ -217,9 +217,6 @@ namespace MCT {
             return _List;
         }
         private void Plot(List<List<List<string>>> _values) {
-
-            int maxSamples = 0;
-
             int _session_index = 0;
             foreach(List<List<string>> _session in _values) {
                 if (_session_index != 0) _listbox.Items.Add("");
@@ -237,7 +234,7 @@ namespace MCT {
                         if (_samples_index != 0)
                             if (!_sensor_value.Contains(':'))
                             {
-                                Curve[_sensor_index].AddPoint(_samples_index, Convert.ToDouble(_sensor_value.Split('-')[1]));
+                                Curve[_session_index][_sensor_index].AddPoint(_samples_index, Convert.ToDouble(_sensor_value.Split('-')[1]));
                                 string _list_item = Convert.ToDouble(_sensor_value.Split('-')[0]) > 9? 
                                         "Sensor: " + _sensor_value.Split('-')[0] + " | Value= " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time 
                                         :
