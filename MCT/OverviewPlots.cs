@@ -25,7 +25,7 @@ namespace MCT {
             Plot(_Values);
         }
 
-
+        private Point _reference_ipt = new Point(-1, -1);
         private protected GraphPane z;
         private bool curveInitialized;
         private List<List<CurveItem>> curve;
@@ -111,7 +111,89 @@ namespace MCT {
             z_Graph.IsAntiAlias = true;
             z_Graph.Refresh();
 
-            //z_Graph.PointValueEvent += (ZedGraphControl sender, GraphPane pane, CurveItem curve, int iPt) => FindSample(sender, pane, curve, iPt);
+            z_Graph.PointValueEvent += (ZedGraphControl sender, GraphPane pane, CurveItem curve, int iPt) => FindSample(sender, pane, curve, iPt);
+        }
+
+        private string FindSample(ZedGraphControl sender, GraphPane pane, CurveItem curve, int iPt)
+        {
+            List<List<string>> _found_samples = new List<List<string>>();
+            foreach (List<CurveItem> _session in Curve)
+            {
+                _found_samples.Add(new List<string>());
+                foreach (CurveItem _ci in _session)
+                {
+                    #region convert CurveItem iPoints to List<Point>
+                    List<Point> _points = new List<Point>();
+                    for (int i = 1; i < _ci.Points.Count; i++)
+                        _points.Add(new Point((int)_ci[i].X, (int)_ci[i].Y));
+                    #endregion
+
+                    foreach (Point _p in _points)
+                        if (_p.X == (int)curve[iPt].X && _p.Y == (int)curve[iPt].Y)
+                            _found_samples[_found_samples.Count - 1].Add(
+                                _ci.Label.Text.Split('-')[0] + "|" +
+                                _ci.Label.Text.Split('-')[1] + "|" +
+                                curve[iPt].X + "|" +
+                                curve[iPt].Y
+                                );
+                }
+            }
+
+            List<int> _found_indexes = new List<int>();
+
+            foreach (List<string> _session in _found_samples)
+            {
+                foreach (string _sample in _session)
+                {
+                    int _session_index = _listbox.FindString("============" + _sample.Split('|')[0].Split(':')[0] + " " + _sample.Split('|')[0].Split(' ')[1]);
+                    int _sample_index = _listbox.FindString("============Sample " + _sample.Split('|')[2], _session_index);
+
+                    string _search_string =
+                        Convert.ToInt32(_sample.Split('|')[1].Split(' ')[1]) > 9 ?
+                            "Sensor: " + _sample.Split('|')[1].Split(' ')[1] + " | Value= " + _sample.Split('|')[3] :
+                            "Sensor:  " + _sample.Split('|')[1].Split(' ')[1] + " | Value = " + _sample.Split('|')[3];
+
+                    _found_indexes.Add(_listbox.FindString(_search_string, _sample_index));
+                }
+            }
+
+            if (_reference_ipt.X != curve[iPt].X || _reference_ipt.Y != curve[iPt].Y)
+            {
+                _reference_ipt = new Point((int)curve[iPt].X, (int)curve[iPt].Y);
+                if (_found_indexes.Count < 2)
+                {
+                    Controls.RemoveByKey("Secondary_listbox");
+                    _listbox.Height = z_Graph.Height;
+                    _listbox.SelectedIndex = _found_indexes[0];
+
+                }
+                else
+                {
+                    Controls.RemoveByKey("Secondary_listbox");
+                    _listbox.Height = z_Graph.Height;
+                    _listbox.ClearSelected();
+                    Controls.Add(Secondary_Listbox(_found_indexes));
+                }
+            }
+            return "";
+        }
+
+        private ListBox Secondary_Listbox(List<int> found_samples)
+        {
+            _listbox.Height = _listbox.Height - 100;
+            ListBox second_listbox = new ListBox
+            {
+                Name = "Secondary_listbox",
+                Location = new Point(_listbox.Location.X, _listbox.Location.Y + _listbox.Height + 25),
+                Width = _listbox.Width,
+                ScrollAlwaysVisible = true
+            };
+            second_listbox.Height = Height - second_listbox.Location.Y - 50;
+
+            foreach (int _item in found_samples)
+                second_listbox.Items.Add(_listbox.Items[_item]);
+
+            return second_listbox;
         }
 
         private void InitCurve(List<List<List<string>>> _Values) {
