@@ -38,7 +38,7 @@ namespace MCT {
         public RealTimeValues() {
             InitializeComponent();
         }
-        
+
         public RealTimeValues(List<int> _active_sensors, double[] _current_Values, int _sampling_rate) {
             if (_active_sensors == null || _active_sensors.Count == 0)
                 return;
@@ -137,16 +137,16 @@ namespace MCT {
                 //Set the dynamic location of each groupbox
                 Gb_threshold[i].AutoSize = true;
                 Gb_threshold[i].Width = cb_threshold.Width;
-                
-                if(row<=0)
-                Gb_threshold[i].Location = new Point(
-                    5 + (column * (Gb_threshold[i].Width + 30)),
-                    15 + (row * Gb_threshold[i].Height)
-                    );
+
+                if (row <= 0)
+                    Gb_threshold[i].Location = new Point(
+                        5 + (column * (Gb_threshold[i].Width + 30)),
+                        15 + (row * Gb_threshold[i].Height)
+                        );
                 else
                     Gb_threshold[i].Location = new Point(
                     5 + (column * (Gb_threshold[i].Width + 30)),
-                    15 + (row * Gb_threshold[i].Height+5)
+                    15 + (row * Gb_threshold[i].Height + 5)
                     );
                 column++;
                 if ((5 + (column * (Gb_threshold[i].Width + 30))) > gb_parent.Width) {
@@ -195,7 +195,7 @@ namespace MCT {
 
             z.YAxis.Title.Text = "Temperature";
             z.YAxis.IsVisible = true;
-            
+
 
             GraphPaneInitialized = true;
         }
@@ -228,7 +228,7 @@ namespace MCT {
 
             BarInitialized = true;
         }
-       
+
         private protected void RefreshBars() {
             double[] _sensor_values = SensorValues;
 
@@ -246,10 +246,10 @@ namespace MCT {
             int _index = 0;
             foreach (GroupBox _gb in gb_parent.Controls) {
                 if (((CheckBox)_gb.Controls[0]).Checked) {
-                    if((double)((NumericUpDown)_gb.Controls[2]).Value > _sensorValues[_index])
+                    if ((double)((NumericUpDown)_gb.Controls[2]).Value > _sensorValues[_index])
                         ((NumericUpDown)_gb.Controls[2]).BackColor = Color.Red;
                     else
-                    ((NumericUpDown)_gb.Controls[2]).BackColor = Color.FromKnownColor((KnownColor.Control));
+                        ((NumericUpDown)_gb.Controls[2]).BackColor = Color.FromKnownColor((KnownColor.Control));
 
                     if ((double)((NumericUpDown)_gb.Controls[4]).Value < _sensorValues[_index])
                         ((NumericUpDown)_gb.Controls[4]).BackColor = Color.Red;

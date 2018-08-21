@@ -15,12 +15,12 @@ namespace MCT {
         public OverviewPlots(List<string> LogFilePaths, List<List<string>> _ActiveSensors) {
 
             InitializeComponent();
-            
+
             SetInterface();
-            
-            
+
+
             List<List<string>> _RawData = ParseFiles(LogFilePaths);
-            List<List<List<string>>> _Values = SeperateValues(_RawData, _ActiveSensors);  
+            List<List<List<string>>> _Values = SeperateValues(_RawData, _ActiveSensors);
             InitCurve(_Values);
             Plot(_Values);
         }
@@ -34,26 +34,25 @@ namespace MCT {
 
         private protected bool CurveInitialized { get => curveInitialized; set => curveInitialized = value; }
         private protected List<List<CurveItem>> Curve { get => curve; set => curve = value; }
-        
+
 
         private void SetInterface() {
-            
+
             MaximizeBox = false;
             Location = new Point(0, 0);
             Bounds = Screen.PrimaryScreen.Bounds;
             z_Graph.Height = Height - 50;
             z_Graph.Width = Width - (Width / 4);
 
-            _listbox = new ListBox
-            {
+            _listbox = new ListBox {
                 Location = new Point(z_Graph.Location.X + z_Graph.Width + 10, z_Graph.Location.Y),
                 Height = z_Graph.Height,
             };
             Controls.Add(_listbox);
-            
+
             InitGraphPane();
         }
-        //Parse to be done here
+
         private List<List<string>> ParseFiles(List<string> FilesToParse) {
             List<List<string>> FileContents = new List<List<string>>();
 
@@ -68,11 +67,10 @@ namespace MCT {
                 } while (!_rdr.EndOfStream);
                 _sessionIndex++;
             }
-            
+
             return FileContents;
         }
-        private void InitGraphPane()
-        {
+        private void InitGraphPane() {
             z = z_Graph.GraphPane;
             z_Graph.IsShowHScrollBar = true;
 
@@ -114,14 +112,11 @@ namespace MCT {
             z_Graph.PointValueEvent += (ZedGraphControl sender, GraphPane pane, CurveItem curve, int iPt) => FindSample(sender, pane, curve, iPt);
         }
 
-        private string FindSample(ZedGraphControl sender, GraphPane pane, CurveItem curve, int iPt)
-        {
+        private string FindSample(ZedGraphControl sender, GraphPane pane, CurveItem curve, int iPt) {
             List<List<string>> _found_samples = new List<List<string>>();
-            foreach (List<CurveItem> _session in Curve)
-            {
+            foreach (List<CurveItem> _session in Curve) {
                 _found_samples.Add(new List<string>());
-                foreach (CurveItem _ci in _session)
-                {
+                foreach (CurveItem _ci in _session) {
                     #region convert CurveItem iPoints to List<Point>
                     List<Point> _points = new List<Point>();
                     for (int i = 1; i < _ci.Points.Count; i++)
@@ -141,10 +136,8 @@ namespace MCT {
 
             List<int> _found_indexes = new List<int>();
 
-            foreach (List<string> _session in _found_samples)
-            {
-                foreach (string _sample in _session)
-                {
+            foreach (List<string> _session in _found_samples) {
+                foreach (string _sample in _session) {
                     int _session_index = _listbox.FindString("============" + _sample.Split('|')[0].Split(':')[0] + " " + _sample.Split('|')[0].Split(' ')[1]);
                     int _sample_index = _listbox.FindString("============Sample " + _sample.Split('|')[2], _session_index);
 
@@ -157,18 +150,15 @@ namespace MCT {
                 }
             }
 
-            if (_reference_ipt.X != curve[iPt].X || _reference_ipt.Y != curve[iPt].Y)
-            {
+            if (_reference_ipt.X != curve[iPt].X || _reference_ipt.Y != curve[iPt].Y) {
                 _reference_ipt = new Point((int)curve[iPt].X, (int)curve[iPt].Y);
-                if (_found_indexes.Count < 2)
-                {
+                if (_found_indexes.Count < 2) {
                     Controls.RemoveByKey("Secondary_listbox");
                     _listbox.Height = z_Graph.Height;
                     _listbox.SelectedIndex = _found_indexes[0];
 
                 }
-                else
-                {
+                else {
                     Controls.RemoveByKey("Secondary_listbox");
                     _listbox.Height = z_Graph.Height;
                     _listbox.ClearSelected();
@@ -178,11 +168,9 @@ namespace MCT {
             return "";
         }
 
-        private ListBox Secondary_Listbox(List<int> found_samples)
-        {
+        private ListBox Secondary_Listbox(List<int> found_samples) {
             _listbox.Height = _listbox.Height - 100;
-            ListBox second_listbox = new ListBox
-            {
+            ListBox second_listbox = new ListBox {
                 Name = "Secondary_listbox",
                 Location = new Point(_listbox.Location.X, _listbox.Location.Y + _listbox.Height + 25),
                 Width = _listbox.Width,
@@ -197,7 +185,7 @@ namespace MCT {
         }
 
         private void InitCurve(List<List<List<string>>> _Values) {
-            
+
             Random _rnd = new Random();
 
             List<List<string>> _colors = new List<List<string>>();
@@ -206,12 +194,12 @@ namespace MCT {
 
             List<List<int>> _init_values = new List<List<int>>();
             List<List<int>> _init_labels = new List<List<int>>();
-            
+
             foreach (List<List<string>> _session in _Values) {
 
                 string[] _tmp = new string[_session[0].Count];
                 int _c = 0;
-                foreach(string _s in _session[0]) {
+                foreach (string _s in _session[0]) {
                     _tmp[_c] = _s;
                     _c++;
                 }
@@ -236,11 +224,9 @@ namespace MCT {
             }
 
             Curve = new List<List<CurveItem>>();
-            /*LabelNames = new List<string>();
-            */
             int _session_index = 0;
 
-            foreach(List<int> _session in _init_values) {
+            foreach (List<int> _session in _init_values) {
                 Curve.Add(new List<CurveItem>());
 
                 int _cc = 0;
@@ -258,7 +244,7 @@ namespace MCT {
                 }
                 _session_index++;
             }
-            
+
             z.AxisChange();
             z_Graph.Refresh();
             CurveInitialized = true;
@@ -290,9 +276,9 @@ namespace MCT {
                                 //add sensorID-value
                                 _List[_List.Count - 1]
                                     [_List[_List.Count - 1].Count - 1].Add
-                                    (   
+                                    (
                                         _tmp_sensor[0].Split('=')[1] + "-" + _tmp_sensor[1].Split('=')[1]
-                                    ); 
+                                    );
                             }
                             _sensor_index++;
                         }
@@ -304,7 +290,7 @@ namespace MCT {
         }
         private void Plot(List<List<List<string>>> _values) {
             int _session_index = 0;
-            foreach(List<List<string>> _session in _values) {
+            foreach (List<List<string>> _session in _values) {
                 if (_session_index != 0) _listbox.Items.Add("");
                 _listbox.Items.Add("================================");
                 _listbox.Items.Add("============Session " + (_session_index + 1) + "============");
@@ -312,17 +298,16 @@ namespace MCT {
                 _listbox.Items.Add("");
                 double _samples_index = 1;
                 foreach (List<string> _sample in _session) {
-                    _listbox.Items.Add("============Sample " + _samples_index+"============");
+                    _listbox.Items.Add("============Sample " + _samples_index + "============");
                     int _sensor_index = 0;
                     string _sample_time = "";
                     foreach (string _sensor_value in _sample) {
-                        
+
                         if (_samples_index != 0)
-                            if (!_sensor_value.Contains(':'))
-                            {
+                            if (!_sensor_value.Contains(':')) {
                                 Curve[_session_index][_sensor_index].AddPoint(_samples_index, Convert.ToDouble(_sensor_value.Split('-')[1]));
-                                string _list_item = Convert.ToDouble(_sensor_value.Split('-')[0]) > 9? 
-                                        "Sensor: " + _sensor_value.Split('-')[0] + " | Value= " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time 
+                                string _list_item = Convert.ToDouble(_sensor_value.Split('-')[0]) > 9 ?
+                                        "Sensor: " + _sensor_value.Split('-')[0] + " | Value= " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time
                                         :
                                         "Sensor:  " + _sensor_value.Split('-')[0] + " | Value = " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time;
                                 _listbox.Items.Add(_list_item);
@@ -332,7 +317,7 @@ namespace MCT {
                                 _sample_time = _sensor_value;
                     }
                     _samples_index++;
-                    
+
                 }
                 _session_index++;
                 z.AxisChange();
@@ -344,8 +329,7 @@ namespace MCT {
             FinalizeUI();
         }
 
-        private void FinalizeUI()
-        {
+        private void FinalizeUI() {
             int _scrollBar_width = SystemInformation.VerticalScrollBarWidth;
             _listbox.Location = new Point((Width - _listbox.Width - _scrollBar_width), _listbox.Location.Y);
             _listbox.ScrollAlwaysVisible = true;

@@ -8,12 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MCT
-{
-    public partial class SensorsToPlot : Form
-    {
-        public SensorsToPlot(List<string> _SessionSensors, int _NumberOfSessionSensors, int _SessionID)
-        {
+namespace MCT {
+    public partial class SensorsToPlot : Form {
+        public SensorsToPlot(List<string> _SessionSensors, int _NumberOfSessionSensors, int _SessionID) {
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowOnly;
 
@@ -26,16 +23,14 @@ namespace MCT
 
         Button btn_setSensors;
 
-        private void SetInterface(List<string> _SessionSensors, int _NumberOfSessionSensors, int _SessionID)
-        {
+        private void SetInterface(List<string> _SessionSensors, int _NumberOfSessionSensors, int _SessionID) {
             //MessageBox.Show(_SessionSensors.Count+"");
             string __s = "";
-                foreach(string _s in _SessionSensors)
-                {
-                    __s += _s + "\n";
-                }
-                //MessageBox.Show(__s);
-            
+            foreach (string _s in _SessionSensors) {
+                __s += _s + "\n";
+            }
+            //MessageBox.Show(__s);
+
             Text = "Session" + _SessionID + " - Sensors ";
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
@@ -47,16 +42,13 @@ namespace MCT
 
             int column = 0;
             int row = 0;
-            for (int i = 0; i < _NumberOfSessionSensors; i++)
-            {
-                CheckBox _tmpCB = new CheckBox
-                {
+            for (int i = 0; i < _NumberOfSessionSensors; i++) {
+                CheckBox _tmpCB = new CheckBox {
                     AutoSize = true,
                     Text = "Sensor " + (i + 1)
                 };
 
-                SensorsToshow.Add(new CheckBox
-                {
+                SensorsToshow.Add(new CheckBox {
                     AutoSize = true,
                     Text = "Sensor " + (i + 1),
                     Location = new Point(
@@ -71,11 +63,10 @@ namespace MCT
 
                 Controls.Add(SensorsToshow[i]);
                 column++;
-                    if (column > 2)
-                    {
-                        column = 0;
-                        row++;
-                    }
+                if (column > 2) {
+                    column = 0;
+                    row++;
+                }
             }
             Width = SensorsToshow[SensorsToshow.Count - 1].Location.X + 10;
             Height = SensorsToshow[SensorsToshow.Count - 1].Location.X + 10;
@@ -86,8 +77,7 @@ namespace MCT
             Controls.Add(btn_setSensors);
         }
 
-        private void Btn_SetDemands_Click(object sender, EventArgs e)
-        {
+        private void Btn_SetDemands_Click(object sender, EventArgs e) {
             this.DialogResult = DialogResult.OK;
             Close();
         }

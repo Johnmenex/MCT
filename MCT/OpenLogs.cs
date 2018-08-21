@@ -67,7 +67,7 @@ namespace MCT {
             if (_path == "")
                 return _info;
             StreamReader _reader = new StreamReader(_path);
-            
+
             string _value = _reader.ReadLine();
             _reader.Close();
 
@@ -102,7 +102,7 @@ namespace MCT {
             lb_time_created.Width -= 15;
             lb_time_created.Name = "lb_time_" + (SessionsAdded + 1);
             lb_time_created.Text = "Creation Time\n    " + _SessionTime;
-            lb_time_created.Location = new Point(lb_date_created.Location.X, lb_date_created.Location.Y + lb_date_created.Height+5);
+            lb_time_created.Location = new Point(lb_date_created.Location.X, lb_date_created.Location.Y + lb_date_created.Height + 5);
 
             Label lb_number_of_sensors = new Label();
             lb_number_of_sensors.AutoSize = true;
@@ -120,12 +120,11 @@ namespace MCT {
             btn_choseSensorsToPlot.AutoSize = true;
             btn_choseSensorsToPlot.Name = "btn_plot_" + (_NumberOfSensors + 1);
             btn_choseSensorsToPlot.Text = "Choose sensors";
-            btn_choseSensorsToPlot.Location = new Point(lb_number_of_sensors.Location.X+3, lb_sampling_time.Location.Y + lb_sampling_time.Height - 7);
-            btn_choseSensorsToPlot.Click += (sender, EventArgs) => 
-            {
-                btn_choseSensorsToPlot_Click(sender, EventArgs, 
-                    SessionSensors[Convert.ToInt32(labels.Name.Split('_')[1])], 
-                    _NumberOfSensors, 
+            btn_choseSensorsToPlot.Location = new Point(lb_number_of_sensors.Location.X + 3, lb_sampling_time.Location.Y + lb_sampling_time.Height - 7);
+            btn_choseSensorsToPlot.Click += (sender, EventArgs) => {
+                btn_choseSensorsToPlot_Click(sender, EventArgs,
+                    SessionSensors[Convert.ToInt32(labels.Name.Split('_')[1])],
+                    _NumberOfSensors,
                     (Convert.ToInt32(labels.Name.Split('_')[1]) + 1));
             };
 
@@ -136,31 +135,28 @@ namespace MCT {
             labels.Controls.Add(lb_sampling_time);
             labels.Controls.Add(btn_choseSensorsToPlot);
             labels.Width = lb_sampling_time.Location.X + lb_sampling_time.Width + 5;
-            labels.Height = lb_time_created.Location.Y + lb_time_created.Height+10;
+            labels.Height = lb_time_created.Location.Y + lb_time_created.Height + 10;
 
             //labels.Location = new Point(3, ((button1.Location.Y + button1.Height + 5) + ((SensorsAdded) * (labels.Height + 10))));
             //labels.Show();
             return labels;
         }
 
-        public void btn_choseSensorsToPlot_Click(object sender, EventArgs e,List<string> _SessionSensors, int _SensorsNumber,int _SessionNumber)
-        {
+        public void btn_choseSensorsToPlot_Click(object sender, EventArgs e, List<string> _SessionSensors, int _SensorsNumber, int _SessionNumber) {
             SensorsToPlot _SensorsSelectionForm = new SensorsToPlot(_SessionSensors, _SensorsNumber, _SessionNumber);
-            if(_SensorsSelectionForm.ShowDialog() == DialogResult.OK)
-            {
+            if (_SensorsSelectionForm.ShowDialog() == DialogResult.OK) {
                 SessionSensors[_SessionNumber - 1] = new List<string>();
-                foreach (CheckBox _cb in _SensorsSelectionForm.SensorsToshow)
-                {
+                foreach (CheckBox _cb in _SensorsSelectionForm.SensorsToshow) {
                     //save the checked sensors in order to remember 
                     //which ones user selected when that session is reopened
-                    SessionSensors[_SessionNumber-1].Add(_cb.Checked+""); 
+                    SessionSensors[_SessionNumber - 1].Add(_cb.Checked + "");
                 }
             }
         }
 
         private void ClearSessions() {
-            for (int i = Controls.Count - 1; i >= 0; i--) 
-                if (Controls[i].GetType() == typeof(GroupBox)) 
+            for (int i = Controls.Count - 1; i >= 0; i--)
+                if (Controls[i].GetType() == typeof(GroupBox))
                     Controls.Remove(Controls[i]);
 
             _sessionSensors = new List<List<string>>();
@@ -171,7 +167,7 @@ namespace MCT {
             AutoSize = false;
             Width = btn_clear_sessions.Location.X + btn_clear_sessions.Width + 30;
         }
-        
+
         private bool GetLogValidity(string _FileHeader) {
             return _FileHeader != null ? (_FileHeader.Contains("MCT|") ? true : false) : false;
         }
@@ -187,13 +183,13 @@ namespace MCT {
             string[] _FileInfo = GetFileHeader();
             string _FilePath = _FileInfo[0];
             string _Fileheader = _FileInfo[1];
-            if (_Fileheader == "" || _Fileheader==null)
+            if (_Fileheader == "" || _Fileheader == null)
                 return;
-            else if(!GetLogValidity(_Fileheader)) {
+            else if (!GetLogValidity(_Fileheader)) {
                 MessageBox.Show(
                     "You have chosen an incompatible Log file.\n" +
-                    "Please try again.", "File error", 
-                    MessageBoxButtons.OK, 
+                    "Please try again.", "File error",
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return;
             }
@@ -217,8 +213,8 @@ namespace MCT {
             SessionInformation.Location = new Point(5, 15);
             gb_SessionParent.Width = SessionInformation.Width + 10;
             gb_SessionParent.Height = SessionInformation.Height + 20;
-            gb_SessionParent.Location = new Point(7, ((btn_add_session.Location.Y + btn_add_session.Height + 5) + ((SessionsAdded) * (gb_SessionParent.Height+5))));
-            
+            gb_SessionParent.Location = new Point(7, ((btn_add_session.Location.Y + btn_add_session.Height + 5) + ((SessionsAdded) * (gb_SessionParent.Height + 5))));
+
             Controls.Add(gb_SessionParent);
 
             Button btn_PlotSessions = new Button {
@@ -226,25 +222,24 @@ namespace MCT {
                 Text = "Plot Sessions",
                 Location = new Point(gb_SessionParent.Location.X, gb_SessionParent.Location.Y + gb_SessionParent.Height + 10)
             };
-            btn_PlotSessions.Click += (object sender1, EventArgs e1) => { Btn_PlotSessions_Click(sender1, e1); };
+            btn_PlotSessions.Click += (object _sender, EventArgs _e) => Btn_PlotSessions_Click(_sender, _e);
 
             if (Controls.ContainsKey("btn_PlotSessions"))
                 Controls.Remove(Controls.Find("btn_PlotSessions", false)[0]);
             Controls.Add(btn_PlotSessions);
             SessionSensors.Add(new List<string>()); //contains the sensors of every session that will be displayed
-            for(int i = 0; i < _NumberOfSensors; i++) {
+            for (int i = 0; i < _NumberOfSensors; i++) {
                 SessionSensors[SessionSensors.Count - 1].Add("True"); //initialize each list's elements with "True" in case user plots all session's sensors
             }
             SessionsAdded++;
         }
 
-        private void Btn_PlotSessions_Click(object sender, EventArgs e)
-        {
+        private void Btn_PlotSessions_Click(object sender, EventArgs e) {
             List<string> _SessionLogs = new List<string>();
-            for(int i=0;i<SessionsAdded;i++) {
-                 _SessionLogs.Add(Controls.Find("FileName_" + i, true)[0].Text); //add all sessions log filenames to a list, and send that to the OverViewPlots constructor
+            for (int i = 0; i < SessionsAdded; i++) {
+                _SessionLogs.Add(Controls.Find("FileName_" + i, true)[0].Text); //add all sessions log filenames to a list, and send that to the OverViewPlots constructor
             }
-            OverviewPlots overviewPlots = new OverviewPlots(_SessionLogs,SessionSensors);
+            OverviewPlots overviewPlots = new OverviewPlots(_SessionLogs, SessionSensors);
             overviewPlots.Show();
 
         }
@@ -252,7 +247,5 @@ namespace MCT {
         private void btn_clear_sessions_Click(object sender, EventArgs e) {
             ClearSessions();
         }
-        
     }
-    
 }

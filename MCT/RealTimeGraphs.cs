@@ -40,7 +40,7 @@ namespace MCT {
         }
 
         public RealTimeGraphs(List<int> _active_sensors, double[] _current_Values, int _sampling_rate) {
-            if (_active_sensors == null || _active_sensors.Count==0)
+            if (_active_sensors == null || _active_sensors.Count == 0)
                 return;
 
             InitializeComponent();
@@ -65,7 +65,7 @@ namespace MCT {
         private protected int samplenumber = 1;
         private protected int samplingTime;
         private protected List<GroupBox> gb_threshold;
-        
+
         private protected bool graphPaneInitialized;
         private protected bool curveInitialized;
 
@@ -81,12 +81,12 @@ namespace MCT {
         private protected List<string> LabelNames { get => labelNames; set => labelNames = value; }
 
         private protected void InitGraphPane() {
-            
+
             z = zedGraphControl1.GraphPane;
             z.XAxis.Scale.MinorStep = 1;
-            
+
             z.XAxis.Scale.Max = 20; //values range on X axis
-            
+
             zedGraphControl1.IsShowHScrollBar = true;
 
             z.XAxis.MajorGrid.DashOff = 0;
@@ -105,7 +105,7 @@ namespace MCT {
             z.XAxis.Title.Text = "Samples";
             z.YAxis.Title.Text = "Temperature";
             z.Title.Text = "Realtime monitoring";
-            
+
             z.AxisChange();
             zedGraphControl1.IsAntiAlias = true;
             zedGraphControl1.Refresh();
@@ -198,15 +198,15 @@ namespace MCT {
                 Gb_threshold[i].AutoSize = true;
                 Gb_threshold[i].Width = cb_threshold.Width;
 
-                if(row<=0)
-                Gb_threshold[i].Location = new Point(
-                    5 + (column * (Gb_threshold[i].Width + 30)),
-                    15 + (row * Gb_threshold[i].Height)
-                    );
+                if (row <= 0)
+                    Gb_threshold[i].Location = new Point(
+                        5 + (column * (Gb_threshold[i].Width + 30)),
+                        15 + (row * Gb_threshold[i].Height)
+                        );
                 else {
                     Gb_threshold[i].Location = new Point(
                     5 + (column * (Gb_threshold[i].Width + 30)),
-                    15 + (row * Gb_threshold[i].Height+15)
+                    15 + (row * Gb_threshold[i].Height + 15)
                     );
                 }
                 column++;
@@ -262,7 +262,7 @@ namespace MCT {
                 };
             _curve = new List<CurveItem>();
             LabelNames = new List<string>();
-            
+
             for (int i = 0; i < NumberOfSensors; i++) {
                 double[] x_value = new double[1] { 1 };
                 double[] y_value = new double[1] { _curValues[i] };
