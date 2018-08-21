@@ -193,6 +193,30 @@ namespace MCT {
             }
             return _value;
         }
+        private string OpenLogfile() {
+            OpenFileDialog _ofd = new OpenFileDialog();
+            _ofd.Title = "Choose Log file for conversion...";
+            string _filename = "";
+            _ofd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (_ofd.ShowDialog() == DialogResult.OK)
+                _filename = _ofd.FileName;
+
+            return _filename;
+        }
+        private string SetSaveLocation(string _type) {
+            SaveFileDialog _sfd = new SaveFileDialog();
+            _sfd.Title = "Save as...";
+            string _filename = "";
+            _sfd.Filter = _type == "csv" ?
+                "Text files (*.txt)|*.txt|All files (*.*)|*.*" :
+                "Excel files (*.xls)|*.xls|Excel files(*.xlsx)|*.xlsx";
+            if (_sfd.ShowDialog() == DialogResult.OK)
+                _filename = _sfd.FileName;
+
+            if (File.Exists(_filename))
+                File.Delete(_filename);
+            return _filename;
+        }
         private int DetectNumberOfSensors(string _DataToAnalyze) {
             int _value = 0;
 
@@ -371,50 +395,165 @@ namespace MCT {
             else
                 return;
         }
-        private protected void SaveData(double[] _serialData) {
-            if (!File.Exists(_logs)) {
-                StreamWriter _writer = new StreamWriter(_logs);
-                string _header = "MCT|" + DateTime.Now.ToString("dd/MM/yyyy|HH:mm:ss") + "|" + SamplingTime;
-                foreach (CheckBox _cb in cb_sensors) {
-                    if (_cb.Checked)
-                        _header += "|" + _cb.Text;
-                }
-                _writer.WriteLine(_header);
-                _writer.Close();
-                sample_number = 1;
-            }
+        private void LogToCSV() {
+            string _LogToParse = OpenLogfile();
+            if (_LogToParse == "")
+                return;
             else {
-                StreamReader _reader = new StreamReader(_logs);
-                string _wholeFile = _reader.ReadToEnd()+"\n";
-                _reader.Close();
-
-
-                StreamWriter _writer = new StreamWriter(_logs);
-                string _line = "Sample=" + sample_number + "|Time=" + DateTime.Now.ToString("HH:mm:ss");
-                int _index = 1;
-                foreach(double _v in _serialData) {
-                    if(cb_sensors[_index-1].Checked) {
-                        _line += "|Sensor="+_index+"-value=" + _v ;
-                    }
-                    _index++;
+                StreamReader _r = new StreamReader(_LogToParse);
+                if (!GetLogValidity(_r.ReadLine())) {
+                    MessageBox.Show(
+                        "You have chosen an incompatible Log file.\n" +
+                        "Please try again.", "File error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    _r.Close();
+                    return;
                 }
-                _wholeFile += _line;
-                _writer.Write(_wholeFile);
-                _writer.Close();
-                sample_number++;
+            }
+            string _CSVSavePath = SetSaveLocation("csv");
+            if (_CSVSavePath == "")
+                return;
+
+            List<List<string>> _ParsedList = LogParser(_LogToParse);
+            string _csv_header = "";
+            foreach (string _s in _ParsedList[_ParsedList.Count - 1]) {
+                _csv_header += _s;
+            }
+            _ParsedList.RemoveAt(_ParsedList.Count - 1);
+
+            StreamWriter _wrt = new StreamWriter(_CSVSavePath);
+            _wrt.WriteLine(_csv_header);
+            foreach (List<string> _l in _ParsedList) {
+                string _tmp = "";
+                foreach (string _s in _l) {
+                    _tmp += _s + ",";
+                }
+                _tmp = _tmp.Remove(_tmp.Length - 1);
+                _wrt.WriteLine(_tmp);
+            }
+            _wrt.Close();
+        }
+        private void LogToExcel() {
+            string _LogToParse = OpenLogfile();
+            if (_LogToParse == "")
+                return;
+            else {
+                StreamReader _r = new StreamReader(_LogToParse);
+                if (!GetLogValidity(_r.ReadLine())) {
+                    MessageBox.Show(
+                        "You have chosen an incompatible Log file.\n" +
+                        "Please try again.", "File error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    _r.Close();
+                    return;
+                }
+            }
+
+            string _ExcelSavePath = SetSaveLocation("excel");
+            if (_ExcelSavePath == "")
+                return;
+
+            List<List<string>> _ParsedList = LogParser(_LogToParse);
+
+            try {
+                Excel.Application _excl = new Excel.Application();
+
+                Excel.Workbook _xlWorkBook;
+                Excel.Worksheet _xlWorkSheet;
+
+                _xlWorkBook = _excl.Workbooks.Add();
+                _xlWorkSheet = _excl.Worksheets.get_Item(1);
+
+                int _row, _col;
+                _row = _col = 1;
+
+
+                foreach (string _s in _ParsedList[_ParsedList.Count - 1]) {
+                    if (!_s.Contains(',')) {
+                        _xlWorkSheet.Cells[_row, _col] = _s;
+                        ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s.Length;
+                        ((Excel.Range)_xlWorkSheet.Cells[_row, _col]).Font.Bold = true;
+
+                    }
+                    else {
+                        foreach (string _s_split in _s.Split(',')) {
+                            if (_s_split != "") {
+                                _col++;
+                                _xlWorkSheet.Cells[_row, _col] = _s_split;
+                                _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                                _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                                ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s_split.Length + 2;
+                                ((Excel.Range)_xlWorkSheet.Cells[_row, _col]).Font.Bold = true;
+                            }
+                        }
+                    }
+                }
+                _ParsedList.RemoveAt(_ParsedList.Count - 1);
+
+                //<progress form initialization>
+                Progress prog_form = new Progress();
+                Point loc = new Point();
+                loc.X = this.Size.Width + this.Location.X;
+                loc.Y = this.Location.Y;
+                prog_form.GetSet_location(loc);
+                prog_form.stop.Text = "Stop";
+                prog_form.progressBar1.Maximum = _ParsedList.Count;
+                prog_form.progressBar1.Step = 1;
+                prog_form.Show();
+                //</progress form initialization>
+                bool _stopped_by_user = false;
+                foreach (List<string> _list in _ParsedList) {
+                    _row++;
+                    _col = 1;
+                    foreach (string _s in _list) {
+                        _xlWorkSheet.Cells[_row, _col] = _s;
+                        if (_row % 2 == 0)
+                            ((Excel.Range)(_xlWorkSheet.Cells[_row, _col])).Interior.Color = Color.LightGray;
+
+                        _col++;
+                    }
+                    if (prog_form.stopped) {
+                        DialogResult _dg = MessageBox.Show(
+                            "Log File conversion has been stopped.\nDo you want to resume the process?",
+                            "Conversion stopped...",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Information
+                            );
+                        if (_dg == DialogResult.No) {
+                            _stopped_by_user = true;
+                            prog_form.Dispose();
+                            ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
+                            break;
+                        }
+                        else
+                            prog_form.stopped = false;
+                    }
+                    prog_form.progressBar1.Value++;
+                    prog_form.current_samples_LB.Text = "Converting: " + prog_form.progressBar1.Value + " / " + _ParsedList.Count + " samples.";
+                    prog_form.conversion_progress_LB.Text = "Conversion in progress... " + (100 * prog_form.progressBar1.Value) / _ParsedList.Count + " %";
+                    Application.DoEvents();
+                }
+                if (_stopped_by_user)
+                    return;
+                prog_form.progressBar1.Value = prog_form.progressBar1.Maximum;
+                prog_form.conversion_progress_LB.Text = "Conversion finished!";
+                prog_form.stop.Text = "Close";
+                prog_form.current_samples_LB.Text = "Converted: " + prog_form.progressBar1.Value + " / " + _ParsedList.Count + " samples.";
+
+
+
+                _xlWorkBook.SaveAs(_ExcelSavePath);
+                ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
+
+            }
+            catch (Exception _z) {
+                MessageBox.Show(_z.ToString(), "Unexpected error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private List<int> GetActiveSensors() {
-            List<int> _active_sensors = new List<int>();
-            foreach (CheckBox _cb in cb_sensors) {
-                if (_cb.Checked)
-                    _active_sensors.Add(Convert.ToInt32(_cb.Name.Split('_')[2]));
-            }
-            return _active_sensors;
-        }
-        private void SetSensorsCheckboxStatus(bool _state)
-        {
-            foreach(CheckBox _cb in cb_sensors)
+        private void SetSensorsCheckboxStatus(bool _state) {
+            foreach (CheckBox _cb in cb_sensors)
                 _cb.Enabled = _state;
         }
         public void savefile(string type) {
@@ -463,6 +602,92 @@ namespace MCT {
                 
             }*/
         }
+        private protected void SaveData(double[] _serialData) {
+            if (!File.Exists(_logs)) {
+                StreamWriter _writer = new StreamWriter(_logs);
+                string _header = "MCT|" + DateTime.Now.ToString("dd/MM/yyyy|HH:mm:ss") + "|" + SamplingTime;
+                foreach (CheckBox _cb in cb_sensors) {
+                    if (_cb.Checked)
+                        _header += "|" + _cb.Text;
+                }
+                _writer.WriteLine(_header);
+                _writer.Close();
+                sample_number = 1;
+            }
+            else {
+                StreamReader _reader = new StreamReader(_logs);
+                string _wholeFile = _reader.ReadToEnd()+"\n";
+                _reader.Close();
+
+
+                StreamWriter _writer = new StreamWriter(_logs);
+                string _line = "Sample=" + sample_number + "|Time=" + DateTime.Now.ToString("HH:mm:ss");
+                int _index = 1;
+                foreach(double _v in _serialData) {
+                    if(cb_sensors[_index-1].Checked) {
+                        _line += "|Sensor="+_index+"-value=" + _v ;
+                    }
+                    _index++;
+                }
+                _wholeFile += _line;
+                _writer.Write(_wholeFile);
+                _writer.Close();
+                sample_number++;
+            }
+        }
+        private bool GetLogValidity(string _FileHeader) {
+            return _FileHeader != null ? (_FileHeader.Contains("MCT|") ? true : false) : false;
+        }
+        private List<int> GetActiveSensors() {
+            List<int> _active_sensors = new List<int>();
+            foreach (CheckBox _cb in cb_sensors) {
+                if (_cb.Checked)
+                    _active_sensors.Add(Convert.ToInt32(_cb.Name.Split('_')[2]));
+            }
+            return _active_sensors;
+        }
+        private List<List<string>> LogParser(string _LogToParse) {
+            List<string> _LogToList = new List<string>();
+
+            string _cur_line = "";
+            StreamReader _rdr = new StreamReader(_LogToParse);
+            do {
+                _cur_line = _rdr.ReadLine();
+                if (_cur_line != "")
+                    _LogToList.Add(_cur_line);
+            } while (!_rdr.EndOfStream);
+            _rdr.Close();
+
+            string _header = _LogToList[0];
+            _LogToList.RemoveAt(0);
+
+            List<List<string>> _ParsedList = new List<List<string>>();
+            int _list_index = 0;
+            foreach (string _s in _LogToList) {
+                _ParsedList.Add(new List<string>());
+                string[] _s_split = _s.Split('|');
+                for (int i = 1; i < _s_split.Length; i++)
+                    if (!_s_split[i].Contains('-'))
+                        _ParsedList[_list_index].Add(_s_split[i].Split('=')[1]);
+                    else {
+                        string[] _s_2nd_split = _s_split[i].Split('-');
+                        foreach (string _ss in _s_2nd_split) {
+                            _ParsedList[_list_index].Add(_ss.Split('=')[1]);
+                        }
+                    }
+                _list_index++;
+            }
+
+            List<string> _parsed_header = new List<string>();
+            _parsed_header.Add("Acquisition time");
+            for (int i = 4; i < _header.Split('|').Length; i++) {
+                _parsed_header.Add(",Sensor#,Value");
+            }
+            _ParsedList.Add(_parsed_header);
+
+            return _ParsedList;
+        }
+        
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e) {
             string _temporarySerialData;
@@ -666,235 +891,7 @@ namespace MCT {
             _o.ShowDialog();
         }
 
-        private string OpenLogfile() {
-            OpenFileDialog _ofd = new OpenFileDialog();
-            _ofd.Title = "Choose Log file for conversion...";
-            string _filename = "";
-            _ofd.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            if (_ofd.ShowDialog() == DialogResult.OK)
-                _filename = _ofd.FileName;
-
-            return _filename;
-        }
-
-        private string SetSaveLocation(string _type) {
-            SaveFileDialog _sfd = new SaveFileDialog();
-            _sfd.Title = "Save as...";
-            string _filename = "";
-            _sfd.Filter = _type == "csv" ?
-                "Text files (*.txt)|*.txt|All files (*.*)|*.*" :
-                "Excel files (*.xls)|*.xls|Excel files(*.xlsx)|*.xlsx";
-            if (_sfd.ShowDialog() == DialogResult.OK)
-                _filename = _sfd.FileName;
-
-            if (File.Exists(_filename))
-                File.Delete(_filename);
-            return _filename;
-        }
-
-        private bool GetLogValidity(string _FileHeader) {
-            return _FileHeader != null ? (_FileHeader.Contains("MCT|") ? true : false) : false;
-        }
-
-        private List<List<string>> LogParser(string _LogToParse) {
-            List<string> _LogToList = new List<string>();
-
-            string _cur_line = "";
-            StreamReader _rdr = new StreamReader(_LogToParse);
-            do {
-                _cur_line = _rdr.ReadLine();
-                if (_cur_line != "")
-                    _LogToList.Add(_cur_line);
-            } while (!_rdr.EndOfStream);
-            _rdr.Close();
-
-            string _header = _LogToList[0];
-            _LogToList.RemoveAt(0);
-
-            List<List<string>> _ParsedList = new List<List<string>>();
-            int _list_index = 0;
-            foreach (string _s in _LogToList) {
-                _ParsedList.Add(new List<string>());
-                string[] _s_split = _s.Split('|');
-                for (int i = 1; i < _s_split.Length; i++)
-                    if (!_s_split[i].Contains('-'))
-                        _ParsedList[_list_index].Add(_s_split[i].Split('=')[1]);
-                    else {
-                        string[] _s_2nd_split = _s_split[i].Split('-');
-                        foreach (string _ss in _s_2nd_split) {
-                            _ParsedList[_list_index].Add(_ss.Split('=')[1]);
-                        }
-                    }
-                _list_index++;
-            }
-
-            List<string> _parsed_header = new List<string>();
-            _parsed_header.Add("Acquisition time");
-            for (int i = 4; i < _header.Split('|').Length; i++) {
-                _parsed_header.Add(",Sensor#,Value");
-            }
-            _ParsedList.Add(_parsed_header);
-
-            return _ParsedList;
-        }
-
-        private void LogToCSV() {
-            string _LogToParse = OpenLogfile();
-            if (_LogToParse == "")
-                return;
-            else{
-                StreamReader _r = new StreamReader(_LogToParse);
-                if (!GetLogValidity(_r.ReadLine())) {
-                    MessageBox.Show(
-                        "You have chosen an incompatible Log file.\n" +
-                        "Please try again.", "File error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                    _r.Close();
-                    return;
-                }
-            }
-            string _CSVSavePath = SetSaveLocation("csv");
-            if (_CSVSavePath=="")
-                return;
-
-            List<List<string>> _ParsedList = LogParser(_LogToParse);
-            string _csv_header = "";
-            foreach(string _s in _ParsedList[_ParsedList.Count - 1]) {
-                _csv_header += _s;
-            }
-            _ParsedList.RemoveAt(_ParsedList.Count - 1);
-
-            StreamWriter _wrt = new StreamWriter(_CSVSavePath);
-            _wrt.WriteLine(_csv_header);
-            foreach(List<string> _l in _ParsedList) {
-                string _tmp = "";
-                foreach (string _s in _l) {
-                    _tmp += _s + ",";
-                }
-                _tmp = _tmp.Remove(_tmp.Length - 1);
-                _wrt.WriteLine(_tmp);
-            }
-            _wrt.Close();
-        }
-        private void LogToExcel() {
-            string _LogToParse = OpenLogfile();
-            if (_LogToParse == "")
-                return;
-            else {
-                StreamReader _r = new StreamReader(_LogToParse);
-                if (!GetLogValidity(_r.ReadLine())) {
-                    MessageBox.Show(
-                        "You have chosen an incompatible Log file.\n" +
-                        "Please try again.", "File error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                    _r.Close();
-                    return;
-                }
-            }
-
-            string _ExcelSavePath = SetSaveLocation("excel");
-            if (_ExcelSavePath == "")
-                return;
-
-            List<List<string>> _ParsedList = LogParser(_LogToParse);
-
-            try {
-                Excel.Application _excl = new Excel.Application();
-
-                Excel.Workbook _xlWorkBook;
-                Excel.Worksheet _xlWorkSheet;
-
-                _xlWorkBook = _excl.Workbooks.Add();
-                _xlWorkSheet = _excl.Worksheets.get_Item(1);
-
-                int _row, _col;
-                _row = _col = 1;
-
-
-                foreach (string _s in _ParsedList[_ParsedList.Count - 1]) {
-                    if (!_s.Contains(',')) {
-                        _xlWorkSheet.Cells[_row, _col] = _s;
-                        ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s.Length;
-                        ((Excel.Range)_xlWorkSheet.Cells[_row, _col]).Font.Bold = true;
-
-                    }
-                    else {
-                        foreach (string _s_split in _s.Split(',')) {
-                            if (_s_split != "") {
-                                _col++;
-                                _xlWorkSheet.Cells[_row, _col] = _s_split;
-                                _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                                _xlWorkSheet.Columns.Style.HorizontalAlignment = Excel.XlVAlign.xlVAlignCenter;
-                                ((Excel.Range)_xlWorkSheet.Columns[_col]).ColumnWidth = _s_split.Length + 2;
-                                ((Excel.Range)_xlWorkSheet.Cells[_row, _col]).Font.Bold = true;
-                            }
-                        }
-                    }
-                }
-                _ParsedList.RemoveAt(_ParsedList.Count - 1);
-
-                //<progress form initialization>
-                Progress prog_form = new Progress();
-                Point loc = new Point();
-                loc.X = this.Size.Width + this.Location.X;
-                loc.Y = this.Location.Y;
-                prog_form.GetSet_location(loc);
-                prog_form.stop.Text = "Stop";
-                prog_form.progressBar1.Maximum = _ParsedList.Count;
-                prog_form.progressBar1.Step = 1;
-                prog_form.Show();
-                //</progress form initialization>
-                bool _stopped_by_user = false;
-                foreach (List<string> _list in _ParsedList) {
-                    _row++;
-                    _col = 1;
-                    foreach (string _s in _list) {
-                        _xlWorkSheet.Cells[_row, _col] = _s;
-                        if (_row % 2 == 0)
-                            ((Excel.Range)(_xlWorkSheet.Cells[_row, _col])).Interior.Color = Color.LightGray;
-
-                        _col++;
-                    }
-                    if (prog_form.stopped) {
-                        DialogResult _dg = MessageBox.Show(
-                            "Log File conversion has been stopped.\nDo you want to resume the process?", 
-                            "Conversion stopped...", 
-                            MessageBoxButtons.YesNo, 
-                            MessageBoxIcon.Information
-                            );
-                        if (_dg == DialogResult.No) {
-                            _stopped_by_user = true;
-                            prog_form.Dispose();
-                            ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
-                            break;
-                        }
-                        else
-                            prog_form.stopped = false;
-                    }
-                    prog_form.progressBar1.Value++;
-                    prog_form.current_samples_LB.Text = "Converting: " + prog_form.progressBar1.Value + " / " + _ParsedList.Count + " samples.";
-                    prog_form.conversion_progress_LB.Text = "Conversion in progress... " + (100 * prog_form.progressBar1.Value) / _ParsedList.Count + " %";
-                    Application.DoEvents();
-                }
-                if (_stopped_by_user)
-                    return;
-                prog_form.progressBar1.Value = prog_form.progressBar1.Maximum;
-                prog_form.conversion_progress_LB.Text = "Conversion finished!";
-                prog_form.stop.Text = "Close";
-                prog_form.current_samples_LB.Text = "Converted: " + prog_form.progressBar1.Value + " / " + _ParsedList.Count + " samples.";
-
-
-
-                _xlWorkBook.SaveAs(_ExcelSavePath);
-                ExcelProcessIdByHandle.GetExcelProcess(_excl).Kill();
-
-            }
-            catch (Exception _z) {
-                MessageBox.Show(_z.ToString(), "Unexpected error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+       
 
         private void convertLogFileToTxtToolStripMenuItem_Click(object sender, EventArgs e) {
             LogToCSV();
