@@ -71,45 +71,49 @@ namespace MCT {
             
             return FileContents;
         }
-        private void InitGraphPane() {
+        private void InitGraphPane()
+        {
             z = z_Graph.GraphPane;
-            z.XAxis.Scale.MinorStep = 1;
-
-            z.XAxis.Scale.Max = 20; //values range on X axis
-
             z_Graph.IsShowHScrollBar = true;
 
+            z.XAxis.Scale.MinorStep = 1;
+            z.XAxis.Scale.Max = 20;
             z.XAxis.MajorGrid.DashOff = 0;
-            z.YAxis.MajorGrid.DashOff = 0;
 
             z.XAxis.MajorGrid.Color = Color.DarkSlateGray;
             z.XAxis.MinorGrid.IsVisible = true;
             z.XAxis.MinorGrid.Color = Color.Gray;
             z.XAxis.MajorGrid.IsVisible = true;
 
+            z.XAxis.Title.Text = "Samples";
+            z.XAxis.Title.FontSpec.Size = 7;
+            z.XAxis.Scale.FontSpec.Size = 7;
+
+            z.YAxis.MajorGrid.DashOff = 0;
             z.YAxis.MajorGrid.Color = Color.DarkSlateGray;
             z.YAxis.MajorGrid.IsVisible = true;
             z.YAxis.MinorGrid.Color = Color.Gray;
             z.YAxis.MinorGrid.IsVisible = true;
 
-            z.XAxis.Title.Text = "Samples";
-            z.XAxis.Title.FontSpec.Size = 7;
-            z.XAxis.Scale.FontSpec.Size = 7;
-
             z.YAxis.Title.Text = "Temperature";
             z.YAxis.Title.FontSpec.Size = 7;
             z.YAxis.Scale.FontSpec.Size = 7;
+
 
             z.Title.Text = "Logs Overview";
             z.Title.FontSpec.Size = 10;
             z.Legend.Position = LegendPos.BottomFlushLeft;
             z.Legend.FontSpec.Size = 6;
 
+            z_Graph.IsShowPointValues = true;
+
             z.AxisChange();
             z_Graph.IsAntiAlias = true;
             z_Graph.Refresh();
+
+            //z_Graph.PointValueEvent += (ZedGraphControl sender, GraphPane pane, CurveItem curve, int iPt) => FindSample(sender, pane, curve, iPt);
         }
-        
+
         private void InitCurve(List<List<List<string>>> _Values) {
             
             Random _rnd = new Random();
