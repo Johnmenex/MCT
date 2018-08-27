@@ -208,7 +208,7 @@ namespace MCT {
         }
 
         private ListBox Secondary_Listbox(List<List<string>> found_samples) {
-            _listbox.Height = _listbox.Height - 100;
+            _listbox.Height = (2 * _listbox.Height) / 3;
             ListBox second_listbox = new ListBox {
                 Name = "Secondary_listbox",
                 Location = new Point(_listbox.Location.X, _listbox.Location.Y + _listbox.Height + 25),
