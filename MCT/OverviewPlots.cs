@@ -154,10 +154,16 @@ namespace MCT {
                 }
             }
 
-            List<int> _found_indexes = new List<int>();
-
+            List<List<string>> _found_indexes = new List<List<string>>();
+            bool multi_valued_samples = false;
+            int multi_valued_samples_counter = 0;
+            int _session_specifier = 0;
             foreach (List<string> _session in _found_samples) {
+                _found_indexes.Add(new List<string>());
+                int _sample_counter = 0;
                 foreach (string _sample in _session) {
+                    _sample_counter++;
+                    multi_valued_samples_counter++;
                     int _session_index = _listbox.FindString("============" + _sample.Split('|')[0].Split(':')[0] + " " + _sample.Split('|')[0].Split(' ')[1]);
                     int _sample_index = _listbox.FindString("============Sample " + _sample.Split('|')[2], _session_index);
 
@@ -166,16 +172,19 @@ namespace MCT {
                             "Sensor: " + _sample.Split('|')[1].Split(' ')[1] + " | Value= " + _sample.Split('|')[3] :
                             "Sensor:  " + _sample.Split('|')[1].Split(' ')[1] + " | Value = " + _sample.Split('|')[3];
 
-                    _found_indexes.Add(_listbox.FindString(_search_string, _sample_index));
+                    _found_indexes[_found_indexes.Count - 1].Add(_listbox.FindString(_search_string, _sample_index) + "|" + _sample.Split('|')[2]);
+
+                    multi_valued_samples = multi_valued_samples_counter > 1 ? true : false;
+                    _session_specifier = Convert.ToInt32(_sample.Split('|')[0].Split(' ')[1]) -1;
                 }
             }
 
             if (_reference_ipt.X != curve[iPt].X || _reference_ipt.Y != curve[iPt].Y) {
                 _reference_ipt = new Point((int)curve[iPt].X, (int)curve[iPt].Y);
-                if (_found_indexes.Count < 2) {
+                if (!multi_valued_samples) {
                     Controls.RemoveByKey("Secondary_listbox");
                     _listbox.Height = z_Graph.Height;
-                    _listbox.SelectedIndex = _found_indexes[0];
+                    _listbox.SelectedIndex = Convert.ToInt32(_found_indexes[_session_specifier][0].Split('|')[0]);
 
                 }
                 else {
@@ -190,7 +199,7 @@ namespace MCT {
             return "";
         }
 
-        private ListBox Secondary_Listbox(List<int> found_samples) {
+        private ListBox Secondary_Listbox(List<List<string>> found_samples) {
             _listbox.Height = _listbox.Height - 100;
             ListBox second_listbox = new ListBox {
                 Name = "Secondary_listbox",
@@ -199,10 +208,17 @@ namespace MCT {
                 ScrollAlwaysVisible = true
             };
             second_listbox.Height = Height - second_listbox.Location.Y - 50;
-
-            foreach (int _item in found_samples)
-                second_listbox.Items.Add(_listbox.Items[_item]);
-
+            int _session_counter = 0;
+            foreach (List<string> _session in found_samples) {
+                _session_counter++;
+                if(_session.Count!=0)
+                    second_listbox.Items.Add("============Session " + _session_counter + "============");
+                foreach (string _item in _session) {
+                    second_listbox.Items.Add("============Sample " + _item.Split('|')[1] + "============");
+                    second_listbox.Items.Add(_listbox.Items[Convert.ToInt32(_item.Split('|')[0])]);
+                }
+                second_listbox.Items.Add("");
+            }
             return second_listbox;
         }
 
