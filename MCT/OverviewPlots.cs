@@ -183,6 +183,8 @@ namespace MCT {
                     _listbox.Height = z_Graph.Height;
                     _listbox.ClearSelected();
                     Controls.Add(Secondary_Listbox(_found_indexes));
+                    object _tmp_lb = ((ListBox)(Controls.Find("Secondary_listbox", true)[0]));
+                    ((ListBox)_tmp_lb).SelectedItem = ((ListBox)_tmp_lb).Items[0];
                 }
             }
             return "";
