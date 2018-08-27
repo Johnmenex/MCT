@@ -144,6 +144,7 @@ namespace MCT {
                         _points.Add(new Point((int)_ci[i].X, (int)_ci[i].Y));
                     #endregion
 
+                    #region find the samples that the mouse is hovering upon and add them in a list syntaxed as ["Session #id" | "Sensor #id" | #sample | #value]
                     foreach (Point _p in _points)
                         if (_p.X == (int)curve[iPt].X && _p.Y == (int)curve[iPt].Y)
                             _found_samples[_found_samples.Count - 1].Add(
@@ -152,6 +153,7 @@ namespace MCT {
                                 curve[iPt].X + "|" +
                                 curve[iPt].Y
                                 );
+                    #endregion
                 }
             }
 
@@ -159,6 +161,8 @@ namespace MCT {
             bool multi_valued_samples = false;
             int multi_valued_samples_counter = 0;
             int _session_specifier = 0;
+
+            #region Search listbox, find the matching item, return its unique 0-based key and add it to a List<List<string>>
             foreach (List<string> _session in _found_samples) {
                 _found_indexes.Add(new List<string>());
                 int _sample_counter = 0;
@@ -179,7 +183,9 @@ namespace MCT {
                     _session_specifier = Convert.ToInt32(_sample.Split('|')[0].Split(' ')[1]) -1;
                 }
             }
+            #endregion
 
+            #region Select the found item or create a 2nd listbox with the found samples
             if (_reference_ipt.X != curve[iPt].X || _reference_ipt.Y != curve[iPt].Y) {
                 _reference_ipt = new Point((int)curve[iPt].X, (int)curve[iPt].Y);
                 if (!multi_valued_samples) {
@@ -197,6 +203,7 @@ namespace MCT {
                     ((ListBox)_tmp_lb).SelectedItem = ((ListBox)_tmp_lb).Items[0];
                 }
             }
+            #endregion
             return "";
         }
 
@@ -218,7 +225,8 @@ namespace MCT {
                     second_listbox.Items.Add("============Sample " + _item.Split('|')[1] + "============");
                     second_listbox.Items.Add(_listbox.Items[Convert.ToInt32(_item.Split('|')[0])]);
                 }
-                second_listbox.Items.Add("");
+                if(_session.Count!=0)
+                    second_listbox.Items.Add("");
             }
             return second_listbox;
         }
