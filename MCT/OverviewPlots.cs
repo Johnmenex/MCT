@@ -206,6 +206,7 @@ namespace MCT {
         }
 
         private ListBox Secondary_Listbox(List<List<string>> found_samples) {
+            #region Initialize the 2nd Listbox
             _listbox.Height = (2 * _listbox.Height) / 3;
             ListBox second_listbox = new ListBox {
                 Name = "Secondary_listbox",
@@ -214,6 +215,8 @@ namespace MCT {
                 ScrollAlwaysVisible = true
             };
             second_listbox.Height = Height - second_listbox.Location.Y - 50;
+            #endregion
+            #region Populate the 2nd Listbox with the found_samples
             int _session_counter = 0;
             foreach (List<string> _session in found_samples) {
                 _session_counter++;
@@ -226,6 +229,7 @@ namespace MCT {
                 if(_session.Count!=0)
                     second_listbox.Items.Add("");
             }
+            #endregion
             return second_listbox;
         }
 
