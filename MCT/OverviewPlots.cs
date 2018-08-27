@@ -90,6 +90,7 @@ namespace MCT {
 
             return FileContents;
         }
+
         private void InitGraphPane() {
             z = z_Graph.GraphPane;
             z_Graph.IsShowHScrollBar = true;
@@ -287,8 +288,7 @@ namespace MCT {
             z_Graph.Refresh();
             CurveInitialized = true;
         }
-
-
+        
         private List<List<List<string>>> SeperateValues(List<List<string>> RawData, List<List<string>> _ActiveSensors) {
             List<List<List<string>>> _List = new List<List<List<string>>>();
             ///
@@ -326,6 +326,7 @@ namespace MCT {
             }
             return _List;
         }
+
         private void Plot(List<List<List<string>>> _values) {
             int _session_index = 0;
             foreach (List<List<string>> _session in _values) {
@@ -362,12 +363,14 @@ namespace MCT {
                 z_Graph.Refresh();
             }
 
-            int calculated_width = ("Sensor: XX | Value= XX | Time: HH:MM:SS").Length * 6;
-            _listbox.Width = calculated_width;
+            
             FinalizeUI();
         }
 
         private void FinalizeUI() {
+            int calculated_width = ("Sensor: XX | Value= XX | Time: HH:MM:SS").Length * 6;
+            _listbox.Width = calculated_width;
+
             int _scrollBar_width = SystemInformation.VerticalScrollBarWidth;
             _listbox.Location = new Point((Width - _listbox.Width - _scrollBar_width), _listbox.Location.Y);
             _listbox.ScrollAlwaysVisible = true;
