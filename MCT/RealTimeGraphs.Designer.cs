@@ -67,7 +67,6 @@
             this.MaximizeBox = false;
             this.Name = "RealTimeGraphs";
             this.Text = "RealTimeGraphs";
-            this.Load += new System.EventHandler(this.RealTimeGraphs_Load);
             this.ResumeLayout(false);
 
         }
