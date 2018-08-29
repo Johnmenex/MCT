@@ -43,9 +43,12 @@ namespace MCT {
         private List<List<string>> _sessionSensors = new List<List<string>>();
         private List<List<string>> SessionSensors { get => _sessionSensors; set => _sessionSensors = value; }
 
+        private int _Default_Height;
+        private int Default_Height { get => _Default_Height; set => _Default_Height = value; }
+
         private void InitUI() {
-            //AutoSize = true;
-            //AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Default_Height = Height;
+            Width = btn_clear_sessions.Location.X + btn_clear_sessions.Width + 30;
         }
         private string Openfile() {
             OpenFileDialog _ofd = new OpenFileDialog();
@@ -150,17 +153,22 @@ namespace MCT {
         }
 
         private void ClearSessions() {
+
+            Controls.Remove(
+                Controls.Find("btn_PlotSessions", true).Length > 0 ? 
+                    Controls.Find("btn_PlotSessions", true)[0] : 
+                    null
+                );
+
             for (int i = Controls.Count - 1; i >= 0; i--)
                 if (Controls[i].GetType() == typeof(GroupBox))
                     Controls.Remove(Controls[i]);
-
+            
             _sessionSensors = new List<List<string>>();
             SessionsAdded = 0;
-            AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            Invalidate();
-            AutoSize = false;
             Width = btn_clear_sessions.Location.X + btn_clear_sessions.Width + 30;
+            Height = Default_Height;
+            
         }
 
         private bool GetLogValidity(string _FileHeader) {
