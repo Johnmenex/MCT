@@ -202,10 +202,12 @@ namespace MCT {
                 }
             }
             #endregion
+
             return "";
         }
 
         private ListBox Secondary_Listbox(List<List<string>> found_samples) {
+
             #region Initialize the 2nd Listbox
             _listbox.Height = (2 * _listbox.Height) / 3;
             ListBox second_listbox = new ListBox {
@@ -216,6 +218,7 @@ namespace MCT {
             };
             second_listbox.Height = Height - second_listbox.Location.Y - 50;
             #endregion
+
             #region Populate the 2nd Listbox with the found_samples
             int _session_counter = 0;
             foreach (List<string> _session in found_samples) {
@@ -230,6 +233,7 @@ namespace MCT {
                     second_listbox.Items.Add("");
             }
             #endregion
+
             return second_listbox;
         }
 
@@ -244,6 +248,7 @@ namespace MCT {
             List<List<int>> _init_values = new List<List<int>>();
             List<List<int>> _init_labels = new List<List<int>>();
 
+            #region Initializes the Lists for Sensor's initial values, Sensors' labels + each sensor's color
             foreach (List<List<string>> _session in _Values) {
 
                 string[] _tmp = new string[_session[0].Count];
@@ -271,10 +276,12 @@ namespace MCT {
                     _number_of_sensors++;
                 }
             }
+            #endregion
 
             Curve = new List<List<CurveItem>>();
             int _session_index = 0;
 
+            #region Creates the Curve, initialized according to _init_values & _init_labels
             foreach (List<int> _session in _init_values) {
                 Curve.Add(new List<CurveItem>());
 
@@ -293,6 +300,7 @@ namespace MCT {
                 }
                 _session_index++;
             }
+            #endregion
 
             z.AxisChange();
             z_Graph.Refresh();
@@ -301,12 +309,9 @@ namespace MCT {
         
         private List<List<List<string>>> SeperateValues(List<List<string>> RawData, List<List<string>> _ActiveSensors) {
             List<List<List<string>>> _List = new List<List<List<string>>>();
-            ///
-            /// List looks like this
-            /// [ Session [ sample [ sensor_values ] ]
-            ///
-            int _Session_index = 0;
 
+            #region Creates a List syntaxed as [Session][Sensor][Sample]
+            int _Session_index = 0;
             foreach (List<string> _session in RawData) {
                 _List.Add(new List<List<string>>());
 
@@ -334,18 +339,22 @@ namespace MCT {
                 }
                 _Session_index++;
             }
+            #endregion
+
             return _List;
         }
 
         private void Plot(List<List<List<string>>> _values) {
             int _session_index = 0;
+
+            #region Plot the logs and populate the Main Listbox
             foreach (List<List<string>> _session in _values) {
-                if (_session_index != 0) _listbox.Items.Add("");
+                if (_session_index != 0) _listbox.Items.Add(""); //Adds a spacer between session 1 & 2
                 _listbox.Items.Add("================================");
                 _listbox.Items.Add("============Session " + (_session_index + 1) + "============");
                 _listbox.Items.Add("================================");
                 _listbox.Items.Add("");
-                double _samples_index = 1;
+                int _samples_index = 1;
                 foreach (List<string> _sample in _session) {
                     _listbox.Items.Add("============Sample " + _samples_index + "============");
                     int _sensor_index = 0;
@@ -354,15 +363,18 @@ namespace MCT {
 
                         if (_samples_index != 0)
                             if (!_sensor_value.Contains(':')) {
+                                //adds points to the graph
                                 Curve[_session_index][_sensor_index].AddPoint(_samples_index, Convert.ToDouble(_sensor_value.Split('-')[1]));
-                                string _list_item = Convert.ToDouble(_sensor_value.Split('-')[0]) > 9 ?
+                                
+                                //inline IF setting different format if there are more than 9 sensors
+                                string _list_item = Convert.ToDouble(_sensor_value.Split('-')[0]) > 9 ? 
                                         "Sensor: " + _sensor_value.Split('-')[0] + " | Value= " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time
                                         :
                                         "Sensor:  " + _sensor_value.Split('-')[0] + " | Value = " + _sensor_value.Split('-')[1] + " | Time: " + _sample_time;
                                 _listbox.Items.Add(_list_item);
                                 _sensor_index++;
                             }
-                            else
+                            else //if sensor_value contains ':', that's the timestamp
                                 _sample_time = _sensor_value;
                     }
                     _samples_index++;
@@ -372,8 +384,8 @@ namespace MCT {
                 z.AxisChange();
                 z_Graph.Refresh();
             }
+            #endregion
 
-            
             FinalizeUI();
         }
 
