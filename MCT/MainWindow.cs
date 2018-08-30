@@ -165,9 +165,6 @@ namespace MCT {
 
             return _SerialData;
         }
-        private double[] TransmitData() {
-            return SerialData;
-        }
         private string DetectCOM() {
             SerialPort _serialPort = new SerialPort(); //temporary serial port
             string _serial_content = "";
@@ -848,13 +845,13 @@ namespace MCT {
         private void timer_logger_Tick(object sender, EventArgs e) {
             timer_logger.Stop();
             SerialData = ReceiveData(SerialDataToAnalyze);
-            SaveData(serialData);
+            SaveData(SerialData);
 
 
             if (ValuesForm != null)
-                ValuesForm.ReceiveData(serialData);
+                ValuesForm.ReceiveData(SerialData);
             if (GraphsForm != null) {
-                GraphsForm.ReceiveData(serialData);
+                GraphsForm.ReceiveData(SerialData);
             }
 
             timer_logger.Start();
@@ -890,9 +887,7 @@ namespace MCT {
             OpenLogs _o = new OpenLogs();
             _o.ShowDialog();
         }
-
-       
-
+        
         private void convertLogFileToTxtToolStripMenuItem_Click(object sender, EventArgs e) {
             LogToCSV();
         }
