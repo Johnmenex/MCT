@@ -835,11 +835,21 @@ namespace MCT {
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
             _current_Values = ReceiveData("");
-            ValuesForm = new RealTimeValues(GetActiveSensors(), _current_Values, SamplingTime);
+            if (ValuesForm == null || ValuesForm.IsDisposed) {
+                ValuesForm = new RealTimeValues(GetActiveSensors(), _current_Values, SamplingTime);
+                ValuesForm.Show();
+            }
+            else
+                ValuesForm.Activate();
+
 #elif !demo
-            ValuesForm = new RealTimeValues(GetActiveSensors(), serialData, SamplingTime);
+            if (ValuesForm == null || ValuesForm.IsDisposed) {
+                ValuesForm = new RealTimeValues(GetActiveSensors(), serialData, SamplingTime);
+                ValuesForm.Show();
+            }
+            else
+                ValuesForm.Activate();
 #endif
-            ValuesForm.Show();
         }
 
         private void timer_logger_Tick(object sender, EventArgs e) {
@@ -870,13 +880,22 @@ namespace MCT {
             Random _rnd = new Random();
             double[] _current_Values = new double[Total_sensors];
             _current_Values = ReceiveData("");
-            GraphsForm = new RealTimeGraphs(GetActiveSensors(), _current_Values, SamplingTime);
-            
+            if (GraphsForm == null || GraphsForm.IsDisposed) {
+                GraphsForm = new RealTimeGraphs(GetActiveSensors(), _current_Values, SamplingTime);
+                GraphsForm.Show();
+            }
+            else
+                GraphsForm.Activate();
+
 #elif !demo
-            GraphsForm = new RealTimeGraphs(GetActiveSensors(), SerialData, SamplingTime);
+            if (GraphsForm == null || GraphsForm.IsDisposed) {
+                GraphsForm = new RealTimeGraphs(GetActiveSensors(), SerialData, SamplingTime);
+                GraphsForm.Show();
+            }
+            else
+                GraphsForm.Activate();
             
 #endif
-            GraphsForm.Show();
         }
 
         private void btn_save_Click(object sender, EventArgs e) {
