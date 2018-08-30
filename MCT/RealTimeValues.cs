@@ -191,9 +191,22 @@ namespace MCT {
             z.YAxis.Title.Text = "Temperature";
             z.YAxis.IsVisible = true;
 
+            zedGraphControl1.ContextMenuBuilder +=
+                (ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState)
+                    => Zed_CustomRightClickMenu(sender, menuStrip, mousePt, objState);
 
             GraphPaneInitialized = true;
         }
+
+        private void Zed_CustomRightClickMenu(ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState) {
+            foreach (ToolStripMenuItem _item in menuStrip.Items) {
+                if ((string)_item.Tag == "show_val") {
+                    menuStrip.Items.Remove(_item);
+                    break;
+                }
+            }
+        }
+
         private protected void InitBar(int _nSensors, double[] _curValues) {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
