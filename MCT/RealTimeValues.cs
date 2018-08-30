@@ -79,9 +79,12 @@ namespace MCT {
             Gb_threshold = new List<GroupBox>();
             for (int i = 0; i < NumberOfSensors; i++) {
 
+                #region Parent groupbox
                 Gb_threshold.Add(new GroupBox());
                 Gb_threshold[i].Text = "Sensor " + ActiveSensors[i];
-                //create cb_sensor
+                #endregion
+
+                #region create cb_sensor -> Gb_threshold.Controls[0]
                 CheckBox cb_threshold = new CheckBox();
                 cb_threshold.Location = new Point(4, 15);
                 cb_threshold.AutoSize = true;
@@ -90,8 +93,9 @@ namespace MCT {
                 cb_threshold.Checked = false;
                 cb_threshold.Show();
                 Gb_threshold[i].Controls.Add(cb_threshold);
-                //
-                //create min_label
+                #endregion
+
+                #region create min_label -> Gb_threshold.Controls[1]
                 System.Windows.Forms.Label lb_min = new System.Windows.Forms.Label();
                 lb_min.AutoSize = true;
                 lb_min.Name = "lb_min";
@@ -99,8 +103,9 @@ namespace MCT {
                 lb_min.Location = new Point(2, cb_threshold.Location.Y + cb_threshold.Height + 5);
                 lb_min.Show();
                 Gb_threshold[i].Controls.Add(lb_min);
-                //
-                //create min_nuD
+                #endregion
+
+                #region create min_nuD -> Gb_threshold.Controls[2]
                 NumericUpDown nUD_min = new NumericUpDown();
                 nUD_min.Minimum = -999;
                 nUD_min.Maximum = 999;
@@ -109,8 +114,9 @@ namespace MCT {
                 nUD_min.BackColor = Color.FromKnownColor(KnownColor.Control);
                 nUD_min.Show();
                 Gb_threshold[i].Controls.Add(nUD_min);
-                //
-                //create max_label
+                #endregion
+
+                #region create max_label -> Gb_threshold.Controls[3]
                 System.Windows.Forms.Label lb_max = new System.Windows.Forms.Label();
                 lb_max.AutoSize = true;
                 lb_max.Name = "lb_max";
@@ -118,8 +124,9 @@ namespace MCT {
                 lb_max.Location = new Point(2, lb_min.Location.Y + lb_min.Height + 10);
                 lb_max.Show();
                 Gb_threshold[i].Controls.Add(lb_max);
-                //
-                //create max_nUD
+                #endregion
+
+                #region create max_nUD -> Gb_threshold.Controls[4]
                 NumericUpDown nUD_max = new NumericUpDown();
                 nUD_max.Minimum = -999;
                 nUD_max.Maximum = 999;
@@ -128,8 +135,9 @@ namespace MCT {
                 nUD_max.BackColor = Color.FromKnownColor(KnownColor.Control);
                 nUD_max.Show();
                 Gb_threshold[i].Controls.Add(nUD_max);
-                //
-                //Set the dynamic location of each groupbox
+                #endregion
+
+                #region Set the dynamic location of each groupbox
                 Gb_threshold[i].AutoSize = true;
                 Gb_threshold[i].Width = cb_threshold.Width;
 
@@ -152,7 +160,8 @@ namespace MCT {
                     column = 0;
                     row++;
                 }
-                //
+                #endregion
+
                 Gb_threshold[i].Show();
                 gb_parent.Controls.Add(Gb_threshold[i]);
             }
