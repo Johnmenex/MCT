@@ -46,7 +46,7 @@ namespace MCT {
             NumberOfSensors = _active_sensors.Count;
 
             InitGraphs(NumberOfSensors, _current_Values);
-            initUI();
+            InitUI();
             
             timer_visualiser.Start();
         }
@@ -75,13 +75,8 @@ namespace MCT {
         private List<int> ActiveSensors { get => _activeSensors; set => _activeSensors = value; }
         private List<string> LabelNames { get => labelNames; set => labelNames = value; }
         
-        private protected void InitGraphs(int _nSensors, double[] _curValues) {
-            InitGraphPane();
-            InitBar(_nSensors, _curValues);
-
-            timer_visualiser.Interval = Sampling_rate;
-        }
-        private protected void initUI() {
+        
+        private protected void InitUI() {
             int column = 0;
             int row = 0;
             Gb_threshold = new List<GroupBox>();
@@ -174,6 +169,12 @@ namespace MCT {
                 gb_parent.Controls.Add(Gb_threshold[i]);
             }
         }
+        private protected void InitGraphs(int _nSensors, double[] _curValues) {
+            InitGraphPane();
+            InitBar(_nSensors, _curValues);
+
+            timer_visualiser.Interval = Sampling_rate;
+        }
         private protected void InitGraphPane() {
             z = zedGraphControl1.GraphPane;
 
@@ -208,16 +209,6 @@ namespace MCT {
                 (ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState)
                     => Zed_CustomRightClickMenu(sender, menuStrip, mousePt, objState);
         }
-
-        private void Zed_CustomRightClickMenu(ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState) {
-            foreach (ToolStripMenuItem _item in menuStrip.Items) {
-                if ((string)_item.Tag == "show_val") {
-                    menuStrip.Items.Remove(_item);
-                    break;
-                }
-            }
-        }
-
         private protected void InitBar(int _nSensors, double[] _curValues) {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
@@ -248,6 +239,15 @@ namespace MCT {
             BarInitialized = true;
         }
 
+        private void Zed_CustomRightClickMenu(ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState) {
+            foreach (ToolStripMenuItem _item in menuStrip.Items) {
+                if ((string)_item.Tag == "show_val") {
+                    menuStrip.Items.Remove(_item);
+                    break;
+                }
+            }
+        }
+
         private protected void RefreshBars() {
             double[] _sensor_values = SensorValues;
 
@@ -261,6 +261,7 @@ namespace MCT {
 
             zedGraphControl1.Refresh();
         }
+
         private protected void CheckThresholds() {
             int _index = 0;
             foreach (GroupBox _gb in gb_parent.Controls) {
