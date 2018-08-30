@@ -72,7 +72,6 @@
             this.MinimizeBox = false;
             this.Name = "RealTimeValues";
             this.Text = "RealTimeValues";
-            this.Load += new System.EventHandler(this.RealTimeValues_Load);
             this.ResumeLayout(false);
 
         }

@@ -39,17 +39,22 @@ namespace MCT {
                 return;
 
             InitializeComponent();
+            CenterToScreen();
+
             Sampling_rate = _sampling_rate;
             ActiveSensors = _active_sensors;
             NumberOfSensors = _active_sensors.Count;
-            InitGraphPane();
-            InitBar(NumberOfSensors, _current_Values);
+
+            InitGraphs(NumberOfSensors, _current_Values);
+            initUI();
+            
+            timer_visualiser.Start();
         }
         public void ReceiveData(double[] _sensor_values) {
             SensorValues = _sensor_values;
         }
 
-        private bool graphPaneInitialized;
+
         private bool barInitialized;
         private protected int sampling_rate;
         private protected int _number_of_sensors;
@@ -64,15 +69,18 @@ namespace MCT {
         private protected int NumberOfSensors { get => _number_of_sensors; set => _number_of_sensors = value; }
         private protected List<BarItem> Bar { get => _bar; set => _bar = value; }
         private protected int Sampling_rate { get => sampling_rate; set => sampling_rate = value; }
-        private protected bool GraphPaneInitialized { get => graphPaneInitialized; set => graphPaneInitialized = value; }
         private protected bool BarInitialized { get => barInitialized; set => barInitialized = value; }
         private protected double[] SensorValues { get => _sensorValues; set => _sensorValues = value; }
         private protected List<GroupBox> Gb_threshold { get => gb_threshold; set => gb_threshold = value; }
         private List<int> ActiveSensors { get => _activeSensors; set => _activeSensors = value; }
         private List<string> LabelNames { get => labelNames; set => labelNames = value; }
+        
+        private protected void InitGraphs(int _nSensors, double[] _curValues) {
+            InitGraphPane();
+            InitBar(_nSensors, _curValues);
 
-        private GroupBox gb_general = new GroupBox();
-
+            timer_visualiser.Interval = Sampling_rate;
+        }
         private protected void initUI() {
             int column = 0;
             int row = 0;
@@ -168,11 +176,7 @@ namespace MCT {
         }
         private protected void InitGraphPane() {
             z = zedGraphControl1.GraphPane;
-            //z.Rect = new RectangleF(new PointF(2, 2), new SizeF(Width, Height));
 
-            //z.XAxis.Scale.MinorStep = 1;
-            //z.XAxis.Scale.Max = 5; //values range on X axis
-            //z.YAxis.Scale.Max = 100; //values range on Y axis
             z.YAxis.Scale.MaxAuto = true;
             z.YAxis.Scale.MinAuto = true;
 
@@ -203,8 +207,6 @@ namespace MCT {
             zedGraphControl1.ContextMenuBuilder +=
                 (ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState)
                     => Zed_CustomRightClickMenu(sender, menuStrip, mousePt, objState);
-
-            GraphPaneInitialized = true;
         }
 
         private void Zed_CustomRightClickMenu(ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState) {
@@ -279,15 +281,6 @@ namespace MCT {
                 }
                 _index++;
             }
-        }
-
-        private protected void RealTimeValues_Load(object sender, EventArgs e) {
-            CenterToScreen();
-            timer_visualiser.Interval = Sampling_rate;
-            initUI();
-            timer_visualiser.Start();
-
-
         }
 
         private void timer_visualiser_Tick(object sender, EventArgs e) {
