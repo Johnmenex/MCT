@@ -242,15 +242,6 @@ namespace MCT {
                 (ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState)
                     => Zed_CustomRightClickMenu(sender, menuStrip, mousePt, objState);
         }
-
-        private void Zed_CustomRightClickMenu(ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState) {
-            foreach(ToolStripMenuItem _item in menuStrip.Items) {
-                if ((string)_item.Tag == "show_val") {
-                    menuStrip.Items.Remove(_item);
-                    break;
-                }
-            }
-        }
         private protected void InitCurve(int _nSensors, double[] _curValues) {
             List<Color> Colors = new List<Color>() {
                 Color.Green,
@@ -279,10 +270,15 @@ namespace MCT {
             CurveInitialized = true;
         }
 
-        private void Cb_display_CheckedChanged(object sender, EventArgs e) {
-            Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].IsVisible = ((CheckBox)sender).Checked;
-            Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].Label.IsVisible = ((CheckBox)sender).Checked;
+        private void Zed_CustomRightClickMenu(ZedGraphControl sender, ContextMenuStrip menuStrip, Point mousePt, ZedGraphControl.ContextMenuObjectState objState) {
+            foreach(ToolStripMenuItem _item in menuStrip.Items) {
+                if ((string)_item.Tag == "show_val") {
+                    menuStrip.Items.Remove(_item);
+                    break;
+                }
+            }
         }
+
         private void AutoFollowGraphLine() {
             if (!cb_Allow_Scroll.Checked)
                 return;
@@ -300,7 +296,7 @@ namespace MCT {
                 }
             }
         }
-        
+
         private protected void DrawNextSpot() {
 
             int i = 0;
@@ -315,6 +311,7 @@ namespace MCT {
             z.AxisChange();
             zedGraphControl1.Refresh();
         }
+
         private protected void CheckThresholds() {
             int _index = 0;
             foreach (GroupBox _gb in gb_parent.Controls) {
@@ -342,6 +339,11 @@ namespace MCT {
             }
         }
 
+        private void Cb_display_CheckedChanged(object sender, EventArgs e) {
+            Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].IsVisible = ((CheckBox)sender).Checked;
+            Curve[Convert.ToInt32(((CheckBox)sender).Name.Remove(0, 10)) - 1].Label.IsVisible = ((CheckBox)sender).Checked;
+        }
+        
         private void timer_visualizer_Tick(object sender, EventArgs e) {
             if (CurveInitialized) {
                 timer_visualizer.Stop();
