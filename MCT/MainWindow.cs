@@ -331,9 +331,11 @@ namespace MCT {
 
             gb_sampling_info.Enabled = true;
             lb_USB_port.Text = "Selected USB port:";
-            lb_sampling_rate.Text = "Sampling rate:";
-            track_sampling_rate.Value = 0;
+            lb_sampling_rate.Text = "Sampling rate (ms):";
+            track_sampling_rate.Value = 500;
             track_sampling_rate.Enabled = false;
+            nud_sampling_rate.Value = 500;
+            nud_sampling_rate.Enabled = false;
             tb_DTR_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
             tb_RTS_state.BackColor = Color.FromKnownColor(KnownColor.ControlLight);
             lb_sensors_number.Text = "Number of detected sensors: ";
@@ -761,6 +763,8 @@ namespace MCT {
             lb_sensors_number.Text = "Number of detected sensors: " + Total_sensors;
             track_sampling_rate.Enabled = true;
             timer_logger.Interval = SamplingTime = track_sampling_rate.Value = 500;
+            nud_sampling_rate.Value = 500;
+            nud_sampling_rate.Enabled = true;
         }
         
         private void _detector_Tick(object sender, EventArgs e) {
@@ -814,9 +818,10 @@ namespace MCT {
         }
 
         private void track_sampling_rate_Scroll(object sender, EventArgs e) {
-            SamplingTime = ((TrackBar)sender).Value > 0 ? ((TrackBar)sender).Value : ((TrackBar)sender).Value + 1;
-            timer_logger.Interval = SamplingTime;
-            lb_sampling_rate.Text = "Sampling rate: " + track_sampling_rate.Value;
+            timer_logger.Interval =
+                SamplingTime = 
+                ((TrackBar)sender).Value > 0 ? ((TrackBar)sender).Value : ((TrackBar)sender).Value + 1;
+            nud_sampling_rate.Value = SamplingTime;
         }
 
         private void restartToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -913,6 +918,13 @@ namespace MCT {
         
         private void convertLogFileToXlsxToolStripMenuItem_Click(object sender, EventArgs e) {
             LogToExcel();
+        }
+
+        private void nud_sampling_rate_ValueChanged(object sender, EventArgs e) {
+            timer_logger.Interval = 
+                track_sampling_rate.Value = 
+                SamplingTime = 
+                (int)((NumericUpDown)sender).Value;
         }
     }
 }
