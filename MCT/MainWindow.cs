@@ -317,12 +317,18 @@ namespace MCT {
             realtimeGraphsToolStripMenuItem.Enabled = true;
             realtimeValuesToolStripMenuItem.Enabled = true;
 
+            //gb_sampling_info.Controls.Add(CreateUptimeLabel());
+            //gb_sampling_info.Height = gb_sampling_info.Controls["lb_logging_uptime"].Location.Y +
+            //                          gb_sampling_info.Controls["lb_logging_uptime"].Height + 2;
+            //gb_sampling_info.Controls["lb_logging_uptime"].Enabled = true;
+            
             uptime_timer.Start();
             timer_logger.Start();
         }
 
         private void Uptime_Tick(object sender, EventArgs e) {
             Uptime = CalculateUptime();
+            //gb_sampling_info.Controls["lb_logging_uptime"].Text = Uptime;
             Text = "Control Panel - " + Uptime;
             seconds_uptime++;
         }
@@ -382,6 +388,7 @@ namespace MCT {
             gb_sensors.Size = new Size(262, 127);
             lb_sensors_instructions.Visible = true;
             gb_sensors.Controls.Add(lb_sensors_instructions);
+            //gb_sampling_info.Controls["lb_logging_uptime"].Dispose();
             Text = "Control Panel";
             seconds_uptime = 1;
             gb_sampling_info.Size = new Size(200, 203);
@@ -795,6 +802,17 @@ namespace MCT {
             timer_logger.Interval = SamplingTime = track_sampling_rate.Value = 500;
             nud_sampling_rate.Value = 500;
             nud_sampling_rate.Enabled = true;
+        }
+
+        private Label CreateUptimeLabel() {
+            Label uptime_label = new Label {
+                Name = "lb_logging_uptime",
+                Location = new Point(lb_sensors_number.Location.X, lb_sensors_number.Location.Y + lb_sensors_number.Height + 5),
+                Text = "E.T: 00:00:00",
+                Visible = true
+            };
+
+            return uptime_label;
         }
         
         private void _detector_Tick(object sender, EventArgs e) {
