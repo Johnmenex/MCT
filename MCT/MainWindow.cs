@@ -47,6 +47,8 @@ namespace MCT {
         private int sample_number;
         private int _detector_counter = 0;
         private string SerialDataToAnalyze;
+        private string _uptime;
+        private int seconds_uptime = 1;
 
         private protected RealTimeValues ValuesForm;
         private protected RealTimeGraphs GraphsForm;
@@ -72,10 +74,16 @@ namespace MCT {
         private protected bool StartDateReached { get => startDateReached; set => startDateReached = value; }
         private protected bool StopDateReached { get => stopDateReached; set => stopDateReached = value; }
         private protected bool ScheduledMonitorSet { get => scheduledMonitorSet; set => scheduledMonitorSet = value; }
+        public string Uptime { get => _uptime; set => _uptime = value; }
 
         private Timer _DateCheck = new Timer {
             Interval = 1000
         };
+        private Timer uptime_timer = new Timer {
+            Tag = "uptime",
+            Interval = 1000
+        };
+
         private void _DateCheck_Tick(object sender, EventArgs e) {
             if (DateTime.Now.ToString("dd/MM/yyyy H:m") == dt_start_monitor.Value.ToString("dd/MM/yyyy ") + nUD_start_hour.Value + ":" + nUD_start_minute.Value) {
 
@@ -309,12 +317,32 @@ namespace MCT {
             realtimeGraphsToolStripMenuItem.Enabled = true;
             realtimeValuesToolStripMenuItem.Enabled = true;
 
+            uptime_timer.Start();
             timer_logger.Start();
         }
+
+        private void Uptime_Tick(object sender, EventArgs e) {
+            Uptime = CalculateUptime();
+            Text = "Control Panel - " + Uptime;
+            seconds_uptime++;
+        }
+
+        private string CalculateUptime() {
+            int secs =  seconds_uptime       - (60 * (seconds_uptime / 60));
+            int min  = (seconds_uptime / 60) - (60 * (seconds_uptime / 3600));
+            int hour = (seconds_uptime / 3600);// - (60 * (seconds_uptime / 216000));
+
+            return ("Elapsed Time: " +
+                (hour < 10 ? "0" + hour + ":" : hour + ":") +
+                (min  < 10 ? "0" + min  + ":" : min  + ":") +
+                (secs < 10 ? "0" + secs       : secs + ""));
+        }
+
         private void Stop() {
             btn_start_stop.Text = "Start";
             Started = false;
 
+            uptime_timer.Stop();
             timer_logger.Stop();
             btn_reset.Enabled = true;
             btn_save.Enabled = true;
@@ -354,6 +382,8 @@ namespace MCT {
             gb_sensors.Size = new Size(262, 127);
             lb_sensors_instructions.Visible = true;
             gb_sensors.Controls.Add(lb_sensors_instructions);
+            Text = "Control Panel";
+            seconds_uptime = 1;
             gb_sampling_info.Size = new Size(200, 203);
             gb_auto_mode.Location = new Point(12, 252);
             Size = new Size(509, 399);
@@ -875,6 +905,7 @@ namespace MCT {
         
         private void MainWindow_Load(object sender, EventArgs e) {
             CreateHiddenDir();
+            uptime_timer.Tick += Uptime_Tick;
         }
 
         private void realtimeGraphsToolStripMenuItem_Click(object sender, EventArgs e) {
