@@ -74,7 +74,7 @@ namespace MCT {
         private protected bool StartDateReached { get => startDateReached; set => startDateReached = value; }
         private protected bool StopDateReached { get => stopDateReached; set => stopDateReached = value; }
         private protected bool ScheduledMonitorSet { get => scheduledMonitorSet; set => scheduledMonitorSet = value; }
-        public string Uptime { get => _uptime; set => _uptime = value; }
+        private string Uptime { get => _uptime; set => _uptime = value; }
 
         private Timer _DateCheck = new Timer {
             Interval = 1000
@@ -317,6 +317,7 @@ namespace MCT {
             realtimeGraphsToolStripMenuItem.Enabled = true;
             realtimeValuesToolStripMenuItem.Enabled = true;
 
+            //Label showing Uptime in sampling information GroupBox
             //gb_sampling_info.Controls.Add(CreateUptimeLabel());
             //gb_sampling_info.Height = gb_sampling_info.Controls["lb_logging_uptime"].Location.Y +
             //                          gb_sampling_info.Controls["lb_logging_uptime"].Height + 2;
@@ -330,6 +331,13 @@ namespace MCT {
             Uptime = CalculateUptime();
             //gb_sampling_info.Controls["lb_logging_uptime"].Text = Uptime;
             Text = "Control Panel - " + Uptime;
+
+            if (GraphsForm != null)
+                GraphsForm.Text = "RealTimeGraphs - " + Uptime;
+            
+            if (ValuesForm != null)
+                ValuesForm.Text = "RealTimeValues - " + Uptime;
+            
             seconds_uptime++;
         }
 
