@@ -422,6 +422,9 @@ namespace MCT {
             StopDateReached = false;
             ScheduledMonitorSet = false;
 
+            if(GraphsForm !=null) GraphsForm.Dispose();
+            if(ValuesForm !=null) ValuesForm.Dispose();
+
         }
         private void ApplicationRestart() {
             DialogResult _dg = MessageBox.Show("Are you sure you want to restart \nthe application?",
