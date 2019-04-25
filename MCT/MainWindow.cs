@@ -326,8 +326,8 @@ namespace MCT {
             uptime_timer.Start();
             timer_logger.Start();
 
-            if (GraphsForm != null) GraphsForm.Start();
-            if (ValuesForm != null) ValuesForm.Start();
+            if (GraphsForm != null && !GraphsForm.IsDisposed) GraphsForm.Start();
+            if (ValuesForm != null && !ValuesForm.IsDisposed) ValuesForm.Start();
         }
 
         private void Uptime_Tick(object sender, EventArgs e) {
