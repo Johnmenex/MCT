@@ -325,6 +325,9 @@ namespace MCT {
             
             uptime_timer.Start();
             timer_logger.Start();
+
+            if (GraphsForm != null) GraphsForm.Start();
+            if (ValuesForm != null) ValuesForm.Start();
         }
 
         private void Uptime_Tick(object sender, EventArgs e) {
@@ -358,6 +361,9 @@ namespace MCT {
 
             uptime_timer.Stop();
             timer_logger.Stop();
+            if (GraphsForm != null) GraphsForm.Stop();
+            if (ValuesForm != null) ValuesForm.Stop();
+
             btn_reset.Enabled = true;
             btn_save.Enabled = true;
 

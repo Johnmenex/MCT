@@ -78,6 +78,8 @@ namespace MCT {
         private List<int> ActiveSensors { get => _activeSensors; set => _activeSensors = value; }
         private protected List<string> LabelNames { get => labelNames; set => labelNames = value; }
 
+        public void Stop() { timer_visualizer.Stop(); }
+        public void Start() { timer_visualizer.Start(); }
         
         private protected void InitUI() {
             CenterToScreen();
